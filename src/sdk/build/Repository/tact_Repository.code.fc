@@ -1,0 +1,235 @@
+#pragma version =0.4.3;
+#pragma allow-post-modification;
+#pragma compute-asm-ltr;
+
+#include "tact_Repository.headers.fc";
+#include "tact_Repository.stdlib.fc";
+#include "tact_Repository.storage.fc";
+
+;;
+;; Contract Repository functions
+;;
+
+(slice, int, int, int) $Repository$_contract_init(int $repositoryId) impure inline_ref {
+    var (($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee)) = (null(), null(), null(), null());
+    $self'owner = __tact_context_get_sender();
+    $self'repositoryId = $repositoryId;
+    $self'numOfOrganizations = 0;
+    $self'deployOrganizationFee = 0;
+    return ($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee);
+}
+
+((slice, int, int, int), int) $Repository$_fun_numOfOrganizations((slice, int, int, int) $self) impure inline_ref {
+    var (($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee)) = $self;
+    return (($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee), $self'numOfOrganizations);
+}
+
+((slice, int, int, int), int) $Repository$_fun_deployOrganizationFee((slice, int, int, int) $self) impure inline_ref {
+    var (($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee)) = $self;
+    return (($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee), $self'deployOrganizationFee);
+}
+
+((slice, int, int, int), slice) $Repository$_fun_organizationAddress((slice, int, int, int) $self, int $organizationId) impure inline_ref {
+    var (($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee)) = $self;
+    var ($init'code, $init'data) = $Organization$_init_child(__tact_context_sys, my_address(), $organizationId);
+    return (($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee), $global_contractAddress(($init'code, $init'data)));
+}
+
+((slice, int, int, int), ()) $Repository$_fun_requireOwner((slice, int, int, int) $self) impure inline_ref {
+    var (($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee)) = $self;
+    throw_unless(132, ( __tact_slice_eq_bits($self'owner, __tact_context_get_sender()) ));
+    return (($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee), ());
+}
+
+((slice, int, int, int), slice) $Repository$_fun_owner((slice, int, int, int) $self) impure inline_ref {
+    var (($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee)) = $self;
+    return (($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee), $self'owner);
+}
+
+;;
+;; Receivers of a Contract Repository
+;;
+
+(((slice, int, int, int)), ()) %$Repository$_internal_empty((slice, int, int, int) $self) impure inline {
+    var ($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee) = $self;
+    return (($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee), ());
+}
+
+(((slice, int, int, int)), ()) $Repository$_internal_binary_DeployOrganization((slice, int, int, int) $self, (int) $msg) impure inline {
+    var ($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee) = $self;
+    var ($msg'hidden) = $msg;
+    throw_unless(27884, ($Context$_get_value(__tact_context_get()) >= $self'deployOrganizationFee));
+    var ($init'code, $init'data) = $Organization$_init_child(__tact_context_sys, my_address(), $self'numOfOrganizations);
+    slice $organization = $global_contractAddress(($init'code, $init'data));
+    $global_send($SendParameters$_constructor_to_value_bounce_mode_body_code_data($organization, 0, false, 64, $InitOrganization$_store_cell($InitOrganization$_constructor_owner_hidden(__tact_context_get_sender(), $msg'hidden)), $init'code, $init'data));
+    $self'numOfOrganizations = $self'numOfOrganizations + 1;
+    return (($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee), ());
+}
+
+(((slice, int, int, int)), ()) $Repository$_internal_binary_DeployOrganizationWithMetadata((slice, int, int, int) $self, (int, (slice, slice, slice, slice)) $msg) impure inline {
+    var ($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee) = $self;
+    var ($msg'hidden, ($msg'metadata'name, $msg'metadata'description, $msg'metadata'emoji, $msg'metadata'website)) = $msg;
+    throw_unless(27884, ($Context$_get_value(__tact_context_get()) >= $self'deployOrganizationFee));
+    var ($init'code, $init'data) = $Organization$_init_child(__tact_context_sys, my_address(), $self'numOfOrganizations);
+    slice $organization = $global_contractAddress(($init'code, $init'data));
+    $global_send($SendParameters$_constructor_to_value_bounce_mode_body_code_data($organization, 0, false, 64, $InitOrganizationWithMetadata$_store_cell($InitOrganizationWithMetadata$_constructor_owner_hidden_metadata(__tact_context_get_sender(), $msg'hidden, ($msg'metadata'name, $msg'metadata'description, $msg'metadata'emoji, $msg'metadata'website))), $init'code, $init'data));
+    $self'numOfOrganizations = $self'numOfOrganizations + 1;
+    return (($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee), ());
+}
+
+(((slice, int, int, int)), ()) $Repository$_internal_binary_SetDeployOrgFee((slice, int, int, int) $self, (int) $msg) impure inline {
+    var ($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee) = $self;
+    var ($msg'newFee) = $msg;
+    ($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee)~$Repository$_fun_requireOwner();
+    $self'deployOrganizationFee = $msg'newFee;
+    return (($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee), ());
+}
+
+((slice, int, int, int), ()) $Repository$_internal_text_5092b5dce0715a57dd969f5fb5a6f93025a0b02eab329470ca2b365ca0d7e93a((slice, int, int, int) $self) impure inline {
+    var ($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee) = $self;
+    ($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee)~$Repository$_fun_requireOwner();
+    $global_send($SendParameters$_constructor_to_bounce_value_mode(__tact_context_get_sender(), true, 0, (128 + 2)));
+    return (($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee), ());
+}
+
+(((slice, int, int, int)), ()) $Repository$_internal_binary_Deploy((slice, int, int, int) $self, (int) $deploy) impure inline {
+    var ($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee) = $self;
+    var ($deploy'queryId) = $deploy;
+    ($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee)~$Repository$_fun_notify($DeployOk$_store_cell($DeployOk$_constructor_queryId($deploy'queryId)));
+    return (($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee), ());
+}
+
+;;
+;; Get methods of a Contract Repository
+;;
+
+_ %numOfOrganizations() method_id(125543) {
+    var self = $Repository$_contract_load();
+    var res = self~$Repository$_fun_numOfOrganizations();
+    return res;
+}
+
+_ %deployOrganizationFee() method_id(104328) {
+    var self = $Repository$_contract_load();
+    var res = self~$Repository$_fun_deployOrganizationFee();
+    return res;
+}
+
+_ %organizationAddress(int $$organizationId) method_id(128109) {
+    int $organizationId = $$organizationId;
+    var self = $Repository$_contract_load();
+    var res = self~$Repository$_fun_organizationAddress($organizationId);
+    return res;
+}
+
+_ %owner() method_id(83229) {
+    var self = $Repository$_contract_load();
+    var res = self~$Repository$_fun_owner();
+    return res;
+}
+
+_ supported_interfaces() method_id {
+    return (
+        "org.ton.introspection.v0"H >> 128,
+        "org.ton.abi.ipfs.v0"H >> 128,
+        "org.ton.deploy.lazy.v0"H >> 128,
+        "org.ton.chain.workchain.v0"H >> 128,
+        "org.ton.ownable"H >> 128
+    );
+}
+
+_ get_abi_ipfs() method_id {
+    return "ipfs://QmP9FrtEiknh3ViX5b1rmekEGtKEYBuTvMgZP8cmSs5i1N";
+}
+
+_ lazy_deployment_completed() method_id {
+    return get_data().begin_parse().load_int(1);
+}
+
+;;
+;; Routing of a Contract Repository
+;;
+
+((slice, int, int, int), int) $Repository$_contract_router_internal((slice, int, int, int) self, int msg_bounced, slice in_msg) impure inline_ref {
+    ;; Handle bounced messages
+    if (msg_bounced) {
+        return (self, true);
+    }
+    
+    ;; Parse incoming message
+    int op = 0;
+    if (slice_bits(in_msg) >= 32) {
+        op = in_msg.preload_uint(32);
+    }
+    
+    
+    ;; Receive empty message
+    if ((op == 0) & (slice_bits(in_msg) <= 32)) {
+        self~%$Repository$_internal_empty();
+        return (self, true);
+    }
+    
+    ;; Receive DeployOrganization message
+    if (op == 3207174752) {
+        var msg = in_msg~$DeployOrganization$_load();
+        self~$Repository$_internal_binary_DeployOrganization(msg);
+        return (self, true);
+    }
+    
+    ;; Receive DeployOrganizationWithMetadata message
+    if (op == 2019860049) {
+        var msg = in_msg~$DeployOrganizationWithMetadata$_load();
+        self~$Repository$_internal_binary_DeployOrganizationWithMetadata(msg);
+        return (self, true);
+    }
+    
+    ;; Receive SetDeployOrgFee message
+    if (op == 155918963) {
+        var msg = in_msg~$SetDeployOrgFee$_load();
+        self~$Repository$_internal_binary_SetDeployOrgFee(msg);
+        return (self, true);
+    }
+    
+    ;; Receive Deploy message
+    if (op == 2490013878) {
+        var msg = in_msg~$Deploy$_load();
+        self~$Repository$_internal_binary_Deploy(msg);
+        return (self, true);
+    }
+    
+    ;; Text Receivers
+    if (op == 0) {
+        var text_op = slice_hash(in_msg);
+        
+        ;; Receive "withdraw all" message
+        if (text_op == 0x5092b5dce0715a57dd969f5fb5a6f93025a0b02eab329470ca2b365ca0d7e93a) {
+            self~$Repository$_internal_text_5092b5dce0715a57dd969f5fb5a6f93025a0b02eab329470ca2b365ca0d7e93a();
+            return (self, true);
+        }
+    }
+    
+    return (self, false);
+}
+
+() recv_internal(int msg_value, cell in_msg_cell, slice in_msg) impure {
+    
+    ;; Context
+    var cs = in_msg_cell.begin_parse();
+    var msg_flags = cs~load_uint(4);
+    var msg_bounced = -(msg_flags & 1);
+    slice msg_sender_addr = __tact_verify_address(cs~load_msg_addr());
+    __tact_context = (msg_bounced, msg_sender_addr, msg_value, cs);
+    __tact_context_sender = msg_sender_addr;
+    
+    ;; Load contract data
+    var self = $Repository$_contract_load();
+    
+    ;; Handle operation
+    int handled = self~$Repository$_contract_router_internal(msg_bounced, in_msg);
+    
+    ;; Throw if not handled
+    throw_unless(130, handled);
+    
+    ;; Persist state
+    $Repository$_contract_store(self);
+}
