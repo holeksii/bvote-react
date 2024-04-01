@@ -46,7 +46,7 @@ export default () => {
   }
 
   return (
-    <div className="relative rounded-md bg-slate-800 pr-6">
+    <div className="relative rounded-md bg-slate-800 pr-6 max-w-96 w-full">
       <input
         type="text"
         className={"bg-transparent text-gray-200 p-2 w-full pr-10"}

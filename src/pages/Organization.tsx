@@ -12,7 +12,7 @@ import {
   storeDeployVotingWithMetadata,
 } from "../sdk/wrappers/Organization";
 import { Voting } from "../sdk/wrappers/Voting";
-import { Address, beginCell, toNano } from "@ton/core";
+import { Address, beginCell, fromNano, toNano } from "@ton/core";
 import Box from "../components/Page/Box";
 import InfoTable from "../components/Page/InfoTable";
 import {
@@ -55,15 +55,28 @@ const pageSize = 4;
 */
 
 const newVotingFields = [
-  { name: "name", label: "Name", type: "text", initialValue: "" },
+  {
+    name: "name",
+    label: "Name",
+    type: "text",
+    initialValue: "",
+    isRequired: true,
+  },
   {
     name: "description",
     label: "Description",
     type: "textarea",
     initialValue: "",
+    isRequired: true,
   },
-  { name: "emoji", label: "Emoji", type: "emoji" },
-  { name: "website", label: "Website", type: "text", initialValue: "" },
+  { name: "emoji", label: "Emoji", type: "emoji", isRequired: true },
+  {
+    name: "website",
+    label: "Website",
+    type: "text",
+    initialValue: "",
+    isRequired: false,
+  },
 
   {
     name: "voteFee",
@@ -71,6 +84,8 @@ const newVotingFields = [
     type: "number",
     initialValue: "0",
     min: 0,
+    step: 0.001,
+    isRequired: true,
   },
   {
     name: "votesPerCandidate",
@@ -78,24 +93,28 @@ const newVotingFields = [
     type: "number",
     initialValue: 1,
     min: 1,
+    isRequired: true,
   },
   {
     name: "startTime",
     label: "Start Time",
     type: "datepicker",
     initialValue: new Date(),
+    isRequired: true,
   },
   {
     name: "endTime",
     label: "End Time",
     type: "datepicker",
     initialValue: new Date(),
+    isRequired: true,
   },
   {
     name: "candidates",
     label: "Candidates",
     type: "reccuring",
     initialValue: [],
+    isRequired: true,
     fields: [
       { name: "name", label: "Name", type: "text", initialValue: "" },
       { name: "info", label: "Info", type: "text", initialValue: "" },
@@ -122,6 +141,8 @@ export default () => {
     {} as OrganizationAllInfo,
   );
 
+  const [contractBalance, setContractBalance] = useState(0n);
+
   let [total, setTotal] = useState(0n);
   let [totalLoaded, setTotalLoaded] = useState(0n);
 
@@ -142,11 +163,22 @@ export default () => {
         type: "string",
         value: organizationInfo.numOfVotings.toString(),
       },
-      Website: {
+    } as any;
+
+    if (metadata.website !== "") {
+      fields["Website"] = {
         type: "url",
         value: metadata.website,
-      },
-    };
+      };
+    }
+
+    // if owner is me add deploy voting fee
+    if (isMyOrganization()) {
+      fields["Contract Balance"] = {
+        type: "string",
+        value: fromNano(contractBalance).toString() + " TON",
+      };
+    }
 
     return fields;
   }
@@ -215,6 +247,12 @@ export default () => {
     const metadata = await organization.getMetadata();
     const info = await organization.getAllInfo();
 
+    const contractBalance = await tonClient.getBalance(
+      Address.parse(contractAddress!),
+    );
+
+    setContractBalance(contractBalance);
+
     // set
     setMetadata(metadata);
     setOrganizationInfo(info);
@@ -235,7 +273,7 @@ export default () => {
       Address.parse(contractAddress!),
     );
 
-    const deployFee = await organization.getDeployVotingFee(
+    const deployFee = await organization.getDeployVotingFeePlusTonToLive(
       tonClient.provider(organization.address),
     );
 
@@ -272,6 +310,31 @@ export default () => {
                 ),
               }),
             )
+            .endCell()
+            .toBoc()
+            .toString("base64"),
+        },
+      ],
+    };
+    await tonConnectUi.sendTransaction(tx);
+  }
+
+  async function withdrawFunds() {
+    if (!tonClient) return;
+
+    const organization = await Organization.fromAddress(
+      Address.parse(contractAddress!),
+    );
+
+    const tx: SendTransactionRequest = {
+      validUntil: Math.floor(Date.now() / 1000) + 600,
+      messages: [
+        {
+          address: organization.address.toRawString(),
+          amount: toNano(0.1).toString(),
+          payload: beginCell()
+            .storeUint(0, 32)
+            .storeStringTail("withdrawSafe")
             .endCell()
             .toBoc()
             .toString("base64"),
@@ -320,15 +383,26 @@ export default () => {
         </Box>
         {isMyOrganization() && (
           <div>
-            <button
-              className="bg-slate-900 text-white px-4 py-2 rounded-xl mt-4"
-              onClick={() => {
-                if (!wallet) tonConnectUi.openModal();
-                else setOverlayVisible(true);
-              }}
-            >
-              Create Voting
-            </button>
+            <div className="flex flex-row w-full justify-between gap-2">
+              <button
+                className="bg-slate-900 text-white px-4 py-2 rounded-xl mt-4"
+                onClick={() => {
+                  if (!wallet) tonConnectUi.openModal();
+                  else setOverlayVisible(true);
+                }}
+              >
+                Create Voting
+              </button>
+              <button
+                className="bg-slate-900 text-white px-4 py-2 rounded-xl mt-4"
+                onClick={() => {
+                  if (!wallet) tonConnectUi.openModal();
+                  else withdrawFunds();
+                }}
+              >
+                Withdraw Funds
+              </button>
+            </div>
             <Overlay
               isOpen={overlayVisible}
               onClose={() => setOverlayVisible(false)}

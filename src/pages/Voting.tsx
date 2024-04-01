@@ -21,8 +21,6 @@ import FormsCustom from "../components/Forms/Custom";
 
 import { useNavigate } from "react-router-dom";
 
-import { Vote } from "../sdk/wrappers/Vote";
-
 export default () => {
   const [tonConnectUi] = useTonConnectUI();
   const wallet = useTonWallet();
@@ -53,6 +51,7 @@ export default () => {
         max: votingInfo.votesPerCandidate ?? 1,
         min: 1,
         initialValue: 1,
+        isRequired: true,
       },
     ];
   }
@@ -69,6 +68,12 @@ export default () => {
       : timeNow < timeStart
         ? "Waiting"
         : "Ended";
+  }
+
+  function isMyVoting() {
+    if (!wallet) return false;
+    if (!votingInfo.owner) return false;
+    return wallet?.account.address === votingInfo.owner.toRawString();
   }
 
   function allInfo() {
@@ -148,14 +153,10 @@ export default () => {
       Address.parseRaw(wallet!.account.address),
     );
 
-    const vote = Vote.fromAddress(voteAddress);
-
-    try {
-      await vote.getVoting(tonClient.provider(vote.address));
-      alert("You have already voted in this voting");
+    const isDeployed = await tonClient.isContractDeployed(voteAddress);
+    if (isDeployed) {
+      alert("You have already voted");
       return;
-    } catch (e) {
-      // continue
     }
 
     // calculate the amount of TON to send
@@ -188,6 +189,28 @@ export default () => {
 
     const res = await tonConnectUi.sendTransaction(tx);
   }
+  async function withdrawFunds() {
+    if (!tonClient) return;
+
+    const voting = await Voting.fromAddress(Address.parse(contractAddress!));
+
+    const tx: SendTransactionRequest = {
+      validUntil: Math.floor(Date.now() / 1000) + 600,
+      messages: [
+        {
+          address: voting.address.toRawString(),
+          amount: toNano(0.1).toString(),
+          payload: beginCell()
+            .storeUint(0, 32)
+            .storeStringTail("withdrawSafe")
+            .endCell()
+            .toBoc()
+            .toString("base64"),
+        },
+      ],
+    };
+    await tonConnectUi.sendTransaction(tx);
+  }
 
   // ping update
   useEffect(() => {
@@ -217,8 +240,22 @@ export default () => {
                     {votingInfo.emoji}
                   </div>
                 </div>
-
                 <div className="font-light">{votingInfo.description}</div>
+
+                <div className="mt-2">
+                  {candidates.map((candidate, index) => {
+                    return (
+                      <div key={index} className="mt-2">
+                        <div className="w-full text-center">
+                          {candidate.name}
+                        </div>
+                        <div className="font-light">
+                          {candidate.info.toString()}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             ) : (
               <div className="animate-pulse flex flex-col gap-2">
@@ -286,6 +323,19 @@ export default () => {
             </div>
           )}
         </Box>
+        {isMyVoting() && (
+          <div className="flex flex-row w-full justify-between gap-2">
+            <button
+              className="bg-slate-900 text-white px-4 py-2 rounded-xl mt-4"
+              onClick={() => {
+                if (!wallet) tonConnectUi.openModal();
+                else withdrawFunds();
+              }}
+            >
+              Withdraw Funds
+            </button>
+          </div>
+        )}
       </div>
       {isLoaded && (
         <Overlay

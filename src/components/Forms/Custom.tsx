@@ -12,7 +12,9 @@ interface Field {
   initialValue: any;
   max?: number;
   min?: number;
+  step?: number;
   fields?: Field[];
+  isRequired?: boolean;
 }
 
 interface CustomizableFormProps {
@@ -46,6 +48,12 @@ const CustomizableForm = ({ fields, onFormSubmit }: CustomizableFormProps) => {
       ...formData,
       [name]: value,
     });
+    // if field is not required return
+    const field = fields.find((field) => field.name === name);
+    if (!field?.isRequired) {
+      return;
+    }
+
     setFormErrors({
       ...formErrors,
       [name]: value.trim() === "" ? `${name} is required` : "",
@@ -77,6 +85,14 @@ const CustomizableForm = ({ fields, onFormSubmit }: CustomizableFormProps) => {
 
     Object.keys(formData).forEach((key) => {
       const value = formData[key];
+
+      // check if field is required
+      const field = fields.find((field) => field.name === key);
+      // if not required return
+      if (!field?.isRequired) {
+        return;
+      }
+
       if (typeof value === "string" && value.trim() === "") {
         newFormErrors[key] = `${key} is required`;
         errorsExist = true;
@@ -168,6 +184,7 @@ const CustomizableForm = ({ fields, onFormSubmit }: CustomizableFormProps) => {
                 value={formData[field.name]}
                 max={field.max}
                 min={field.min}
+                step={field.step}
                 onChange={handleChange}
                 className="w-full rounded px-3 py-2 bg-slate-900"
               />
@@ -233,7 +250,6 @@ const CustomizableForm = ({ fields, onFormSubmit }: CustomizableFormProps) => {
                   >
                     +
                   </button>
-                  ({formData[field.name].toString()} )
                   <button
                     type="button"
                     onClick={() => {
@@ -255,12 +271,14 @@ const CustomizableForm = ({ fields, onFormSubmit }: CustomizableFormProps) => {
           <div className="text-red-500 text-sm">{formErrors[field.name]}</div>
         </div>
       ))}
-      <button
-        type="submit"
-        className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
-      >
-        Submit
-      </button>
+      <div className="w-full flex flex-row justify-center">
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+        >
+          Submit
+        </button>
+      </div>
     </form>
   );
 };

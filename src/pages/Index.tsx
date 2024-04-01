@@ -6,7 +6,6 @@ import { Organization } from "../sdk/wrappers/Organization";
 import {
   Repository,
   storeDeploy,
-  storeDeployOrganization,
   storeDeployOrganizationWithMetadata,
 } from "../sdk/wrappers/Repository";
 import { Address, Sender, beginCell, toNano } from "@ton/core";
@@ -26,15 +25,28 @@ const pageSize = 5;
 const repoId = 998n;
 
 const newOrganizationFields = [
-  { name: "name", label: "Name", type: "text", initialValue: "" },
+  {
+    name: "name",
+    label: "Name",
+    type: "text",
+    initialValue: "",
+    isRequired: true,
+  },
   {
     name: "description",
     label: "Description",
     type: "textarea",
     initialValue: "",
+    isRequired: true,
   },
-  { name: "emoji", label: "Emoji", type: "emoji" },
-  { name: "website", label: "Website", type: "text", initialValue: "" },
+  { name: "emoji", label: "Emoji", type: "emoji", isRequired: true },
+  {
+    name: "website",
+    label: "Website",
+    type: "text",
+    initialValue: "",
+    isRequired: false,
+  },
 ] as any;
 
 export default () => {
@@ -131,7 +143,7 @@ export default () => {
 
     const repo = await Repository.fromInit(repoId);
 
-    const deployFee = await repo.getDeployOrganizationFee(
+    const deployFee = await repo.getDeployOrganizationFeePlusTonToLive(
       tonClient.provider(repo.address),
     );
 
@@ -145,7 +157,6 @@ export default () => {
             .store(
               storeDeployOrganizationWithMetadata({
                 $$type: "DeployOrganizationWithMetadata",
-                hidden: false, // used to hide the organization
                 metadata: {
                   $$type: "Metadata",
                   name: data.name,

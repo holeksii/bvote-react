@@ -1,6 +1,6 @@
 import { TonConnectButton } from "@tonconnect/ui-react";
 import "./header.scss";
-import Search from "./search";
+import Search from "./Search";
 import { Link } from "react-router-dom";
 
 export const Header = () => {
