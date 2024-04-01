@@ -5,11 +5,6 @@ struct Candidate {
 }
 
 struct CandidateArray {
-    size: Int as uint64;
+    size: Int as uint8;
     candidates: map<Int as uint64, Candidate>; // candidateId -> candidate
-}
-
-struct VoteArray {
-    size: Int as uint64;
-    votesMap: map<Int as uint64, Int as uint64>; // candidateId -> voteCount
 }

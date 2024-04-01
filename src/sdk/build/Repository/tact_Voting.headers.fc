@@ -93,6 +93,9 @@ tuple $Candidate$_load_opt(cell cl) inline;
 ;; $DeployAndCastVote$_load
 (slice, ((int, int))) $DeployAndCastVote$_load(slice sc_0) inline;
 
+;; $DeployAndCastVoteOk$_load
+(slice, ((slice, int, int))) $DeployAndCastVoteOk$_load(slice sc_0) inline;
+
 ;; $CastVote$_store
 builder $CastVote$_store(builder build_0, (slice, int, int) v) inline;
 
@@ -124,7 +127,7 @@ _ $Context$_get_value((int, slice, int, slice) v) inline;
 (slice, slice, int, int) $VotingBasicInfo$_to_external(((slice, slice, int, int)) v) inline;
 
 ;; $VotingAllInfo$_to_external
-(slice, slice, slice, slice, int, int, int, int, int) $VotingAllInfo$_to_external(((slice, slice, slice, slice, int, int, int, int, int)) v) inline;
+(slice, slice, slice, slice, slice, int, int, int, int, int) $VotingAllInfo$_to_external(((slice, slice, slice, slice, slice, int, int, int, int, int)) v) inline;
 
 ;; $Voting$init$_load
 (slice, ((slice, int))) $Voting$init$_load(slice sc_0) inline;
@@ -195,11 +198,11 @@ slice $global_contractAddress((cell, cell) $s) impure inline;
 ;; $Voting$_fun_basicInfo
 ((slice, slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), (slice, slice, int, int)) $Voting$_fun_basicInfo((slice, slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
 
-;; $VotingAllInfo$_constructor_organization_emoji_name_description_numOfVotes_voteFee_votesPerCandidate_startTime_endTime
-((slice, slice, slice, slice, int, int, int, int, int)) $VotingAllInfo$_constructor_organization_emoji_name_description_numOfVotes_voteFee_votesPerCandidate_startTime_endTime(slice organization, slice emoji, slice name, slice description, int numOfVotes, int voteFee, int votesPerCandidate, int startTime, int endTime) inline;
+;; $VotingAllInfo$_constructor_organization_owner_emoji_name_description_numOfVotes_voteFee_votesPerCandidate_startTime_endTime
+((slice, slice, slice, slice, slice, int, int, int, int, int)) $VotingAllInfo$_constructor_organization_owner_emoji_name_description_numOfVotes_voteFee_votesPerCandidate_startTime_endTime(slice organization, slice owner, slice emoji, slice name, slice description, int numOfVotes, int voteFee, int votesPerCandidate, int startTime, int endTime) inline;
 
 ;; $Voting$_fun_allInfo
-((slice, slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), (slice, slice, slice, slice, int, int, int, int, int)) $Voting$_fun_allInfo((slice, slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
+((slice, slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), (slice, slice, slice, slice, slice, int, int, int, int, int)) $Voting$_fun_allInfo((slice, slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
 
 ;; $Voting$_fun_forward
 ((slice, slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), ()) $Voting$_fun_forward((slice, slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
@@ -212,6 +215,9 @@ slice $global_contractAddress((cell, cell) $s) impure inline;
 
 ;; $Voting$_fun_owner
 ((slice, slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), slice) $Voting$_fun_owner((slice, slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
+
+;; $SendParameters$_constructor_to_value_bounce_mode_body
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_mode_body(slice to, int value, int bounce, int mode, cell body) inline;
 
 ;; $SendParameters$_constructor_to_value_bounce_mode_body_code_data
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_mode_body_code_data(slice to, int value, int bounce, int mode, cell body, cell code, cell data) inline;

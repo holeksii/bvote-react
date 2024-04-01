@@ -415,80 +415,33 @@ function dictValueParserChangeOwnerOk(): DictionaryValue<ChangeOwnerOk> {
     }
 }
 
-export type DeployOrganization = {
-    $$type: 'DeployOrganization';
-    hidden: boolean;
-}
-
-export function storeDeployOrganization(src: DeployOrganization) {
-    return (builder: Builder) => {
-        let b_0 = builder;
-        b_0.storeUint(3207174752, 32);
-        b_0.storeBit(src.hidden);
-    };
-}
-
-export function loadDeployOrganization(slice: Slice) {
-    let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 3207174752) { throw Error('Invalid prefix'); }
-    let _hidden = sc_0.loadBit();
-    return { $$type: 'DeployOrganization' as const, hidden: _hidden };
-}
-
-function loadTupleDeployOrganization(source: TupleReader) {
-    let _hidden = source.readBoolean();
-    return { $$type: 'DeployOrganization' as const, hidden: _hidden };
-}
-
-function storeTupleDeployOrganization(source: DeployOrganization) {
-    let builder = new TupleBuilder();
-    builder.writeBoolean(source.hidden);
-    return builder.build();
-}
-
-function dictValueParserDeployOrganization(): DictionaryValue<DeployOrganization> {
-    return {
-        serialize: (src, buidler) => {
-            buidler.storeRef(beginCell().store(storeDeployOrganization(src)).endCell());
-        },
-        parse: (src) => {
-            return loadDeployOrganization(src.loadRef().beginParse());
-        }
-    }
-}
-
 export type DeployOrganizationWithMetadata = {
     $$type: 'DeployOrganizationWithMetadata';
-    hidden: boolean;
     metadata: Metadata;
 }
 
 export function storeDeployOrganizationWithMetadata(src: DeployOrganizationWithMetadata) {
     return (builder: Builder) => {
         let b_0 = builder;
-        b_0.storeUint(2019860049, 32);
-        b_0.storeBit(src.hidden);
+        b_0.storeUint(3894970140, 32);
         b_0.store(storeMetadata(src.metadata));
     };
 }
 
 export function loadDeployOrganizationWithMetadata(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 2019860049) { throw Error('Invalid prefix'); }
-    let _hidden = sc_0.loadBit();
+    if (sc_0.loadUint(32) !== 3894970140) { throw Error('Invalid prefix'); }
     let _metadata = loadMetadata(sc_0);
-    return { $$type: 'DeployOrganizationWithMetadata' as const, hidden: _hidden, metadata: _metadata };
+    return { $$type: 'DeployOrganizationWithMetadata' as const, metadata: _metadata };
 }
 
 function loadTupleDeployOrganizationWithMetadata(source: TupleReader) {
-    let _hidden = source.readBoolean();
     const _metadata = loadTupleMetadata(source.readTuple());
-    return { $$type: 'DeployOrganizationWithMetadata' as const, hidden: _hidden, metadata: _metadata };
+    return { $$type: 'DeployOrganizationWithMetadata' as const, metadata: _metadata };
 }
 
 function storeTupleDeployOrganizationWithMetadata(source: DeployOrganizationWithMetadata) {
     let builder = new TupleBuilder();
-    builder.writeBoolean(source.hidden);
     builder.writeTuple(storeTupleMetadata(source.metadata));
     return builder.build();
 }
@@ -607,36 +560,31 @@ function dictValueParserMetadata(): DictionaryValue<Metadata> {
 export type InitOrganization = {
     $$type: 'InitOrganization';
     owner: Address;
-    hidden: boolean;
 }
 
 export function storeInitOrganization(src: InitOrganization) {
     return (builder: Builder) => {
         let b_0 = builder;
-        b_0.storeUint(181733061, 32);
+        b_0.storeUint(2483039406, 32);
         b_0.storeAddress(src.owner);
-        b_0.storeBit(src.hidden);
     };
 }
 
 export function loadInitOrganization(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 181733061) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 2483039406) { throw Error('Invalid prefix'); }
     let _owner = sc_0.loadAddress();
-    let _hidden = sc_0.loadBit();
-    return { $$type: 'InitOrganization' as const, owner: _owner, hidden: _hidden };
+    return { $$type: 'InitOrganization' as const, owner: _owner };
 }
 
 function loadTupleInitOrganization(source: TupleReader) {
     let _owner = source.readAddress();
-    let _hidden = source.readBoolean();
-    return { $$type: 'InitOrganization' as const, owner: _owner, hidden: _hidden };
+    return { $$type: 'InitOrganization' as const, owner: _owner };
 }
 
 function storeTupleInitOrganization(source: InitOrganization) {
     let builder = new TupleBuilder();
     builder.writeAddress(source.owner);
-    builder.writeBoolean(source.hidden);
     return builder.build();
 }
 
@@ -654,40 +602,35 @@ function dictValueParserInitOrganization(): DictionaryValue<InitOrganization> {
 export type InitOrganizationWithMetadata = {
     $$type: 'InitOrganizationWithMetadata';
     owner: Address;
-    hidden: boolean;
     metadata: Metadata;
 }
 
 export function storeInitOrganizationWithMetadata(src: InitOrganizationWithMetadata) {
     return (builder: Builder) => {
         let b_0 = builder;
-        b_0.storeUint(3017949540, 32);
+        b_0.storeUint(3404583615, 32);
         b_0.storeAddress(src.owner);
-        b_0.storeBit(src.hidden);
         b_0.store(storeMetadata(src.metadata));
     };
 }
 
 export function loadInitOrganizationWithMetadata(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 3017949540) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 3404583615) { throw Error('Invalid prefix'); }
     let _owner = sc_0.loadAddress();
-    let _hidden = sc_0.loadBit();
     let _metadata = loadMetadata(sc_0);
-    return { $$type: 'InitOrganizationWithMetadata' as const, owner: _owner, hidden: _hidden, metadata: _metadata };
+    return { $$type: 'InitOrganizationWithMetadata' as const, owner: _owner, metadata: _metadata };
 }
 
 function loadTupleInitOrganizationWithMetadata(source: TupleReader) {
     let _owner = source.readAddress();
-    let _hidden = source.readBoolean();
     const _metadata = loadTupleMetadata(source.readTuple());
-    return { $$type: 'InitOrganizationWithMetadata' as const, owner: _owner, hidden: _hidden, metadata: _metadata };
+    return { $$type: 'InitOrganizationWithMetadata' as const, owner: _owner, metadata: _metadata };
 }
 
 function storeTupleInitOrganizationWithMetadata(source: InitOrganizationWithMetadata) {
     let builder = new TupleBuilder();
     builder.writeAddress(source.owner);
-    builder.writeBoolean(source.hidden);
     builder.writeTuple(storeTupleMetadata(source.metadata));
     return builder.build();
 }
@@ -715,10 +658,10 @@ export type DeployVoting = {
 export function storeDeployVoting(src: DeployVoting) {
     return (builder: Builder) => {
         let b_0 = builder;
-        b_0.storeUint(3833162508, 32);
+        b_0.storeUint(2352013716, 32);
         b_0.store(storeCandidateArray(src.candidates));
         b_0.storeUint(src.voteFee, 64);
-        b_0.storeUint(src.votesPerCandidate, 64);
+        b_0.storeUint(src.votesPerCandidate, 8);
         b_0.storeUint(src.startTime, 64);
         b_0.storeUint(src.timeToLive, 64);
     };
@@ -726,10 +669,10 @@ export function storeDeployVoting(src: DeployVoting) {
 
 export function loadDeployVoting(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 3833162508) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 2352013716) { throw Error('Invalid prefix'); }
     let _candidates = loadCandidateArray(sc_0);
     let _voteFee = sc_0.loadUintBig(64);
-    let _votesPerCandidate = sc_0.loadUintBig(64);
+    let _votesPerCandidate = sc_0.loadUintBig(8);
     let _startTime = sc_0.loadUintBig(64);
     let _timeToLive = sc_0.loadUintBig(64);
     return { $$type: 'DeployVoting' as const, candidates: _candidates, voteFee: _voteFee, votesPerCandidate: _votesPerCandidate, startTime: _startTime, timeToLive: _timeToLive };
@@ -778,10 +721,10 @@ export type DeployVotingWithMetadata = {
 export function storeDeployVotingWithMetadata(src: DeployVotingWithMetadata) {
     return (builder: Builder) => {
         let b_0 = builder;
-        b_0.storeUint(3149243131, 32);
+        b_0.storeUint(3253980079, 32);
         b_0.store(storeCandidateArray(src.candidates));
         b_0.storeUint(src.voteFee, 64);
-        b_0.storeUint(src.votesPerCandidate, 64);
+        b_0.storeUint(src.votesPerCandidate, 8);
         b_0.storeUint(src.startTime, 64);
         b_0.storeUint(src.timeToLive, 64);
         let b_1 = new Builder();
@@ -792,10 +735,10 @@ export function storeDeployVotingWithMetadata(src: DeployVotingWithMetadata) {
 
 export function loadDeployVotingWithMetadata(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 3149243131) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 3253980079) { throw Error('Invalid prefix'); }
     let _candidates = loadCandidateArray(sc_0);
     let _voteFee = sc_0.loadUintBig(64);
-    let _votesPerCandidate = sc_0.loadUintBig(64);
+    let _votesPerCandidate = sc_0.loadUintBig(8);
     let _startTime = sc_0.loadUintBig(64);
     let _timeToLive = sc_0.loadUintBig(64);
     let sc_1 = sc_0.loadRef().beginParse();
@@ -879,7 +822,6 @@ function dictValueParserSetDeployVotingFee(): DictionaryValue<SetDeployVotingFee
 
 export type OrganizationBasicInfo = {
     $$type: 'OrganizationBasicInfo';
-    hidden: boolean;
     emoji: string;
     name: string;
     website: string;
@@ -888,7 +830,6 @@ export type OrganizationBasicInfo = {
 export function storeOrganizationBasicInfo(src: OrganizationBasicInfo) {
     return (builder: Builder) => {
         let b_0 = builder;
-        b_0.storeBit(src.hidden);
         b_0.storeStringRefTail(src.emoji);
         b_0.storeStringRefTail(src.name);
         b_0.storeStringRefTail(src.website);
@@ -897,24 +838,21 @@ export function storeOrganizationBasicInfo(src: OrganizationBasicInfo) {
 
 export function loadOrganizationBasicInfo(slice: Slice) {
     let sc_0 = slice;
-    let _hidden = sc_0.loadBit();
     let _emoji = sc_0.loadStringRefTail();
     let _name = sc_0.loadStringRefTail();
     let _website = sc_0.loadStringRefTail();
-    return { $$type: 'OrganizationBasicInfo' as const, hidden: _hidden, emoji: _emoji, name: _name, website: _website };
+    return { $$type: 'OrganizationBasicInfo' as const, emoji: _emoji, name: _name, website: _website };
 }
 
 function loadTupleOrganizationBasicInfo(source: TupleReader) {
-    let _hidden = source.readBoolean();
     let _emoji = source.readString();
     let _name = source.readString();
     let _website = source.readString();
-    return { $$type: 'OrganizationBasicInfo' as const, hidden: _hidden, emoji: _emoji, name: _name, website: _website };
+    return { $$type: 'OrganizationBasicInfo' as const, emoji: _emoji, name: _name, website: _website };
 }
 
 function storeTupleOrganizationBasicInfo(source: OrganizationBasicInfo) {
     let builder = new TupleBuilder();
-    builder.writeBoolean(source.hidden);
     builder.writeString(source.emoji);
     builder.writeString(source.name);
     builder.writeString(source.website);
@@ -935,7 +873,6 @@ function dictValueParserOrganizationBasicInfo(): DictionaryValue<OrganizationBas
 export type OrganizationAllInfo = {
     $$type: 'OrganizationAllInfo';
     owner: Address;
-    hidden: boolean;
     emoji: string;
     name: string;
     description: string;
@@ -947,7 +884,6 @@ export function storeOrganizationAllInfo(src: OrganizationAllInfo) {
     return (builder: Builder) => {
         let b_0 = builder;
         b_0.storeAddress(src.owner);
-        b_0.storeBit(src.hidden);
         b_0.storeStringRefTail(src.emoji);
         b_0.storeStringRefTail(src.name);
         b_0.storeStringRefTail(src.description);
@@ -961,31 +897,28 @@ export function storeOrganizationAllInfo(src: OrganizationAllInfo) {
 export function loadOrganizationAllInfo(slice: Slice) {
     let sc_0 = slice;
     let _owner = sc_0.loadAddress();
-    let _hidden = sc_0.loadBit();
     let _emoji = sc_0.loadStringRefTail();
     let _name = sc_0.loadStringRefTail();
     let _description = sc_0.loadStringRefTail();
     let sc_1 = sc_0.loadRef().beginParse();
     let _website = sc_1.loadStringRefTail();
     let _numOfVotings = sc_1.loadUintBig(64);
-    return { $$type: 'OrganizationAllInfo' as const, owner: _owner, hidden: _hidden, emoji: _emoji, name: _name, description: _description, website: _website, numOfVotings: _numOfVotings };
+    return { $$type: 'OrganizationAllInfo' as const, owner: _owner, emoji: _emoji, name: _name, description: _description, website: _website, numOfVotings: _numOfVotings };
 }
 
 function loadTupleOrganizationAllInfo(source: TupleReader) {
     let _owner = source.readAddress();
-    let _hidden = source.readBoolean();
     let _emoji = source.readString();
     let _name = source.readString();
     let _description = source.readString();
     let _website = source.readString();
     let _numOfVotings = source.readBigNumber();
-    return { $$type: 'OrganizationAllInfo' as const, owner: _owner, hidden: _hidden, emoji: _emoji, name: _name, description: _description, website: _website, numOfVotings: _numOfVotings };
+    return { $$type: 'OrganizationAllInfo' as const, owner: _owner, emoji: _emoji, name: _name, description: _description, website: _website, numOfVotings: _numOfVotings };
 }
 
 function storeTupleOrganizationAllInfo(source: OrganizationAllInfo) {
     let builder = new TupleBuilder();
     builder.writeAddress(source.owner);
-    builder.writeBoolean(source.hidden);
     builder.writeString(source.emoji);
     builder.writeString(source.name);
     builder.writeString(source.description);
@@ -1064,14 +997,14 @@ export type CandidateArray = {
 export function storeCandidateArray(src: CandidateArray) {
     return (builder: Builder) => {
         let b_0 = builder;
-        b_0.storeUint(src.size, 64);
+        b_0.storeUint(src.size, 8);
         b_0.storeDict(src.candidates, Dictionary.Keys.BigUint(64), dictValueParserCandidate());
     };
 }
 
 export function loadCandidateArray(slice: Slice) {
     let sc_0 = slice;
-    let _size = sc_0.loadUintBig(64);
+    let _size = sc_0.loadUintBig(8);
     let _candidates = Dictionary.load(Dictionary.Keys.BigUint(64), dictValueParserCandidate(), sc_0);
     return { $$type: 'CandidateArray' as const, size: _size, candidates: _candidates };
 }
@@ -1100,51 +1033,6 @@ function dictValueParserCandidateArray(): DictionaryValue<CandidateArray> {
     }
 }
 
-export type VoteArray = {
-    $$type: 'VoteArray';
-    size: bigint;
-    votesMap: Dictionary<bigint, bigint>;
-}
-
-export function storeVoteArray(src: VoteArray) {
-    return (builder: Builder) => {
-        let b_0 = builder;
-        b_0.storeUint(src.size, 64);
-        b_0.storeDict(src.votesMap, Dictionary.Keys.BigUint(64), Dictionary.Values.BigUint(64));
-    };
-}
-
-export function loadVoteArray(slice: Slice) {
-    let sc_0 = slice;
-    let _size = sc_0.loadUintBig(64);
-    let _votesMap = Dictionary.load(Dictionary.Keys.BigUint(64), Dictionary.Values.BigUint(64), sc_0);
-    return { $$type: 'VoteArray' as const, size: _size, votesMap: _votesMap };
-}
-
-function loadTupleVoteArray(source: TupleReader) {
-    let _size = source.readBigNumber();
-    let _votesMap = Dictionary.loadDirect(Dictionary.Keys.BigUint(64), Dictionary.Values.BigUint(64), source.readCellOpt());
-    return { $$type: 'VoteArray' as const, size: _size, votesMap: _votesMap };
-}
-
-function storeTupleVoteArray(source: VoteArray) {
-    let builder = new TupleBuilder();
-    builder.writeNumber(source.size);
-    builder.writeCell(source.votesMap.size > 0 ? beginCell().storeDictDirect(source.votesMap, Dictionary.Keys.BigUint(64), Dictionary.Values.BigUint(64)).endCell() : null);
-    return builder.build();
-}
-
-function dictValueParserVoteArray(): DictionaryValue<VoteArray> {
-    return {
-        serialize: (src, buidler) => {
-            buidler.storeRef(beginCell().store(storeVoteArray(src)).endCell());
-        },
-        parse: (src) => {
-            return loadVoteArray(src.loadRef().beginParse());
-        }
-    }
-}
-
 export type InitVoting = {
     $$type: 'InitVoting';
     owner: Address;
@@ -1158,11 +1046,11 @@ export type InitVoting = {
 export function storeInitVoting(src: InitVoting) {
     return (builder: Builder) => {
         let b_0 = builder;
-        b_0.storeUint(4250906149, 32);
+        b_0.storeUint(4246717119, 32);
         b_0.storeAddress(src.owner);
         b_0.store(storeCandidateArray(src.candidates));
         b_0.storeUint(src.voteFee, 64);
-        b_0.storeUint(src.votesPerCandidate, 64);
+        b_0.storeUint(src.votesPerCandidate, 8);
         b_0.storeUint(src.startTime, 64);
         b_0.storeUint(src.timeToLive, 64);
     };
@@ -1170,11 +1058,11 @@ export function storeInitVoting(src: InitVoting) {
 
 export function loadInitVoting(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 4250906149) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 4246717119) { throw Error('Invalid prefix'); }
     let _owner = sc_0.loadAddress();
     let _candidates = loadCandidateArray(sc_0);
     let _voteFee = sc_0.loadUintBig(64);
-    let _votesPerCandidate = sc_0.loadUintBig(64);
+    let _votesPerCandidate = sc_0.loadUintBig(8);
     let _startTime = sc_0.loadUintBig(64);
     let _timeToLive = sc_0.loadUintBig(64);
     return { $$type: 'InitVoting' as const, owner: _owner, candidates: _candidates, voteFee: _voteFee, votesPerCandidate: _votesPerCandidate, startTime: _startTime, timeToLive: _timeToLive };
@@ -1226,11 +1114,11 @@ export type InitVotingWithMetadata = {
 export function storeInitVotingWithMetadata(src: InitVotingWithMetadata) {
     return (builder: Builder) => {
         let b_0 = builder;
-        b_0.storeUint(594339819, 32);
+        b_0.storeUint(3692900348, 32);
         b_0.storeAddress(src.owner);
         b_0.store(storeCandidateArray(src.candidates));
         b_0.storeUint(src.voteFee, 64);
-        b_0.storeUint(src.votesPerCandidate, 64);
+        b_0.storeUint(src.votesPerCandidate, 8);
         b_0.storeUint(src.startTime, 64);
         b_0.storeUint(src.timeToLive, 64);
         let b_1 = new Builder();
@@ -1241,11 +1129,11 @@ export function storeInitVotingWithMetadata(src: InitVotingWithMetadata) {
 
 export function loadInitVotingWithMetadata(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 594339819) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 3692900348) { throw Error('Invalid prefix'); }
     let _owner = sc_0.loadAddress();
     let _candidates = loadCandidateArray(sc_0);
     let _voteFee = sc_0.loadUintBig(64);
-    let _votesPerCandidate = sc_0.loadUintBig(64);
+    let _votesPerCandidate = sc_0.loadUintBig(8);
     let _startTime = sc_0.loadUintBig(64);
     let _timeToLive = sc_0.loadUintBig(64);
     let sc_1 = sc_0.loadRef().beginParse();
@@ -1296,17 +1184,17 @@ export type DeployAndCastVote = {
 export function storeDeployAndCastVote(src: DeployAndCastVote) {
     return (builder: Builder) => {
         let b_0 = builder;
-        b_0.storeUint(1355346110, 32);
-        b_0.storeUint(src.candidateInd, 64);
-        b_0.storeUint(src.numOfVotes, 64);
+        b_0.storeUint(1642098951, 32);
+        b_0.storeUint(src.candidateInd, 8);
+        b_0.storeUint(src.numOfVotes, 8);
     };
 }
 
 export function loadDeployAndCastVote(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 1355346110) { throw Error('Invalid prefix'); }
-    let _candidateInd = sc_0.loadUintBig(64);
-    let _numOfVotes = sc_0.loadUintBig(64);
+    if (sc_0.loadUint(32) !== 1642098951) { throw Error('Invalid prefix'); }
+    let _candidateInd = sc_0.loadUintBig(8);
+    let _numOfVotes = sc_0.loadUintBig(8);
     return { $$type: 'DeployAndCastVote' as const, candidateInd: _candidateInd, numOfVotes: _numOfVotes };
 }
 
@@ -1330,6 +1218,58 @@ function dictValueParserDeployAndCastVote(): DictionaryValue<DeployAndCastVote> 
         },
         parse: (src) => {
             return loadDeployAndCastVote(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type DeployAndCastVoteOk = {
+    $$type: 'DeployAndCastVoteOk';
+    voter: Address;
+    candidateInd: bigint;
+    numOfVotes: bigint;
+}
+
+export function storeDeployAndCastVoteOk(src: DeployAndCastVoteOk) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(4128084533, 32);
+        b_0.storeAddress(src.voter);
+        b_0.storeUint(src.candidateInd, 8);
+        b_0.storeUint(src.numOfVotes, 8);
+    };
+}
+
+export function loadDeployAndCastVoteOk(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 4128084533) { throw Error('Invalid prefix'); }
+    let _voter = sc_0.loadAddress();
+    let _candidateInd = sc_0.loadUintBig(8);
+    let _numOfVotes = sc_0.loadUintBig(8);
+    return { $$type: 'DeployAndCastVoteOk' as const, voter: _voter, candidateInd: _candidateInd, numOfVotes: _numOfVotes };
+}
+
+function loadTupleDeployAndCastVoteOk(source: TupleReader) {
+    let _voter = source.readAddress();
+    let _candidateInd = source.readBigNumber();
+    let _numOfVotes = source.readBigNumber();
+    return { $$type: 'DeployAndCastVoteOk' as const, voter: _voter, candidateInd: _candidateInd, numOfVotes: _numOfVotes };
+}
+
+function storeTupleDeployAndCastVoteOk(source: DeployAndCastVoteOk) {
+    let builder = new TupleBuilder();
+    builder.writeAddress(source.voter);
+    builder.writeNumber(source.candidateInd);
+    builder.writeNumber(source.numOfVotes);
+    return builder.build();
+}
+
+function dictValueParserDeployAndCastVoteOk(): DictionaryValue<DeployAndCastVoteOk> {
+    return {
+        serialize: (src, buidler) => {
+            buidler.storeRef(beginCell().store(storeDeployAndCastVoteOk(src)).endCell());
+        },
+        parse: (src) => {
+            return loadDeployAndCastVoteOk(src.loadRef().beginParse());
         }
     }
 }
@@ -1392,6 +1332,7 @@ function dictValueParserVotingBasicInfo(): DictionaryValue<VotingBasicInfo> {
 export type VotingAllInfo = {
     $$type: 'VotingAllInfo';
     organization: Address;
+    owner: Address;
     emoji: string;
     name: string;
     description: string;
@@ -1406,12 +1347,13 @@ export function storeVotingAllInfo(src: VotingAllInfo) {
     return (builder: Builder) => {
         let b_0 = builder;
         b_0.storeAddress(src.organization);
+        b_0.storeAddress(src.owner);
         b_0.storeStringRefTail(src.emoji);
         b_0.storeStringRefTail(src.name);
         b_0.storeStringRefTail(src.description);
         b_0.storeUint(src.numOfVotes, 64);
         b_0.storeUint(src.voteFee, 64);
-        b_0.storeUint(src.votesPerCandidate, 64);
+        b_0.storeUint(src.votesPerCandidate, 8);
         b_0.storeUint(src.startTime, 64);
         b_0.storeUint(src.endTime, 64);
     };
@@ -1420,19 +1362,21 @@ export function storeVotingAllInfo(src: VotingAllInfo) {
 export function loadVotingAllInfo(slice: Slice) {
     let sc_0 = slice;
     let _organization = sc_0.loadAddress();
+    let _owner = sc_0.loadAddress();
     let _emoji = sc_0.loadStringRefTail();
     let _name = sc_0.loadStringRefTail();
     let _description = sc_0.loadStringRefTail();
     let _numOfVotes = sc_0.loadUintBig(64);
     let _voteFee = sc_0.loadUintBig(64);
-    let _votesPerCandidate = sc_0.loadUintBig(64);
+    let _votesPerCandidate = sc_0.loadUintBig(8);
     let _startTime = sc_0.loadUintBig(64);
     let _endTime = sc_0.loadUintBig(64);
-    return { $$type: 'VotingAllInfo' as const, organization: _organization, emoji: _emoji, name: _name, description: _description, numOfVotes: _numOfVotes, voteFee: _voteFee, votesPerCandidate: _votesPerCandidate, startTime: _startTime, endTime: _endTime };
+    return { $$type: 'VotingAllInfo' as const, organization: _organization, owner: _owner, emoji: _emoji, name: _name, description: _description, numOfVotes: _numOfVotes, voteFee: _voteFee, votesPerCandidate: _votesPerCandidate, startTime: _startTime, endTime: _endTime };
 }
 
 function loadTupleVotingAllInfo(source: TupleReader) {
     let _organization = source.readAddress();
+    let _owner = source.readAddress();
     let _emoji = source.readString();
     let _name = source.readString();
     let _description = source.readString();
@@ -1441,12 +1385,13 @@ function loadTupleVotingAllInfo(source: TupleReader) {
     let _votesPerCandidate = source.readBigNumber();
     let _startTime = source.readBigNumber();
     let _endTime = source.readBigNumber();
-    return { $$type: 'VotingAllInfo' as const, organization: _organization, emoji: _emoji, name: _name, description: _description, numOfVotes: _numOfVotes, voteFee: _voteFee, votesPerCandidate: _votesPerCandidate, startTime: _startTime, endTime: _endTime };
+    return { $$type: 'VotingAllInfo' as const, organization: _organization, owner: _owner, emoji: _emoji, name: _name, description: _description, numOfVotes: _numOfVotes, voteFee: _voteFee, votesPerCandidate: _votesPerCandidate, startTime: _startTime, endTime: _endTime };
 }
 
 function storeTupleVotingAllInfo(source: VotingAllInfo) {
     let builder = new TupleBuilder();
     builder.writeAddress(source.organization);
+    builder.writeAddress(source.owner);
     builder.writeString(source.emoji);
     builder.writeString(source.name);
     builder.writeString(source.description);
@@ -1479,19 +1424,19 @@ export type CastVote = {
 export function storeCastVote(src: CastVote) {
     return (builder: Builder) => {
         let b_0 = builder;
-        b_0.storeUint(3093652763, 32);
+        b_0.storeUint(1300754827, 32);
         b_0.storeAddress(src.owner);
-        b_0.storeUint(src.candidateInd, 64);
-        b_0.storeUint(src.numOfVotes, 64);
+        b_0.storeUint(src.candidateInd, 8);
+        b_0.storeUint(src.numOfVotes, 8);
     };
 }
 
 export function loadCastVote(slice: Slice) {
     let sc_0 = slice;
-    if (sc_0.loadUint(32) !== 3093652763) { throw Error('Invalid prefix'); }
+    if (sc_0.loadUint(32) !== 1300754827) { throw Error('Invalid prefix'); }
     let _owner = sc_0.loadAddress();
-    let _candidateInd = sc_0.loadUintBig(64);
-    let _numOfVotes = sc_0.loadUintBig(64);
+    let _candidateInd = sc_0.loadUintBig(8);
+    let _numOfVotes = sc_0.loadUintBig(8);
     return { $$type: 'CastVote' as const, owner: _owner, candidateInd: _candidateInd, numOfVotes: _numOfVotes };
 }
 
@@ -1536,8 +1481,8 @@ function initVote_init_args(src: Vote_init_args) {
 }
 
 async function Vote_init(voting: Address, owner: Address) {
-    const __code = Cell.fromBase64('te6ccgECHQEAA+wAART/APSkE/S88sgLAQIBYgIDA3rQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxVE9s88uCCGQQFAgEgCgsC9gGSMH/gcCHXScIflTAg1wsf3iCCELhlZRu6jtgw0x8BghC4ZWUbuvLggfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0z/TP1UgbBM0JXB/gEBDMG1tbds8gXDFA8AAE/L0IIFmZwbHBRXy9AF/4IIQlGqYtggGAKTI+EMBzH8BygBVMFBDINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFhLLP8s/ye1UAVq6jqfTHwGCEJRqmLa68uCB0z8BMcgBghCv+Q9XWMsfyz/J+EIBcG3bPH/gMHAHATptbSJus5lbIG7y0IBvIgGRMuIQJHADBIBCUCPbPAgByshxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsACQCYfwHKAMhwAcoAcAHKACRus51/AcoABCBu8tCAUATMljQDcAHKAOIkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDicAHKAAJ/AcoAAslYzAIBIAwNAgEgExQCAUgODwIRuFHds82zxsQYGRICEbNQts82zxsQYBkQAhGy7zbPNs8bEGAZEQACIgACIAACIwC5u70YJwXOw9XSyuex6E7DnWSoUbZoJwndY1LStkfLMi068t/fFiOYJwIFXAG4BnY5TOWDquRyWyw4JwnZdOWrNOy3M6DpZtlGbopIJwQM51aecV+dJQsB1hbiZHsoAgFIFRYAEbCvu1E0NIAAYAIBWBcYAHSpu40NWlwZnM6Ly9RbWJLanBEN1ZMdmRFVXdXaWJBeVJWVkhwWHltdzlicDZtWVFLV1R5cVhHcEU2gAhCoSds82zxsQRkaAcDtRNDUAfhj0gABjkj6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0z/TP1UwbBTg+CjXCwqDCbry4IkbAAIhAYr6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgSAtEB2zwcAB6CAJLy+EJSMMcF8vQBf3A=');
-    const __system = Cell.fromBase64('te6cckECHwEAA/YAAQHAAQEFoDrNAgEU/wD0pBP0vPLICwMCAWIVBAIBIA0FAgEgDAYCAUgLBwIBWAoIAhCoSds82zxsQRwJAAIhAHSpu40NWlwZnM6Ly9RbWJLanBEN1ZMdmRFVXdXaWJBeVJWVkhwWHltdzlicDZtWVFLV1R5cVhHcEU2gABGwr7tRNDSAAGAAubu9GCcFzsPV0srnsehOw51kqFG2aCcJ3WNS0rZHyzItOvLf3xYjmCcCBVwBuAZ2OUzlg6rkclssOCcJ2XTlqzTstzOg6WbZRm6KSCcEDOdWnnFfnSULAdYW4mR7KAIBIBAOAhG4Ud2zzbPGxBgcDwACIwIBSBMRAhGy7zbPNs8bEGAcEgACIAIRs1C2zzbPGxBgHBQAAiIDetAB0NMDAXGwowH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIVFBTA28E+GEC+GLbPFUT2zzy4IIcFxYApMj4QwHMfwHKAFUwUEMg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYBINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WEss/yz/J7VQC9gGSMH/gcCHXScIflTAg1wsf3iCCELhlZRu6jtgw0x8BghC4ZWUbuvLggfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0z/TP1UgbBM0JXB/gEBDMG1tbds8gXDFA8AAE/L0IIFmZwbHBRXy9AF/4IIQlGqYthoYAVq6jqfTHwGCEJRqmLa68uCB0z8BMcgBghCv+Q9XWMsfyz/J+EIBcG3bPH/gMHAZATptbSJus5lbIG7y0IBvIgGRMuIQJHADBIBCUCPbPBoByshxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsAGwCYfwHKAMhwAcoAcAHKACRus51/AcoABCBu8tCAUATMljQDcAHKAOIkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDicAHKAAJ/AcoAAslYzAHA7UTQ1AH4Y9IAAY5I+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAdM/0z9VMGwU4Pgo1wsKgwm68uCJHQGK+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIEgLRAds8HgAeggCS8vhCUjDHBfL0AX9wtOqtzw==');
+    const __code = Cell.fromBase64('te6ccgECHgEABDkAART/APSkE/S88sgLAQIBYgIDA3rQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxVE9s88uCCGgQFAgEgCwwCvAGSMH/gcCHXScIflTAg1wsf3iCCEE2H8Yu6jrYw0x8BghBNh/GLuvLggfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0wfTB1UgbBPgghCUapi2uuMCMHAGBwCkyPhDAcx/AcoAVTBQQyDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFgEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYSywfLB8ntVALYNFNRxwUDwAAjkSCRcOKzjowGcH+AQEMwbW1t2zyRNuKBcMVQBvL0gWZnWPL0VHATUGTIVSCCEPYNkjVQBMsfWCDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFssHywfJFPhCAX9t2zx/CQgBTtMfAYIQlGqYtrry4IHTPwExyAGCEK/5D1dYyx/LP8n4QgFwbds8fwgBOm1tIm6zmVsgbvLQgG8iAZEy4hAkcAMEgEJQI9s8CQHKyHEBygFQBwHKAHABygJQBSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAD+gJwAcpoI26zkX+TJG6z4pczMwFwAcoA4w0hbrOcfwHKAAEgbvLQgAHMlTFwAcoA4skB+wAKAJh/AcoAyHABygBwAcoAJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4iRus51/AcoABCBu8tCAUATMljQDcAHKAOJwAcoAAn8BygACyVjMAgEgDQ4CASAUFQIBSA8QAhG4Ud2zzbPGxBgaEwIRs1C2zzbPGxBgGhECEbLvNs82zxsQYBoSAAIiAAIgAAIjALm7vRgnBc7D1dLK57HoTsOdZKhRtmgnCd1jUtK2R8syLTry398WI5gnAgVcAbgGdjlM5YOq5HJbLDgnCdl05as07LczoOlm2UZuikgnBAznVp5xX50lCwHWFuJkeygCAUgWFwARsK+7UTQ0gABgAgFYGBkAdKm7jQ1aXBmczovL1FtUmttZVJLRWg3Z1ZqelJQY1lSTHd1aHBoVDdEZUJRREpNUGp3SGJ6b0w2Y1iACEKhJ2zzbPGxBGhsBwO1E0NQB+GPSAAGOSPpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAHTB9MHVTBsFOD4KNcLCoMJuvLgiRwAAiEBivpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiBIC0QHbPB0AHoIAkvL4QlIwxwXy9AF/cA==');
+    const __system = Cell.fromBase64('te6cckECIAEABEMAAQHAAQEFoDrNAgEU/wD0pBP0vPLICwMCAWIVBAIBIA0FAgEgDAYCAUgLBwIBWAoIAhCoSds82zxsQR0JAAIhAHSpu40NWlwZnM6Ly9RbVJrbWVSS0VoN2dWanpSUGNZUkx3dWhwaFQ3RGVCUURKTVBqd0hiem9MNmNYgABGwr7tRNDSAAGAAubu9GCcFzsPV0srnsehOw51kqFG2aCcJ3WNS0rZHyzItOvLf3xYjmCcCBVwBuAZ2OUzlg6rkclssOCcJ2XTlqzTstzOg6WbZRm6KSCcEDOdWnnFfnSULAdYW4mR7KAIBIBAOAhG4Ud2zzbPGxBgdDwACIwIBSBMRAhGy7zbPNs8bEGAdEgACIAIRs1C2zzbPGxBgHRQAAiIDetAB0NMDAXGwowH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIVFBTA28E+GEC+GLbPFUT2zzy4IIdFxYApMj4QwHMfwHKAFUwUEMg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYBINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WEssHywfJ7VQCvAGSMH/gcCHXScIflTAg1wsf3iCCEE2H8Yu6jrYw0x8BghBNh/GLuvLggfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0wfTB1UgbBPgghCUapi2uuMCMHAZGAFO0x8BghCUapi2uvLggdM/ATHIAYIQr/kPV1jLH8s/yfhCAXBt2zx/GgLYNFNRxwUDwAAjkSCRcOKzjowGcH+AQEMwbW1t2zyRNuKBcMVQBvL0gWZnWPL0VHATUGTIVSCCEPYNkjVQBMsfWCDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFssHywfJFPhCAX9t2zx/GxoBOm1tIm6zmVsgbvLQgG8iAZEy4hAkcAMEgEJQI9s8GwHKyHEBygFQBwHKAHABygJQBSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAD+gJwAcpoI26zkX+TJG6z4pczMwFwAcoA4w0hbrOcfwHKAAEgbvLQgAHMlTFwAcoA4skB+wAcAJh/AcoAyHABygBwAcoAJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4iRus51/AcoABCBu8tCAUATMljQDcAHKAOJwAcoAAn8BygACyVjMAcDtRNDUAfhj0gABjkj6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0wfTB1UwbBTg+CjXCwqDCbry4IkeAYr6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgSAtEB2zwfAB6CAJLy+EJSMMcF8vQBf3DZ6aRW');
     let builder = beginCell();
     builder.storeRef(__system);
     builder.storeUint(0, 1);
@@ -1594,26 +1539,25 @@ const Vote_types: ABIType[] = [
     {"name":"FactoryDeploy","header":1829761339,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"cashback","type":{"kind":"simple","type":"address","optional":false}}]},
     {"name":"ChangeOwner","header":2174598809,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"newOwner","type":{"kind":"simple","type":"address","optional":false}}]},
     {"name":"ChangeOwnerOk","header":846932810,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"newOwner","type":{"kind":"simple","type":"address","optional":false}}]},
-    {"name":"DeployOrganization","header":3207174752,"fields":[{"name":"hidden","type":{"kind":"simple","type":"bool","optional":false}}]},
-    {"name":"DeployOrganizationWithMetadata","header":2019860049,"fields":[{"name":"hidden","type":{"kind":"simple","type":"bool","optional":false}},{"name":"metadata","type":{"kind":"simple","type":"Metadata","optional":false}}]},
+    {"name":"DeployOrganizationWithMetadata","header":3894970140,"fields":[{"name":"metadata","type":{"kind":"simple","type":"Metadata","optional":false}}]},
     {"name":"SetDeployOrgFee","header":155918963,"fields":[{"name":"newFee","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
     {"name":"Metadata","header":null,"fields":[{"name":"name","type":{"kind":"simple","type":"string","optional":false}},{"name":"description","type":{"kind":"simple","type":"string","optional":false}},{"name":"emoji","type":{"kind":"simple","type":"string","optional":false}},{"name":"website","type":{"kind":"simple","type":"string","optional":false}}]},
-    {"name":"InitOrganization","header":181733061,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"hidden","type":{"kind":"simple","type":"bool","optional":false}}]},
-    {"name":"InitOrganizationWithMetadata","header":3017949540,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"hidden","type":{"kind":"simple","type":"bool","optional":false}},{"name":"metadata","type":{"kind":"simple","type":"Metadata","optional":false}}]},
-    {"name":"DeployVoting","header":3833162508,"fields":[{"name":"candidates","type":{"kind":"simple","type":"CandidateArray","optional":false}},{"name":"voteFee","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"votesPerCandidate","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"startTime","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"timeToLive","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
-    {"name":"DeployVotingWithMetadata","header":3149243131,"fields":[{"name":"candidates","type":{"kind":"simple","type":"CandidateArray","optional":false}},{"name":"voteFee","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"votesPerCandidate","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"startTime","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"timeToLive","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"metadata","type":{"kind":"simple","type":"Metadata","optional":false}}]},
+    {"name":"InitOrganization","header":2483039406,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}}]},
+    {"name":"InitOrganizationWithMetadata","header":3404583615,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"metadata","type":{"kind":"simple","type":"Metadata","optional":false}}]},
+    {"name":"DeployVoting","header":2352013716,"fields":[{"name":"candidates","type":{"kind":"simple","type":"CandidateArray","optional":false}},{"name":"voteFee","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"votesPerCandidate","type":{"kind":"simple","type":"uint","optional":false,"format":8}},{"name":"startTime","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"timeToLive","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
+    {"name":"DeployVotingWithMetadata","header":3253980079,"fields":[{"name":"candidates","type":{"kind":"simple","type":"CandidateArray","optional":false}},{"name":"voteFee","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"votesPerCandidate","type":{"kind":"simple","type":"uint","optional":false,"format":8}},{"name":"startTime","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"timeToLive","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"metadata","type":{"kind":"simple","type":"Metadata","optional":false}}]},
     {"name":"SetDeployVotingFee","header":3911156721,"fields":[{"name":"newFee","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
-    {"name":"OrganizationBasicInfo","header":null,"fields":[{"name":"hidden","type":{"kind":"simple","type":"bool","optional":false}},{"name":"emoji","type":{"kind":"simple","type":"string","optional":false}},{"name":"name","type":{"kind":"simple","type":"string","optional":false}},{"name":"website","type":{"kind":"simple","type":"string","optional":false}}]},
-    {"name":"OrganizationAllInfo","header":null,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"hidden","type":{"kind":"simple","type":"bool","optional":false}},{"name":"emoji","type":{"kind":"simple","type":"string","optional":false}},{"name":"name","type":{"kind":"simple","type":"string","optional":false}},{"name":"description","type":{"kind":"simple","type":"string","optional":false}},{"name":"website","type":{"kind":"simple","type":"string","optional":false}},{"name":"numOfVotings","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
+    {"name":"OrganizationBasicInfo","header":null,"fields":[{"name":"emoji","type":{"kind":"simple","type":"string","optional":false}},{"name":"name","type":{"kind":"simple","type":"string","optional":false}},{"name":"website","type":{"kind":"simple","type":"string","optional":false}}]},
+    {"name":"OrganizationAllInfo","header":null,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"emoji","type":{"kind":"simple","type":"string","optional":false}},{"name":"name","type":{"kind":"simple","type":"string","optional":false}},{"name":"description","type":{"kind":"simple","type":"string","optional":false}},{"name":"website","type":{"kind":"simple","type":"string","optional":false}},{"name":"numOfVotings","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
     {"name":"Candidate","header":null,"fields":[{"name":"name","type":{"kind":"simple","type":"string","optional":false}},{"name":"info","type":{"kind":"simple","type":"string","optional":false}},{"name":"votes","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
-    {"name":"CandidateArray","header":null,"fields":[{"name":"size","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"candidates","type":{"kind":"dict","key":"uint","keyFormat":64,"value":"Candidate","valueFormat":"ref"}}]},
-    {"name":"VoteArray","header":null,"fields":[{"name":"size","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"votesMap","type":{"kind":"dict","key":"uint","keyFormat":64,"value":"uint","valueFormat":64}}]},
-    {"name":"InitVoting","header":4250906149,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"candidates","type":{"kind":"simple","type":"CandidateArray","optional":false}},{"name":"voteFee","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"votesPerCandidate","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"startTime","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"timeToLive","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
-    {"name":"InitVotingWithMetadata","header":594339819,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"candidates","type":{"kind":"simple","type":"CandidateArray","optional":false}},{"name":"voteFee","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"votesPerCandidate","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"startTime","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"timeToLive","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"metadata","type":{"kind":"simple","type":"Metadata","optional":false}}]},
-    {"name":"DeployAndCastVote","header":1355346110,"fields":[{"name":"candidateInd","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"numOfVotes","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
+    {"name":"CandidateArray","header":null,"fields":[{"name":"size","type":{"kind":"simple","type":"uint","optional":false,"format":8}},{"name":"candidates","type":{"kind":"dict","key":"uint","keyFormat":64,"value":"Candidate","valueFormat":"ref"}}]},
+    {"name":"InitVoting","header":4246717119,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"candidates","type":{"kind":"simple","type":"CandidateArray","optional":false}},{"name":"voteFee","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"votesPerCandidate","type":{"kind":"simple","type":"uint","optional":false,"format":8}},{"name":"startTime","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"timeToLive","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
+    {"name":"InitVotingWithMetadata","header":3692900348,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"candidates","type":{"kind":"simple","type":"CandidateArray","optional":false}},{"name":"voteFee","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"votesPerCandidate","type":{"kind":"simple","type":"uint","optional":false,"format":8}},{"name":"startTime","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"timeToLive","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"metadata","type":{"kind":"simple","type":"Metadata","optional":false}}]},
+    {"name":"DeployAndCastVote","header":1642098951,"fields":[{"name":"candidateInd","type":{"kind":"simple","type":"uint","optional":false,"format":8}},{"name":"numOfVotes","type":{"kind":"simple","type":"uint","optional":false,"format":8}}]},
+    {"name":"DeployAndCastVoteOk","header":4128084533,"fields":[{"name":"voter","type":{"kind":"simple","type":"address","optional":false}},{"name":"candidateInd","type":{"kind":"simple","type":"uint","optional":false,"format":8}},{"name":"numOfVotes","type":{"kind":"simple","type":"uint","optional":false,"format":8}}]},
     {"name":"VotingBasicInfo","header":null,"fields":[{"name":"emoji","type":{"kind":"simple","type":"string","optional":false}},{"name":"name","type":{"kind":"simple","type":"string","optional":false}},{"name":"startTime","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"endTime","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
-    {"name":"VotingAllInfo","header":null,"fields":[{"name":"organization","type":{"kind":"simple","type":"address","optional":false}},{"name":"emoji","type":{"kind":"simple","type":"string","optional":false}},{"name":"name","type":{"kind":"simple","type":"string","optional":false}},{"name":"description","type":{"kind":"simple","type":"string","optional":false}},{"name":"numOfVotes","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"voteFee","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"votesPerCandidate","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"startTime","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"endTime","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
-    {"name":"CastVote","header":3093652763,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"candidateInd","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"numOfVotes","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
+    {"name":"VotingAllInfo","header":null,"fields":[{"name":"organization","type":{"kind":"simple","type":"address","optional":false}},{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"emoji","type":{"kind":"simple","type":"string","optional":false}},{"name":"name","type":{"kind":"simple","type":"string","optional":false}},{"name":"description","type":{"kind":"simple","type":"string","optional":false}},{"name":"numOfVotes","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"voteFee","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"votesPerCandidate","type":{"kind":"simple","type":"uint","optional":false,"format":8}},{"name":"startTime","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"endTime","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
+    {"name":"CastVote","header":1300754827,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"candidateInd","type":{"kind":"simple","type":"uint","optional":false,"format":8}},{"name":"numOfVotes","type":{"kind":"simple","type":"uint","optional":false,"format":8}}]},
 ]
 
 const Vote_getters: ABIGetter[] = [

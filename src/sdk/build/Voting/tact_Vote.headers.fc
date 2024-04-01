@@ -39,6 +39,12 @@ builder $DeployOk$_store(builder build_0, (int) v) inline;
 ;; $DeployOk$_store_cell
 cell $DeployOk$_store_cell((int) v) inline;
 
+;; $DeployAndCastVoteOk$_store
+builder $DeployAndCastVoteOk$_store(builder build_0, (slice, int, int) v) inline;
+
+;; $DeployAndCastVoteOk$_store_cell
+cell $DeployAndCastVoteOk$_store_cell((slice, int, int) v) inline;
+
 ;; $CastVote$_load
 (slice, ((slice, int, int))) $CastVote$_load(slice sc_0) inline;
 
@@ -81,6 +87,9 @@ builder $Vote$_store(builder build_0, (slice, slice, int, int) v) inline;
 ;; $Vote$_fun_forward
 ((slice, slice, int, int), ()) $Vote$_fun_forward((slice, slice, int, int) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
 
+;; $Vote$_fun_reply
+((slice, slice, int, int), ()) $Vote$_fun_reply((slice, slice, int, int) $self, cell $body) impure inline;
+
 ;; $Vote$_fun_notify
 ((slice, slice, int, int), ()) $Vote$_fun_notify((slice, slice, int, int) $self, cell $body) impure inline;
 
@@ -89,6 +98,9 @@ builder $Vote$_store(builder build_0, (slice, slice, int, int) v) inline;
 
 ;; $SendParameters$_constructor_to_value_bounce_mode
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_mode(slice to, int value, int bounce, int mode) inline;
+
+;; $DeployAndCastVoteOk$_constructor_voter_candidateInd_numOfVotes
+((slice, int, int)) $DeployAndCastVoteOk$_constructor_voter_candidateInd_numOfVotes(slice voter, int candidateInd, int numOfVotes) inline;
 
 ;; $DeployOk$_constructor_queryId
 ((int)) $DeployOk$_constructor_queryId(int queryId) inline;

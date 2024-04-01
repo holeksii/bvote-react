@@ -8,6 +8,8 @@ import "./vote.tact";
 
 contract Voting with Deployable, Ownable {
 
+    const MIN_TON_TO_LIVE: Int = ton("0.1");
+
     owner: Address;
     organization: Address;
     votingId: Int as uint64;
@@ -15,7 +17,7 @@ contract Voting with Deployable, Ownable {
     metadata: Metadata;
 
     voteFee: Int as uint64;
-    votesPerCandidate: Int as uint64;
+    votesPerCandidate: Int as uint8;
     startTime: Int as uint64;
     timeToLive: Int as uint64;
 
@@ -49,6 +51,14 @@ contract Voting with Deployable, Ownable {
         self.votesPerCandidate = msg.votesPerCandidate;
         self.startTime = msg.startTime;
         self.timeToLive = msg.timeToLive;
+
+        send(SendParameters{
+            to: self.organization,
+            value: context().value - self.MIN_TON_TO_LIVE,
+            bounce: false,
+            mode: 0,
+            body: "deployVotingOk".asComment()
+        });
     }
 
     receive(msg: InitVotingWithMetadata) {
@@ -59,6 +69,15 @@ contract Voting with Deployable, Ownable {
         self.startTime = msg.startTime;
         self.timeToLive = msg.timeToLive;
         self.metadata = msg.metadata;
+
+ 
+        send(SendParameters{
+            to: self.organization,
+            value: context().value - self.MIN_TON_TO_LIVE,
+            bounce: false,
+            mode: 0,
+            body: "deployVotingOk".asComment()
+        });
     }
 
     receive(msg: DeployAndCastVote) {
@@ -75,7 +94,7 @@ contract Voting with Deployable, Ownable {
         send(SendParameters{
             to: voting,
             value: context().value - totalFee,
-            bounce: true,
+            bounce: false,
             mode: 0,
             body: CastVote{
                 owner: sender(),
@@ -85,18 +104,42 @@ contract Voting with Deployable, Ownable {
             code: init.code,
             data: init.data
         });
+    }
 
+    receive(msg: DeployAndCastVoteOk) {
         let cand: Candidate = self.candidates.candidates.get(msg.candidateInd)!!;
         self.candidates.candidates.set(msg.candidateInd, Candidate{
             name: cand.name,
             info: cand.info,
             votes: cand.votes + msg.numOfVotes
         });
+
+        send(SendParameters{
+            to: msg.voter,
+            bounce: true,
+            value: 0,
+            mode: (SendRemainingValue + SendIgnoreErrors)
+        });
     }
 
-    receive("withdraw all"){
+    receive("withdrawAll") {
         self.requireOwner();
-        send(SendParameters{to: sender(), bounce: true, value: 0, mode: (SendRemainingBalance + SendIgnoreErrors)});
+        send(SendParameters{
+            to: sender(),
+            bounce: true,
+            value: 0,
+            mode: (SendRemainingBalance + SendIgnoreErrors)
+        });
+    }
+
+    receive("withdrawSafe") {
+        self.requireOwner();
+        send(SendParameters{
+            to: sender(),
+            bounce: true,
+            value: myBalance() - self.MIN_TON_TO_LIVE,
+            mode: 0
+        });
     }
 
     get fun organization(): Address {
@@ -164,6 +207,7 @@ contract Voting with Deployable, Ownable {
     get fun allInfo(): VotingAllInfo {
         return VotingAllInfo{
             organization: self.organization,
+            owner: self.owner,
             emoji: self.metadata.emoji,
             name: self.metadata.name,
             description: self.metadata.description,

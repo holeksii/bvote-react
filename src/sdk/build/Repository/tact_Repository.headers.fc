@@ -51,9 +51,6 @@ builder $DeployOk$_store(builder build_0, (int) v) inline;
 ;; $DeployOk$_store_cell
 cell $DeployOk$_store_cell((int) v) inline;
 
-;; $DeployOrganization$_load
-(slice, ((int))) $DeployOrganization$_load(slice sc_0) inline;
-
 ;; $Metadata$_store
 builder $Metadata$_store(builder build_0, (slice, slice, slice, slice) v) inline;
 
@@ -61,22 +58,22 @@ builder $Metadata$_store(builder build_0, (slice, slice, slice, slice) v) inline
 (slice, ((slice, slice, slice, slice))) $Metadata$_load(slice sc_0) inline;
 
 ;; $DeployOrganizationWithMetadata$_load
-(slice, ((int, (slice, slice, slice, slice)))) $DeployOrganizationWithMetadata$_load(slice sc_0) inline;
+(slice, (((slice, slice, slice, slice)))) $DeployOrganizationWithMetadata$_load(slice sc_0) inline;
 
 ;; $SetDeployOrgFee$_load
 (slice, ((int))) $SetDeployOrgFee$_load(slice sc_0) inline;
 
 ;; $InitOrganization$_store
-builder $InitOrganization$_store(builder build_0, (slice, int) v) inline;
+builder $InitOrganization$_store(builder build_0, (slice) v) inline;
 
 ;; $InitOrganization$_store_cell
-cell $InitOrganization$_store_cell((slice, int) v) inline;
+cell $InitOrganization$_store_cell((slice) v) inline;
 
 ;; $InitOrganizationWithMetadata$_store
-builder $InitOrganizationWithMetadata$_store(builder build_0, (slice, int, (slice, slice, slice, slice)) v) inline;
+builder $InitOrganizationWithMetadata$_store(builder build_0, (slice, (slice, slice, slice, slice)) v) inline;
 
 ;; $InitOrganizationWithMetadata$_store_cell
-cell $InitOrganizationWithMetadata$_store_cell((slice, int, (slice, slice, slice, slice)) v) inline;
+cell $InitOrganizationWithMetadata$_store_cell((slice, (slice, slice, slice, slice)) v) inline;
 
 ;; $Repository$_store
 builder $Repository$_store(builder build_0, (slice, int, int, int) v) inline;
@@ -123,8 +120,14 @@ slice $global_contractAddress((cell, cell) $s) impure inline;
 ;; $Repository$_fun_deployOrganizationFee
 ((slice, int, int, int), int) $Repository$_fun_deployOrganizationFee((slice, int, int, int) $self) impure inline_ref;
 
+;; $Repository$_fun_deployOrganizationFeePlusTonToLive
+((slice, int, int, int), int) $Repository$_fun_deployOrganizationFeePlusTonToLive((slice, int, int, int) $self) impure inline_ref;
+
 ;; $Repository$_fun_organizationAddress
 ((slice, int, int, int), slice) $Repository$_fun_organizationAddress((slice, int, int, int) $self, int $organizationId) impure inline_ref;
+
+;; $Repository$_fun_lastOrganizationAddress
+((slice, int, int, int), slice) $Repository$_fun_lastOrganizationAddress((slice, int, int, int) $self) impure inline_ref;
 
 ;; $Repository$_fun_forward
 ((slice, int, int, int), ()) $Repository$_fun_forward((slice, int, int, int) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
@@ -141,11 +144,11 @@ slice $global_contractAddress((cell, cell) $s) impure inline;
 ;; $SendParameters$_constructor_to_value_bounce_mode_body_code_data
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_mode_body_code_data(slice to, int value, int bounce, int mode, cell body, cell code, cell data) inline;
 
-;; $InitOrganization$_constructor_owner_hidden
-((slice, int)) $InitOrganization$_constructor_owner_hidden(slice owner, int hidden) inline;
+;; $InitOrganization$_constructor_owner
+((slice)) $InitOrganization$_constructor_owner(slice owner) inline;
 
-;; $InitOrganizationWithMetadata$_constructor_owner_hidden_metadata
-((slice, int, (slice, slice, slice, slice))) $InitOrganizationWithMetadata$_constructor_owner_hidden_metadata(slice owner, int hidden, (slice, slice, slice, slice) metadata) inline;
+;; $InitOrganizationWithMetadata$_constructor_owner_metadata
+((slice, (slice, slice, slice, slice))) $InitOrganizationWithMetadata$_constructor_owner_metadata(slice owner, (slice, slice, slice, slice) metadata) inline;
 
 ;; $SendParameters$_constructor_to_bounce_value_mode
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_bounce_value_mode(slice to, int bounce, int value, int mode) inline;

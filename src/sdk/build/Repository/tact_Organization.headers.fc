@@ -58,10 +58,10 @@ builder $Metadata$_store(builder build_0, (slice, slice, slice, slice) v) inline
 (slice, ((slice, slice, slice, slice))) $Metadata$_load(slice sc_0) inline;
 
 ;; $InitOrganization$_load
-(slice, ((slice, int))) $InitOrganization$_load(slice sc_0) inline;
+(slice, ((slice))) $InitOrganization$_load(slice sc_0) inline;
 
 ;; $InitOrganizationWithMetadata$_load
-(slice, ((slice, int, (slice, slice, slice, slice)))) $InitOrganizationWithMetadata$_load(slice sc_0) inline;
+(slice, ((slice, (slice, slice, slice, slice)))) $InitOrganizationWithMetadata$_load(slice sc_0) inline;
 
 ;; $CandidateArray$_store
 builder $CandidateArray$_store(builder build_0, (int, cell) v) inline;
@@ -91,10 +91,10 @@ builder $InitVotingWithMetadata$_store(builder build_0, (slice, (int, cell), int
 cell $InitVotingWithMetadata$_store_cell((slice, (int, cell), int, int, int, int, (slice, slice, slice, slice)) v) inline;
 
 ;; $Organization$_store
-builder $Organization$_store(builder build_0, (slice, int, int, (slice, slice, slice, slice), slice, int, int, int) v) inline;
+builder $Organization$_store(builder build_0, (slice, int, (slice, slice, slice, slice), slice, int, int, int) v) inline;
 
 ;; $Organization$_load
-(slice, ((slice, int, int, (slice, slice, slice, slice), slice, int, int, int))) $Organization$_load(slice sc_0) inline;
+(slice, ((slice, int, (slice, slice, slice, slice), slice, int, int, int))) $Organization$_load(slice sc_0) inline;
 
 ;; $StateInit$_not_null
 ((cell, cell)) $StateInit$_not_null(tuple v) inline;
@@ -106,10 +106,10 @@ _ $Context$_get_value((int, slice, int, slice) v) inline;
 (slice, slice, slice, slice) $Metadata$_to_external(((slice, slice, slice, slice)) v) inline;
 
 ;; $OrganizationBasicInfo$_to_external
-(int, slice, slice, slice) $OrganizationBasicInfo$_to_external(((int, slice, slice, slice)) v) inline;
+(slice, slice, slice) $OrganizationBasicInfo$_to_external(((slice, slice, slice)) v) inline;
 
 ;; $OrganizationAllInfo$_to_external
-(slice, int, slice, slice, slice, slice, int) $OrganizationAllInfo$_to_external(((slice, int, slice, slice, slice, slice, int)) v) inline;
+(slice, slice, slice, slice, slice, int) $OrganizationAllInfo$_to_external(((slice, slice, slice, slice, slice, int)) v) inline;
 
 ;; $Organization$init$_load
 (slice, ((slice, int))) $Organization$init$_load(slice sc_0) inline;
@@ -121,13 +121,13 @@ builder $Voting$init$_store(builder build_0, (slice, int) v) inline;
 ((slice, slice, slice, slice)) $Metadata$_constructor_name_description_emoji_website(slice name, slice description, slice emoji, slice website) inline;
 
 ;; $Organization$_contract_init
-(slice, int, int, (slice, slice, slice, slice), slice, int, int, int) $Organization$_contract_init(slice $repository, int $organizationId) impure inline_ref;
+(slice, int, (slice, slice, slice, slice), slice, int, int, int) $Organization$_contract_init(slice $repository, int $organizationId) impure inline_ref;
 
 ;; $Organization$_contract_load
-(slice, int, int, (slice, slice, slice, slice), slice, int, int, int) $Organization$_contract_load() impure inline_ref;
+(slice, int, (slice, slice, slice, slice), slice, int, int, int) $Organization$_contract_load() impure inline_ref;
 
 ;; $Organization$_contract_store
-() $Organization$_contract_store((slice, int, int, (slice, slice, slice, slice), slice, int, int, int) v) impure inline;
+() $Organization$_contract_store((slice, int, (slice, slice, slice, slice), slice, int, int, int) v) impure inline;
 
 ;; $global_contractAddress
 slice $global_contractAddress((cell, cell) $s) impure inline;
@@ -136,58 +136,64 @@ slice $global_contractAddress((cell, cell) $s) impure inline;
 () $global_send((int, slice, int, int, cell, cell, cell) $params) impure inline_ref;
 
 ;; $Organization$_fun_numOfVotings
-((slice, int, int, (slice, slice, slice, slice), slice, int, int, int), int) $Organization$_fun_numOfVotings((slice, int, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
+((slice, int, (slice, slice, slice, slice), slice, int, int, int), int) $Organization$_fun_numOfVotings((slice, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
 
 ;; $Organization$_fun_deployVotingFee
-((slice, int, int, (slice, slice, slice, slice), slice, int, int, int), int) $Organization$_fun_deployVotingFee((slice, int, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
+((slice, int, (slice, slice, slice, slice), slice, int, int, int), int) $Organization$_fun_deployVotingFee((slice, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
+
+;; $Organization$_fun_deployVotingFeePlusTonToLive
+((slice, int, (slice, slice, slice, slice), slice, int, int, int), int) $Organization$_fun_deployVotingFeePlusTonToLive((slice, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
 
 ;; $Organization$_fun_lastChanged
-((slice, int, int, (slice, slice, slice, slice), slice, int, int, int), int) $Organization$_fun_lastChanged((slice, int, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
-
-;; $Organization$_fun_hidden
-((slice, int, int, (slice, slice, slice, slice), slice, int, int, int), int) $Organization$_fun_hidden((slice, int, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
+((slice, int, (slice, slice, slice, slice), slice, int, int, int), int) $Organization$_fun_lastChanged((slice, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
 
 ;; $Organization$_fun_metadata
-((slice, int, int, (slice, slice, slice, slice), slice, int, int, int), (slice, slice, slice, slice)) $Organization$_fun_metadata((slice, int, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
+((slice, int, (slice, slice, slice, slice), slice, int, int, int), (slice, slice, slice, slice)) $Organization$_fun_metadata((slice, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
 
 ;; $Organization$_fun_organizationId
-((slice, int, int, (slice, slice, slice, slice), slice, int, int, int), int) $Organization$_fun_organizationId((slice, int, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
+((slice, int, (slice, slice, slice, slice), slice, int, int, int), int) $Organization$_fun_organizationId((slice, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
 
 ;; $Organization$_fun_repository
-((slice, int, int, (slice, slice, slice, slice), slice, int, int, int), slice) $Organization$_fun_repository((slice, int, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
+((slice, int, (slice, slice, slice, slice), slice, int, int, int), slice) $Organization$_fun_repository((slice, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
 
 ;; $Voting$_init_child
 (cell, cell) $Voting$_init_child(cell sys', slice $organization, int $votingId) inline_ref;
 
 ;; $Organization$_fun_votingAddress
-((slice, int, int, (slice, slice, slice, slice), slice, int, int, int), slice) $Organization$_fun_votingAddress((slice, int, int, (slice, slice, slice, slice), slice, int, int, int) $self, int $votingId) impure inline_ref;
+((slice, int, (slice, slice, slice, slice), slice, int, int, int), slice) $Organization$_fun_votingAddress((slice, int, (slice, slice, slice, slice), slice, int, int, int) $self, int $votingId) impure inline_ref;
 
-;; $OrganizationBasicInfo$_constructor_hidden_emoji_name_website
-((int, slice, slice, slice)) $OrganizationBasicInfo$_constructor_hidden_emoji_name_website(int hidden, slice emoji, slice name, slice website) inline;
+;; $Organization$_fun_lastVotingAddress
+((slice, int, (slice, slice, slice, slice), slice, int, int, int), slice) $Organization$_fun_lastVotingAddress((slice, int, (slice, slice, slice, slice), slice, int, int, int) $self, int $votingId) impure inline_ref;
+
+;; $OrganizationBasicInfo$_constructor_emoji_name_website
+((slice, slice, slice)) $OrganizationBasicInfo$_constructor_emoji_name_website(slice emoji, slice name, slice website) inline;
 
 ;; $Organization$_fun_basicInfo
-((slice, int, int, (slice, slice, slice, slice), slice, int, int, int), (int, slice, slice, slice)) $Organization$_fun_basicInfo((slice, int, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
+((slice, int, (slice, slice, slice, slice), slice, int, int, int), (slice, slice, slice)) $Organization$_fun_basicInfo((slice, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
 
-;; $OrganizationAllInfo$_constructor_owner_hidden_emoji_name_description_website_numOfVotings
-((slice, int, slice, slice, slice, slice, int)) $OrganizationAllInfo$_constructor_owner_hidden_emoji_name_description_website_numOfVotings(slice owner, int hidden, slice emoji, slice name, slice description, slice website, int numOfVotings) inline;
+;; $OrganizationAllInfo$_constructor_owner_emoji_name_description_website_numOfVotings
+((slice, slice, slice, slice, slice, int)) $OrganizationAllInfo$_constructor_owner_emoji_name_description_website_numOfVotings(slice owner, slice emoji, slice name, slice description, slice website, int numOfVotings) inline;
 
 ;; $Organization$_fun_allInfo
-((slice, int, int, (slice, slice, slice, slice), slice, int, int, int), (slice, int, slice, slice, slice, slice, int)) $Organization$_fun_allInfo((slice, int, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
+((slice, int, (slice, slice, slice, slice), slice, int, int, int), (slice, slice, slice, slice, slice, int)) $Organization$_fun_allInfo((slice, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
 
 ;; $SendParameters$_constructor_bounce_to_value_mode_body_code_data
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_bounce_to_value_mode_body_code_data(int bounce, slice to, int value, int mode, cell body, cell code, cell data) inline;
 
 ;; $Organization$_fun_forward
-((slice, int, int, (slice, slice, slice, slice), slice, int, int, int), ()) $Organization$_fun_forward((slice, int, int, (slice, slice, slice, slice), slice, int, int, int) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
+((slice, int, (slice, slice, slice, slice), slice, int, int, int), ()) $Organization$_fun_forward((slice, int, (slice, slice, slice, slice), slice, int, int, int) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
 
 ;; $Organization$_fun_notify
-((slice, int, int, (slice, slice, slice, slice), slice, int, int, int), ()) $Organization$_fun_notify((slice, int, int, (slice, slice, slice, slice), slice, int, int, int) $self, cell $body) impure inline;
+((slice, int, (slice, slice, slice, slice), slice, int, int, int), ()) $Organization$_fun_notify((slice, int, (slice, slice, slice, slice), slice, int, int, int) $self, cell $body) impure inline;
 
 ;; $Organization$_fun_requireOwner
-((slice, int, int, (slice, slice, slice, slice), slice, int, int, int), ()) $Organization$_fun_requireOwner((slice, int, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
+((slice, int, (slice, slice, slice, slice), slice, int, int, int), ()) $Organization$_fun_requireOwner((slice, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
 
 ;; $Organization$_fun_owner
-((slice, int, int, (slice, slice, slice, slice), slice, int, int, int), slice) $Organization$_fun_owner((slice, int, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
+((slice, int, (slice, slice, slice, slice), slice, int, int, int), slice) $Organization$_fun_owner((slice, int, (slice, slice, slice, slice), slice, int, int, int) $self) impure inline_ref;
+
+;; $SendParameters$_constructor_to_value_bounce_mode_body
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_mode_body(slice to, int value, int bounce, int mode, cell body) inline;
 
 ;; $SendParameters$_constructor_to_value_bounce_mode_body_code_data
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_mode_body_code_data(slice to, int value, int bounce, int mode, cell body, cell code, cell data) inline;

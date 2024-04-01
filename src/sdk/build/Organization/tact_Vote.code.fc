@@ -47,12 +47,17 @@
 (((slice, slice, int, int)), ()) $Vote$_internal_binary_CastVote((slice, slice, int, int) $self, (slice, int, int) $msg) impure inline {
     var ($self'owner, $self'voting, $self'candidateInd, $self'numOfVotes) = $self;
     var ($msg'owner, $msg'candidateInd, $msg'numOfVotes) = $msg;
-    $global_send($SendParameters$_constructor_to_value_bounce_mode($self'owner, 0, true, 64));
-    throw_unless(28869, ($self'numOfVotes == 0));
-    throw_unless(26215, ( __tact_slice_eq_bits($msg'owner, $self'owner) ));
+    int $isOwner = ( __tact_slice_eq_bits($self'owner, $msg'owner) );
+    int $noVotes = ($self'numOfVotes == 0);
+    if ((~ ( ($isOwner) ? ($noVotes) : (false) ))) {
+        $global_send($SendParameters$_constructor_to_value_bounce_mode($self'owner, 0, true, 64));
+    }
+    throw_unless(28869, $noVotes);
+    throw_unless(26215, $isOwner);
     $self'owner = $msg'owner;
     $self'candidateInd = $msg'candidateInd;
     $self'numOfVotes = $msg'numOfVotes;
+    ($self'owner, $self'voting, $self'candidateInd, $self'numOfVotes)~$Vote$_fun_reply($DeployAndCastVoteOk$_store_cell($DeployAndCastVoteOk$_constructor_voter_candidateInd_numOfVotes($self'owner, $msg'candidateInd, $msg'numOfVotes)));
     return (($self'owner, $self'voting, $self'candidateInd, $self'numOfVotes), ());
 }
 
@@ -102,7 +107,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmWGnBGyvCAkC4NB9JkW1RW2pqPY7m9WGC533oG4qpPFJR";
+    return "ipfs://QmPWxo4SUbiD1wACCcrZwZoRWLrkhj2yeCYhFn9ZRL6LJe";
 }
 
 _ lazy_deployment_completed() method_id {
@@ -127,7 +132,7 @@ _ lazy_deployment_completed() method_id {
     
     
     ;; Receive CastVote message
-    if (op == 3093652763) {
+    if (op == 1300754827) {
         var msg = in_msg~$CastVote$_load();
         self~$Vote$_internal_binary_CastVote(msg);
         return (self, true);

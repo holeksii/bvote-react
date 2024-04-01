@@ -29,6 +29,7 @@ PROGRAM{
   DECLPROC $InitVoting$_load
   DECLPROC $InitVotingWithMetadata$_load
   DECLPROC $DeployAndCastVote$_load
+  DECLPROC $DeployAndCastVoteOk$_load
   DECLPROC $CastVote$_store
   DECLPROC $CastVote$_store_cell
   DECLPROC $Voting$_store
@@ -62,13 +63,14 @@ PROGRAM{
   DECLPROC $Voting$_fun_voteAddress
   DECLPROC $VotingBasicInfo$_constructor_emoji_name_startTime_endTime
   DECLPROC $Voting$_fun_basicInfo
-  DECLPROC $VotingAllInfo$_constructor_organization_emoji_name_description_numOfVotes_voteFee_votesPerCandidate_startTime_endTime
+  DECLPROC $VotingAllInfo$_constructor_organization_owner_emoji_name_description_numOfVotes_voteFee_votesPerCandidate_startTime_endTime
   DECLPROC $Voting$_fun_allInfo
   DECLPROC $SendParameters$_constructor_bounce_to_value_mode_body_code_data
   DECLPROC $Voting$_fun_forward
   DECLPROC $Voting$_fun_notify
   DECLPROC $Voting$_fun_requireOwner
   DECLPROC $Voting$_fun_owner
+  DECLPROC $SendParameters$_constructor_to_value_bounce_mode_body
   DECLPROC $SendParameters$_constructor_to_value_bounce_mode_body_code_data
   DECLPROC $CastVote$_constructor_owner_candidateInd_numOfVotes
   DECLPROC $Candidate$_constructor_name_info_votes
@@ -78,7 +80,9 @@ PROGRAM{
   DECLPROC $Voting$_internal_binary_InitVoting
   DECLPROC $Voting$_internal_binary_InitVotingWithMetadata
   DECLPROC $Voting$_internal_binary_DeployAndCastVote
-  DECLPROC $Voting$_internal_text_5092b5dce0715a57dd969f5fb5a6f93025a0b02eab329470ca2b365ca0d7e93a
+  DECLPROC $Voting$_internal_binary_DeployAndCastVoteOk
+  DECLPROC $Voting$_internal_text_63365f83ad1d185f336d0e64cfce19190f3623d6d976c30c6198ac209c8946ee
+  DECLPROC $Voting$_internal_text_fa1a01be1e29ad0a9589a04fde70c8555eb62353556db90be422f1a9c5d7959d
   DECLPROC $Voting$_internal_binary_Deploy
   73639 DECLMETHOD %organization
   99756 DECLMETHOD %votingId
@@ -293,11 +297,11 @@ PROGRAM{
   }>
   $CandidateArray$_store PROCINLINE:<{
     s0 s2 XCHG
-    64 STU
+    8 STU
     STDICT
   }>
   $CandidateArray$_load PROCINLINE:<{
-    64 LDU
+    8 LDU
     LDDICT
     -ROT
   }>
@@ -353,7 +357,7 @@ PROGRAM{
   $InitVoting$_load PROCREF:<{
     32 LDU
     SWAP
-    4250906149 PUSHINT
+    4246717119 PUSHINT
     EQUAL
     129 THROWIFNOT
     __tact_load_address INLINECALLDICT
@@ -361,7 +365,7 @@ PROGRAM{
     $CandidateArray$_load INLINECALLDICT
     s0 s2 XCHG
     64 LDU
-    64 LDU
+    8 LDU
     64 LDU
     64 LDU
     s0 s7 XCHG
@@ -371,7 +375,7 @@ PROGRAM{
   $InitVotingWithMetadata$_load PROCREF:<{
     32 LDU
     SWAP
-    594339819 PUSHINT
+    3692900348 PUSHINT
     EQUAL
     129 THROWIFNOT
     __tact_load_address INLINECALLDICT
@@ -379,7 +383,7 @@ PROGRAM{
     $CandidateArray$_load INLINECALLDICT
     s0 s2 XCHG
     64 LDU
-    64 LDU
+    8 LDU
     64 LDU
     64 LDU
     LDREF
@@ -398,21 +402,33 @@ PROGRAM{
   $DeployAndCastVote$_load PROCINLINE:<{
     32 LDU
     SWAP
-    1355346110 PUSHINT
+    1642098951 PUSHINT
     EQUAL
     129 THROWIFNOT
-    64 LDU
-    64 LDU
+    8 LDU
+    8 LDU
     -ROT
   }>
+  $DeployAndCastVoteOk$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    4128084533 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    __tact_load_address INLINECALLDICT
+    SWAP
+    8 LDU
+    8 LDU
+    3 -ROLL
+  }>
   $CastVote$_store PROCINLINE:<{
-    3093652763 PUSHINT
+    1300754827 PUSHINT
     s0 s4 XCHG2
     32 STU
     ROT
     __tact_store_address INLINECALLDICT
-    64 STU
-    64 STU
+    8 STU
+    8 STU
   }>
   $CastVote$_store_cell PROCINLINE:<{
     NEWC
@@ -436,7 +452,7 @@ PROGRAM{
     s1 s2 XCHG
     64 STU
     s1 s2 XCHG
-    64 STU
+    8 STU
     s1 s3 XCHG
     64 STU
     64 STU
@@ -458,7 +474,7 @@ PROGRAM{
     $Metadata$_load INLINECALLDICT
     s0 s4 XCHG
     64 LDU
-    64 LDU
+    8 LDU
     64 LDU
     64 LDU
     DROP
@@ -775,7 +791,7 @@ PROGRAM{
     s4 s(-1) PUXC
     $VotingBasicInfo$_constructor_emoji_name_startTime_endTime INLINECALLDICT
   }>
-  $VotingAllInfo$_constructor_organization_emoji_name_description_numOfVotes_voteFee_votesPerCandidate_startTime_endTime PROCINLINE:<{
+  $VotingAllInfo$_constructor_organization_owner_emoji_name_description_numOfVotes_voteFee_votesPerCandidate_startTime_endTime PROCINLINE:<{
   }>
   $Voting$_fun_allInfo PROCREF:<{
     s12 s11 s10 PUSH3
@@ -784,22 +800,23 @@ PROGRAM{
     s12 s11 s10 PUSH3
     s12 PUSH
     24 s() PUSH
-    19 s() PUSH
-    22 s() PUSH
-    22 s() PUSH
-    s12 29 s() XCHG
-    s11 28 s() XCHG
-    s10 27 s() XCHG
-    s9 26 s() XCHG
-    s8 25 s() XCHG
-    s7 24 s() XCHG
-    s6 23 s() XCHG
-    s5 22 s() XCHG
-    s4 21 s() XCHG
-    s3 20 s() XCHG
-    s2 19 s() XCHG
-    s1 18 s() XCHG
-    s0 17 s() XCHG
+    26 s() PUSH
+    20 s() PUSH
+    23 s() PUSH
+    23 s() PUSH
+    s12 30 s() XCHG
+    s11 29 s() XCHG
+    s10 28 s() XCHG
+    s9 27 s() XCHG
+    s8 26 s() XCHG
+    s7 25 s() XCHG
+    s6 24 s() XCHG
+    s5 23 s() XCHG
+    s4 22 s() XCHG
+    s3 21 s() XCHG
+    s2 20 s() XCHG
+    s1 19 s() XCHG
+    s0 18 s() XCHG
     $Voting$_fun_numOfVotes INLINECALLDICT
     5 5 BLKDROP2
     s5 POP
@@ -808,25 +825,25 @@ PROGRAM{
     s5 POP
     s3 s2 PUXC
     ADD
-    s8 s12 XCHG
-    s7 s11 XCHG
-    s6 s10 XCHG
-    s5 s9 XCHG
+    s9 s14 XCHG
+    s8 s13 XCHG
+    s7 s12 XCHG
+    s6 s11 XCHG
+    s5 s10 XCHG
     s4 s4 s0 XCHG3
     s1 s3 XCHG
-    $VotingAllInfo$_constructor_organization_emoji_name_description_numOfVotes_voteFee_votesPerCandidate_startTime_endTime INLINECALLDICT
-    s12 21 s() XCHG
-    s11 20 s() XCHG
-    s10 19 s() XCHG
-    s9 18 s() XCHG
-    s12 17 s() XCHG
-    s11 16 s() XCHG
-    s10 s15 XCHG
-    s9 s14 XCHG
-    s12 s13 XCHG
-    s11 s12 XCHG
+    $VotingAllInfo$_constructor_organization_owner_emoji_name_description_numOfVotes_voteFee_votesPerCandidate_startTime_endTime INLINECALLDICT
+    s14 22 s() XCHG
+    s13 21 s() XCHG
+    s12 20 s() XCHG
+    s11 19 s() XCHG
+    s10 18 s() XCHG
+    s14 17 s() XCHG
+    s13 16 s() XCHG
+    s12 s15 XCHG
+    s11 s14 XCHG
+    4 10 REVERSE
     s10 s11 XCHG
-    s9 s10 XCHG
   }>
   $SendParameters$_constructor_bounce_to_value_mode_body_code_data PROCINLINE:<{
   }>
@@ -868,6 +885,12 @@ PROGRAM{
   $Voting$_fun_owner PROCREF:<{
     s12 PUSH
   }>
+  $SendParameters$_constructor_to_value_bounce_mode_body PROCINLINE:<{
+    s2 s4 XCHG
+    s2 s3 XCHG
+    PUSHNULL
+    PUSHNULL
+  }>
   $SendParameters$_constructor_to_value_bounce_mode_body_code_data PROCINLINE:<{
     s4 s6 XCHG
     s4 s5 XCHG
@@ -894,6 +917,17 @@ PROGRAM{
     s11 POP
     s11 POP
     s13 POP
+    __tact_context_get INLINECALLDICT
+    $Context$_get_value INLINECALLDICT
+    100000000 PUSHINT
+    SUB
+    FALSE
+    0 PUSHINT
+    B{b5ee9c72410101010014000024000000006465706c6f79566f74696e674f6be9832aaa} B>boc PUSHREF
+    s15 PUSH
+    4 -ROLL
+    $SendParameters$_constructor_to_value_bounce_mode_body INLINECALLDICT
+    $global_send INLINECALLDICT
   }>
   $Voting$_internal_binary_InitVotingWithMetadata PROCINLINE:<{
     s11 POP
@@ -907,6 +941,17 @@ PROGRAM{
     s11 POP
     s11 POP
     s13 POP
+    __tact_context_get INLINECALLDICT
+    $Context$_get_value INLINECALLDICT
+    100000000 PUSHINT
+    SUB
+    FALSE
+    0 PUSHINT
+    B{b5ee9c72410101010014000024000000006465706c6f79566f74696e674f6be9832aaa} B>boc PUSHREF
+    s15 PUSH
+    4 -ROLL
+    $SendParameters$_constructor_to_value_bounce_mode_body INLINECALLDICT
+    $global_send INLINECALLDICT
     4 4 BLKSWAP
   }>
   $Voting$_internal_binary_DeployAndCastVote PROCINLINE:<{
@@ -943,16 +988,21 @@ PROGRAM{
     $Context$_get_value INLINECALLDICT
     s0 s4 XCHG2
     SUB
-    TRUE
+    FALSE
     0 PUSHINT
     __tact_context_get_sender INLINECALLDICT
-    s8 s7 PUSH2
+    s0 s8 s7 XCHG3
     $CastVote$_constructor_owner_candidateInd_numOfVotes INLINECALLDICT
     $CastVote$_store_cell INLINECALLDICT
-    2 4 BLKSWAP
+    s4 s6 XCHG
+    s5 s2 XCHG2
+    s1 s4 XCHG
+    s1 s3 XCHG
     $SendParameters$_constructor_to_value_bounce_mode_body_code_data INLINECALLDICT
     $global_send INLINECALLDICT
-    s10 PUSH
+  }>
+  $Voting$_internal_binary_DeployAndCastVoteOk PROCINLINE:<{
+    s11 PUSH
     64 PUSHINT
     s3 PUSH
     __tact_dict_get_uint_cell INLINECALLDICT
@@ -963,17 +1013,33 @@ PROGRAM{
     ADD
     $Candidate$_constructor_name_info_votes INLINECALLDICT
     $Candidate$_store_cell INLINECALLDICT
-    s3 s11 XCHG
+    s3 s12 XCHG
     s1 s2 XCHG
     __tact_dict_set_uint_cell INLINECALLDICT
-    s0 s8 XCHG
+    s0 s9 XCHG
+    TRUE
+    0 PUSHINT
+    66 PUSHINT
+    $SendParameters$_constructor_to_bounce_value_mode INLINECALLDICT
+    $global_send INLINECALLDICT
   }>
-  $Voting$_internal_text_5092b5dce0715a57dd969f5fb5a6f93025a0b02eab329470ca2b365ca0d7e93a PROCINLINE:<{
+  $Voting$_internal_text_63365f83ad1d185f336d0e64cfce19190f3623d6d976c30c6198ac209c8946ee PROCINLINE:<{
     $Voting$_fun_requireOwner INLINECALLDICT
     __tact_context_get_sender INLINECALLDICT
     TRUE
     0 PUSHINT
     130 PUSHINT
+    $SendParameters$_constructor_to_bounce_value_mode INLINECALLDICT
+    $global_send INLINECALLDICT
+  }>
+  $Voting$_internal_text_fa1a01be1e29ad0a9589a04fde70c8555eb62353556db90be422f1a9c5d7959d PROCINLINE:<{
+    $Voting$_fun_requireOwner INLINECALLDICT
+    __tact_context_get_sender INLINECALLDICT
+    TRUE
+    __tact_my_balance INLINECALLDICT
+    100000000 PUSHINT
+    SUB
+    0 PUSHINT
     $SendParameters$_constructor_to_bounce_value_mode INLINECALLDICT
     $global_send INLINECALLDICT
   }>
@@ -1045,8 +1111,8 @@ PROGRAM{
   %allInfo PROC:<{
     $Voting$_contract_load INLINECALLDICT
     $Voting$_fun_allInfo INLINECALLDICT
-    9 9 BLKDROP2
-    4 9 BLKDROP2
+    10 10 BLKDROP2
+    3 10 BLKDROP2
     $VotingAllInfo$_to_external INLINECALLDICT
   }>
   %owner PROC:<{
@@ -1062,7 +1128,7 @@ PROGRAM{
     86142586315491086060343270784266291122 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d52517635753563586f416543325a37474e54536d373642666f7461324b5855687055457363744e65706f3578} PUSHSLICE
+    x{697066733a2f2f516d644a78796a745a434e3146796b63554b72413643773941694a366e336e3378725a6f486d4e6a4c6a54587941} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -1099,7 +1165,7 @@ PROGRAM{
       TRUE
     }>
     DUP
-    4250906149 PUSHINT
+    4246717119 PUSHINT
     EQUAL
     IFJMP:<{
       DROP
@@ -1109,7 +1175,7 @@ PROGRAM{
       TRUE
     }>
     DUP
-    594339819 PUSHINT
+    3692900348 PUSHINT
     EQUAL
     IFJMP:<{
       DROP
@@ -1119,13 +1185,23 @@ PROGRAM{
       TRUE
     }>
     DUP
-    1355346110 PUSHINT
+    1642098951 PUSHINT
     EQUAL
     IFJMP:<{
       DROP
       $DeployAndCastVote$_load INLINECALLDICT
       1 2 BLKDROP2
       $Voting$_internal_binary_DeployAndCastVote INLINECALLDICT
+      TRUE
+    }>
+    DUP
+    4128084533 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      $DeployAndCastVoteOk$_load INLINECALLDICT
+      1 3 BLKDROP2
+      $Voting$_internal_binary_DeployAndCastVoteOk INLINECALLDICT
       TRUE
     }>
     DUP
@@ -1141,10 +1217,19 @@ PROGRAM{
     0 EQINT
     IF:<{
       HASHSU
-      36444242729032575060637673953708123039509959040849370188450484212211184560442 PUSHINT
+      DUP
+      44875040967128359233849870319678368402034961253064673980724220848427263149806 PUSHINT
       EQUAL
       IFJMP:<{
-        $Voting$_internal_text_5092b5dce0715a57dd969f5fb5a6f93025a0b02eab329470ca2b365ca0d7e93a INLINECALLDICT
+        DROP
+        $Voting$_internal_text_63365f83ad1d185f336d0e64cfce19190f3623d6d976c30c6198ac209c8946ee INLINECALLDICT
+        TRUE
+        RETALT
+      }>
+      113124162196813561873574137668437484088250020799762236312505125312699618006429 PUSHINT
+      EQUAL
+      IFJMP:<{
+        $Voting$_internal_text_fa1a01be1e29ad0a9589a04fde70c8555eb62353556db90be422f1a9c5d7959d INLINECALLDICT
         TRUE
         RETALT
       }>

@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: Vote
-BOC Size: 1016 bytes
+BOC Size: 1093 bytes
 
 # Types
-Total Types: 12
+Total Types: 18
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -42,16 +42,40 @@ TLB: `_ name:^string info:^string votes:uint64 = Candidate`
 Signature: `Candidate{name:^string,info:^string,votes:uint64}`
 
 ## CandidateArray
-TLB: `_ size:uint64 candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}> = CandidateArray`
-Signature: `CandidateArray{size:uint64,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>}`
+TLB: `_ size:uint8 candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}> = CandidateArray`
+Signature: `CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>}`
 
-## VoteArray
-TLB: `_ size:uint64 votesMap:dict<uint64, uint64> = VoteArray`
-Signature: `VoteArray{size:uint64,votesMap:dict<uint64, uint64>}`
+## InitVoting
+TLB: `init_voting#fd1fc2bf owner:address candidates:CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint8 startTime:uint64 timeToLive:uint64 = InitVoting`
+Signature: `InitVoting{owner:address,candidates:CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>},voteFee:uint64,votesPerCandidate:uint8,startTime:uint64,timeToLive:uint64}`
+
+## InitVotingWithMetadata
+TLB: `init_voting_with_metadata#dc1d2ffc owner:address candidates:CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint8 startTime:uint64 timeToLive:uint64 metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string} = InitVotingWithMetadata`
+Signature: `InitVotingWithMetadata{owner:address,candidates:CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>},voteFee:uint64,votesPerCandidate:uint8,startTime:uint64,timeToLive:uint64,metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string}}`
+
+## DeployAndCastVote
+TLB: `deploy_and_cast_vote#61e07107 candidateInd:uint8 numOfVotes:uint8 = DeployAndCastVote`
+Signature: `DeployAndCastVote{candidateInd:uint8,numOfVotes:uint8}`
+
+## DeployAndCastVoteOk
+TLB: `deploy_and_cast_vote_ok#f60d9235 voter:address candidateInd:uint8 numOfVotes:uint8 = DeployAndCastVoteOk`
+Signature: `DeployAndCastVoteOk{voter:address,candidateInd:uint8,numOfVotes:uint8}`
+
+## VotingBasicInfo
+TLB: `_ emoji:^string name:^string startTime:uint64 endTime:uint64 = VotingBasicInfo`
+Signature: `VotingBasicInfo{emoji:^string,name:^string,startTime:uint64,endTime:uint64}`
+
+## VotingAllInfo
+TLB: `_ organization:address owner:address emoji:^string name:^string description:^string numOfVotes:uint64 voteFee:uint64 votesPerCandidate:uint8 startTime:uint64 endTime:uint64 = VotingAllInfo`
+Signature: `VotingAllInfo{organization:address,owner:address,emoji:^string,name:^string,description:^string,numOfVotes:uint64,voteFee:uint64,votesPerCandidate:uint8,startTime:uint64,endTime:uint64}`
 
 ## CastVote
-TLB: `cast_vote#b865651b owner:address candidateInd:uint64 numOfVotes:uint64 = CastVote`
-Signature: `CastVote{owner:address,candidateInd:uint64,numOfVotes:uint64}`
+TLB: `cast_vote#4d87f18b owner:address candidateInd:uint8 numOfVotes:uint8 = CastVote`
+Signature: `CastVote{owner:address,candidateInd:uint8,numOfVotes:uint8}`
+
+## Metadata
+TLB: `_ name:^string description:^string emoji:^string website:^string = Metadata`
+Signature: `Metadata{name:^string,description:^string,emoji:^string,website:^string}`
 
 # Get Methods
 Total Get Methods: 4

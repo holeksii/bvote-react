@@ -11,6 +11,8 @@ PROGRAM{
   DECLPROC $Deploy$_load
   DECLPROC $DeployOk$_store
   DECLPROC $DeployOk$_store_cell
+  DECLPROC $DeployAndCastVoteOk$_store
+  DECLPROC $DeployAndCastVoteOk$_store_cell
   DECLPROC $CastVote$_load
   DECLPROC $Vote$_store
   DECLPROC $Vote$_load
@@ -25,9 +27,11 @@ PROGRAM{
   DECLPROC $Vote$_fun_numOfVotes
   DECLPROC $SendParameters$_constructor_bounce_to_value_mode_body_code_data
   DECLPROC $Vote$_fun_forward
+  DECLPROC $Vote$_fun_reply
   DECLPROC $Vote$_fun_notify
   DECLPROC $Vote$_fun_owner
   DECLPROC $SendParameters$_constructor_to_value_bounce_mode
+  DECLPROC $DeployAndCastVoteOk$_constructor_voter_candidateInd_numOfVotes
   DECLPROC $DeployOk$_constructor_queryId
   DECLPROC $Vote$_internal_binary_CastVote
   DECLPROC $Vote$_internal_binary_Deploy
@@ -113,16 +117,31 @@ PROGRAM{
     $DeployOk$_store INLINECALLDICT
     ENDC
   }>
+  $DeployAndCastVoteOk$_store PROCINLINE:<{
+    4128084533 PUSHINT
+    s0 s4 XCHG2
+    32 STU
+    ROT
+    __tact_store_address INLINECALLDICT
+    8 STU
+    8 STU
+  }>
+  $DeployAndCastVoteOk$_store_cell PROCINLINE:<{
+    NEWC
+    3 -ROLL
+    $DeployAndCastVoteOk$_store INLINECALLDICT
+    ENDC
+  }>
   $CastVote$_load PROCINLINE:<{
     32 LDU
     SWAP
-    3093652763 PUSHINT
+    1300754827 PUSHINT
     EQUAL
     129 THROWIFNOT
     __tact_load_address INLINECALLDICT
     SWAP
-    64 LDU
-    64 LDU
+    8 LDU
+    8 LDU
     3 -ROLL
   }>
   $Vote$_store PROCINLINE:<{
@@ -131,16 +150,16 @@ PROGRAM{
     SWAP
     __tact_store_address INLINECALLDICT
     s1 s2 XCHG
-    64 STU
-    64 STU
+    8 STU
+    8 STU
   }>
   $Vote$_load PROCINLINE:<{
     __tact_load_address INLINECALLDICT
     SWAP
     __tact_load_address INLINECALLDICT
     SWAP
-    64 LDU
-    64 LDU
+    8 LDU
+    8 LDU
     4 -ROLL
   }>
   $StateInit$_not_null PROCINLINE:<{
@@ -336,6 +355,13 @@ PROGRAM{
     $SendParameters$_constructor_bounce_to_value_mode_body_code_data INLINECALLDICT
     $global_send INLINECALLDICT
   }>
+  $Vote$_fun_reply PROCINLINE:<{
+    __tact_context_get_sender INLINECALLDICT
+    SWAP
+    TRUE
+    PUSHNULL
+    $Vote$_fun_forward INLINECALLDICT
+  }>
   $Vote$_fun_notify PROCINLINE:<{
     __tact_context_get_sender INLINECALLDICT
     SWAP
@@ -352,28 +378,45 @@ PROGRAM{
     PUSHNULL
     PUSHNULL
   }>
+  $DeployAndCastVoteOk$_constructor_voter_candidateInd_numOfVotes PROCINLINE:<{
+  }>
   $DeployOk$_constructor_queryId PROCINLINE:<{
   }>
   $Vote$_internal_binary_CastVote PROCINLINE:<{
     s4 POP
-    s5 PUSH
-    0 PUSHINT
-    TRUE
-    64 PUSHINT
-    $SendParameters$_constructor_to_value_bounce_mode INLINECALLDICT
-    $global_send INLINECALLDICT
-    28869 PUSHINT
+    s5 s1 PUSH2
+    __tact_slice_eq_bits INLINECALLDICT
     s0 s3 XCHG
     0 EQINT
-    s1 s3 XCHG
+    s3 PUSH
+    IF:<{
+      DUP
+    }>ELSE<{
+      FALSE
+    }>
+    NOT
+    IF:<{
+      s0 s6 XCHG
+      0 PUSHINT
+      TRUE
+      64 PUSHINT
+      $SendParameters$_constructor_to_value_bounce_mode INLINECALLDICT
+      $global_send INLINECALLDICT
+    }>ELSE<{
+      s6 POP
+    }>
+    28869 PUSHINT
+    s0 s6 XCHG2
     THROWANYIFNOT
-    DUP
     26215 PUSHINT
-    s0 s6 XCHG
-    __tact_slice_eq_bits INLINECALLDICT
-    s1 s5 XCHG
+    ROT
     THROWANYIFNOT
-    SWAP
+    s0 s1 s3 PUSH3
+    s6 s4 XCHG2
+    $DeployAndCastVoteOk$_constructor_voter_candidateInd_numOfVotes INLINECALLDICT
+    $DeployAndCastVoteOk$_store_cell INLINECALLDICT
+    s1 s4 XCHG
+    $Vote$_fun_reply INLINECALLDICT
   }>
   $Vote$_internal_binary_Deploy PROCINLINE:<{
     $DeployOk$_constructor_queryId INLINECALLDICT
@@ -408,7 +451,7 @@ PROGRAM{
     86142586315491086060343270784266291122 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d5159706d56524c64523336536167386b74616d3765565978676d3278576b35337664774d315352323558566e} PUSHSLICE
+    x{697066733a2f2f516d56515170764e6e625164595235394d5868567865707467525a554350684b504375796263426d69347a4b6476} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -432,7 +475,7 @@ PROGRAM{
       32 PLDU
     }>
     DUP
-    3093652763 PUSHINT
+    1300754827 PUSHINT
     EQUAL
     IFJMP:<{
       DROP

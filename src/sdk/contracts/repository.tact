@@ -5,6 +5,8 @@ import "./organization.tact";
 
 contract Repository with Deployable, Ownable {
 
+    const MIN_TON_TO_LIVE: Int = ton("0.1");
+
     owner: Address;
     repositoryId: Int as uint64;
     numOfOrganizations: Int as uint64;
@@ -14,46 +16,49 @@ contract Repository with Deployable, Ownable {
         self.owner = sender();
         self.repositoryId = repositoryId;
         self.numOfOrganizations = 0;  
-        self.deployOrganizationFee = ton("0");
+        self.deployOrganizationFee = ton("1");
     }
 
     receive() {}
 
-    receive(msg: DeployOrganization) {
-        require(context().value >= self.deployOrganizationFee, "Insufficient funds to deploy organization");
+    receive("deployOrg") {
+        require(context().value >= self.deployOrganizationFee + self.MIN_TON_TO_LIVE, "Insufficient funds to deploy organization");
 
         let init: StateInit = initOf Organization(myAddress(), self.numOfOrganizations);
         let organization: Address = contractAddress(init);
 
         send(SendParameters{
-            to: organization, 
+            to: organization,
             value: 0, 
-            bounce: false,
+            bounce: true,
             mode: SendRemainingValue,
-            body: InitOrganization{owner: sender(), hidden: msg.hidden}.toCell(),
+            body: InitOrganization{owner: sender()}.toCell(),
             code: init.code,
             data: init.data
         });
-
-        self.numOfOrganizations += 1;
     }
 
     receive(msg: DeployOrganizationWithMetadata) {
-        require(context().value >= self.deployOrganizationFee, "Insufficient funds to deploy organization");
+        require(context().value >= self.deployOrganizationFee + self.MIN_TON_TO_LIVE, "Insufficient funds to deploy organization");
 
         let init: StateInit = initOf Organization(myAddress(), self.numOfOrganizations);
         let organization: Address = contractAddress(init);
 
         send(SendParameters{
-            to: organization, 
-            value: 0, 
+            to: organization,
+            value: 0,
             bounce: false,
             mode: SendRemainingValue,
-            body: InitOrganizationWithMetadata{owner: sender(), hidden: msg.hidden, metadata: msg.metadata}.toCell(),
+            body: InitOrganizationWithMetadata{
+                owner: sender(),
+                metadata: msg.metadata
+            }.toCell(),
             code: init.code,
             data: init.data
         });
+    }
 
+    receive("deployOrgOk") {
         self.numOfOrganizations += 1;
     }
 
@@ -62,9 +67,24 @@ contract Repository with Deployable, Ownable {
         self.deployOrganizationFee = msg.newFee;
     }
 
-    receive("withdraw all"){
+    receive("withdrawAll"){
         self.requireOwner();
-        send(SendParameters{to: sender(), bounce: true, value: 0, mode: (SendRemainingBalance + SendIgnoreErrors)});
+        send(SendParameters{
+            to: sender(),
+            bounce: true,
+            value: 0,
+            mode: (SendRemainingBalance + SendIgnoreErrors)
+        });
+    }
+
+    receive("withdrawSafe"){
+        self.requireOwner();
+        send(SendParameters{
+            to: sender(),
+            bounce: true,
+            value: myBalance() - self.MIN_TON_TO_LIVE,
+            mode: 0
+        });
     }
 
     get fun numOfOrganizations(): Int {
@@ -75,8 +95,17 @@ contract Repository with Deployable, Ownable {
         return self.deployOrganizationFee;
     }
 
+    get fun deployOrganizationFeePlusTonToLive(): Int {
+        return self.deployOrganizationFee + self.MIN_TON_TO_LIVE;
+    }
+
     get fun organizationAddress(organizationId: Int): Address {
         let init: StateInit = initOf Organization(myAddress(), organizationId);
+        return contractAddress(init);
+    }
+
+    get fun lastOrganizationAddress(): Address {
+        let init: StateInit = initOf Organization(myAddress(), self.numOfOrganizations - 1);
         return contractAddress(init);
     }
 }

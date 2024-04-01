@@ -28,6 +28,10 @@ _ $Context$_get_value((int, slice, int, slice) v) inline {
     return (bounce, to, value, mode, body, code, data);
 }
 
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_mode_body(slice to, int value, int bounce, int mode, cell body) inline {
+    return (bounce, to, value, mode, body, null(), null());
+}
+
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_mode_body_code_data(slice to, int value, int bounce, int mode, cell body, cell code, cell data) inline {
     return (bounce, to, value, mode, body, code, data);
 }
@@ -71,15 +75,14 @@ cell $DeployOk$_store_cell((int) v) inline {
 
 ;;
 ;; Type: InitOrganization
-;; Header: 0x0ad506c5
-;; TLB: init_organization#0ad506c5 owner:address hidden:bool = InitOrganization
+;; Header: 0x94002cae
+;; TLB: init_organization#94002cae owner:address = InitOrganization
 ;;
 
-(slice, ((slice, int))) $InitOrganization$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 181733061);
+(slice, ((slice))) $InitOrganization$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 2483039406);
     var v'owner = sc_0~__tact_load_address();
-    var v'hidden = sc_0~load_int(1);
-    return (sc_0, (v'owner, v'hidden));
+    return (sc_0, (v'owner));
 }
 
 ;;
@@ -118,47 +121,46 @@ builder $Metadata$_store(builder build_0, (slice, slice, slice, slice) v) inline
 
 ;;
 ;; Type: InitOrganizationWithMetadata
-;; Header: 0xb3e24164
-;; TLB: init_organization_with_metadata#b3e24164 owner:address hidden:bool metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string} = InitOrganizationWithMetadata
+;; Header: 0xcaedd2bf
+;; TLB: init_organization_with_metadata#caedd2bf owner:address metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string} = InitOrganizationWithMetadata
 ;;
 
-(slice, ((slice, int, (slice, slice, slice, slice)))) $InitOrganizationWithMetadata$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 3017949540);
+(slice, ((slice, (slice, slice, slice, slice)))) $InitOrganizationWithMetadata$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 3404583615);
     var v'owner = sc_0~__tact_load_address();
-    var v'hidden = sc_0~load_int(1);
     var v'metadata = sc_0~$Metadata$_load();
-    return (sc_0, (v'owner, v'hidden, v'metadata));
+    return (sc_0, (v'owner, v'metadata));
 }
 
 ;;
 ;; Type: CandidateArray
-;; TLB: _ size:uint64 candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}> = CandidateArray
+;; TLB: _ size:uint8 candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}> = CandidateArray
 ;;
 
 builder $CandidateArray$_store(builder build_0, (int, cell) v) inline {
     var (v'size, v'candidates) = v;
-    build_0 = build_0.store_uint(v'size, 64);
+    build_0 = build_0.store_uint(v'size, 8);
     build_0 = build_0.store_dict(v'candidates);
     return build_0;
 }
 
 (slice, ((int, cell))) $CandidateArray$_load(slice sc_0) inline {
-    var v'size = sc_0~load_uint(64);
+    var v'size = sc_0~load_uint(8);
     var v'candidates = sc_0~load_dict();
     return (sc_0, (v'size, v'candidates));
 }
 
 ;;
 ;; Type: DeployVoting
-;; Header: 0xe4796b0c
-;; TLB: deploy_voting#e4796b0c candidates:CandidateArray{size:uint64,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint64 startTime:uint64 timeToLive:uint64 = DeployVoting
+;; Header: 0x8c30e194
+;; TLB: deploy_voting#8c30e194 candidates:CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint8 startTime:uint64 timeToLive:uint64 = DeployVoting
 ;;
 
 (slice, (((int, cell), int, int, int, int))) $DeployVoting$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 3833162508);
+    throw_unless(129, sc_0~load_uint(32) == 2352013716);
     var v'candidates = sc_0~$CandidateArray$_load();
     var v'voteFee = sc_0~load_uint(64);
-    var v'votesPerCandidate = sc_0~load_uint(64);
+    var v'votesPerCandidate = sc_0~load_uint(8);
     var v'startTime = sc_0~load_uint(64);
     var v'timeToLive = sc_0~load_uint(64);
     return (sc_0, (v'candidates, v'voteFee, v'votesPerCandidate, v'startTime, v'timeToLive));
@@ -166,15 +168,15 @@ builder $CandidateArray$_store(builder build_0, (int, cell) v) inline {
 
 ;;
 ;; Type: DeployVotingWithMetadata
-;; Header: 0xbbb5a2fb
-;; TLB: deploy_voting_with_metadata#bbb5a2fb candidates:CandidateArray{size:uint64,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint64 startTime:uint64 timeToLive:uint64 metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string} = DeployVotingWithMetadata
+;; Header: 0xc1f3cbaf
+;; TLB: deploy_voting_with_metadata#c1f3cbaf candidates:CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint8 startTime:uint64 timeToLive:uint64 metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string} = DeployVotingWithMetadata
 ;;
 
 (slice, (((int, cell), int, int, int, int, (slice, slice, slice, slice)))) $DeployVotingWithMetadata$_load(slice sc_0) inline_ref {
-    throw_unless(129, sc_0~load_uint(32) == 3149243131);
+    throw_unless(129, sc_0~load_uint(32) == 3253980079);
     var v'candidates = sc_0~$CandidateArray$_load();
     var v'voteFee = sc_0~load_uint(64);
-    var v'votesPerCandidate = sc_0~load_uint(64);
+    var v'votesPerCandidate = sc_0~load_uint(8);
     var v'startTime = sc_0~load_uint(64);
     var v'timeToLive = sc_0~load_uint(64);
     slice sc_1 = sc_0~load_ref().begin_parse();
@@ -196,45 +198,45 @@ builder $CandidateArray$_store(builder build_0, (int, cell) v) inline {
 
 ;;
 ;; Type: OrganizationBasicInfo
-;; TLB: _ hidden:bool emoji:^string name:^string website:^string = OrganizationBasicInfo
+;; TLB: _ emoji:^string name:^string website:^string = OrganizationBasicInfo
 ;;
 
-(int, slice, slice, slice) $OrganizationBasicInfo$_to_external(((int, slice, slice, slice)) v) inline {
-    var (v'hidden, v'emoji, v'name, v'website) = v; 
-    return (v'hidden, v'emoji, v'name, v'website);
+(slice, slice, slice) $OrganizationBasicInfo$_to_external(((slice, slice, slice)) v) inline {
+    var (v'emoji, v'name, v'website) = v; 
+    return (v'emoji, v'name, v'website);
 }
 
-((int, slice, slice, slice)) $OrganizationBasicInfo$_constructor_hidden_emoji_name_website(int hidden, slice emoji, slice name, slice website) inline {
-    return (hidden, emoji, name, website);
+((slice, slice, slice)) $OrganizationBasicInfo$_constructor_emoji_name_website(slice emoji, slice name, slice website) inline {
+    return (emoji, name, website);
 }
 
 ;;
 ;; Type: OrganizationAllInfo
-;; TLB: _ owner:address hidden:bool emoji:^string name:^string description:^string website:^string numOfVotings:uint64 = OrganizationAllInfo
+;; TLB: _ owner:address emoji:^string name:^string description:^string website:^string numOfVotings:uint64 = OrganizationAllInfo
 ;;
 
-(slice, int, slice, slice, slice, slice, int) $OrganizationAllInfo$_to_external(((slice, int, slice, slice, slice, slice, int)) v) inline {
-    var (v'owner, v'hidden, v'emoji, v'name, v'description, v'website, v'numOfVotings) = v; 
-    return (v'owner, v'hidden, v'emoji, v'name, v'description, v'website, v'numOfVotings);
+(slice, slice, slice, slice, slice, int) $OrganizationAllInfo$_to_external(((slice, slice, slice, slice, slice, int)) v) inline {
+    var (v'owner, v'emoji, v'name, v'description, v'website, v'numOfVotings) = v; 
+    return (v'owner, v'emoji, v'name, v'description, v'website, v'numOfVotings);
 }
 
-((slice, int, slice, slice, slice, slice, int)) $OrganizationAllInfo$_constructor_owner_hidden_emoji_name_description_website_numOfVotings(slice owner, int hidden, slice emoji, slice name, slice description, slice website, int numOfVotings) inline {
-    return (owner, hidden, emoji, name, description, website, numOfVotings);
+((slice, slice, slice, slice, slice, int)) $OrganizationAllInfo$_constructor_owner_emoji_name_description_website_numOfVotings(slice owner, slice emoji, slice name, slice description, slice website, int numOfVotings) inline {
+    return (owner, emoji, name, description, website, numOfVotings);
 }
 
 ;;
 ;; Type: InitVoting
-;; Header: 0xfd5fae25
-;; TLB: init_voting#fd5fae25 owner:address candidates:CandidateArray{size:uint64,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint64 startTime:uint64 timeToLive:uint64 = InitVoting
+;; Header: 0xfd1fc2bf
+;; TLB: init_voting#fd1fc2bf owner:address candidates:CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint8 startTime:uint64 timeToLive:uint64 = InitVoting
 ;;
 
 builder $InitVoting$_store(builder build_0, (slice, (int, cell), int, int, int, int) v) inline_ref {
     var (v'owner, (v'candidates'size, v'candidates'candidates), v'voteFee, v'votesPerCandidate, v'startTime, v'timeToLive) = v;
-    build_0 = store_uint(build_0, 4250906149, 32);
+    build_0 = store_uint(build_0, 4246717119, 32);
     build_0 = __tact_store_address(build_0, v'owner);
     build_0 = $CandidateArray$_store(build_0, (v'candidates'size, v'candidates'candidates));
     build_0 = build_0.store_uint(v'voteFee, 64);
-    build_0 = build_0.store_uint(v'votesPerCandidate, 64);
+    build_0 = build_0.store_uint(v'votesPerCandidate, 8);
     build_0 = build_0.store_uint(v'startTime, 64);
     build_0 = build_0.store_uint(v'timeToLive, 64);
     return build_0;
@@ -250,17 +252,17 @@ cell $InitVoting$_store_cell((slice, (int, cell), int, int, int, int) v) inline 
 
 ;;
 ;; Type: InitVotingWithMetadata
-;; Header: 0x236ce7eb
-;; TLB: init_voting_with_metadata#236ce7eb owner:address candidates:CandidateArray{size:uint64,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint64 startTime:uint64 timeToLive:uint64 metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string} = InitVotingWithMetadata
+;; Header: 0xdc1d2ffc
+;; TLB: init_voting_with_metadata#dc1d2ffc owner:address candidates:CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint8 startTime:uint64 timeToLive:uint64 metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string} = InitVotingWithMetadata
 ;;
 
 builder $InitVotingWithMetadata$_store(builder build_0, (slice, (int, cell), int, int, int, int, (slice, slice, slice, slice)) v) inline_ref {
     var (v'owner, (v'candidates'size, v'candidates'candidates), v'voteFee, v'votesPerCandidate, v'startTime, v'timeToLive, (v'metadata'name, v'metadata'description, v'metadata'emoji, v'metadata'website)) = v;
-    build_0 = store_uint(build_0, 594339819, 32);
+    build_0 = store_uint(build_0, 3692900348, 32);
     build_0 = __tact_store_address(build_0, v'owner);
     build_0 = $CandidateArray$_store(build_0, (v'candidates'size, v'candidates'candidates));
     build_0 = build_0.store_uint(v'voteFee, 64);
-    build_0 = build_0.store_uint(v'votesPerCandidate, 64);
+    build_0 = build_0.store_uint(v'votesPerCandidate, 8);
     build_0 = build_0.store_uint(v'startTime, 64);
     build_0 = build_0.store_uint(v'timeToLive, 64);
     var build_1 = begin_cell();
@@ -313,11 +315,10 @@ builder $Voting$init$_store(builder build_0, (slice, int) v) inline {
 ;; Type: Organization
 ;;
 
-builder $Organization$_store(builder build_0, (slice, int, int, (slice, slice, slice, slice), slice, int, int, int) v) inline {
-    var (v'repository, v'organizationId, v'hidden, (v'metadata'name, v'metadata'description, v'metadata'emoji, v'metadata'website), v'owner, v'numOfVotings, v'deployVotingFee, v'lastChanged) = v;
+builder $Organization$_store(builder build_0, (slice, int, (slice, slice, slice, slice), slice, int, int, int) v) inline {
+    var (v'repository, v'organizationId, (v'metadata'name, v'metadata'description, v'metadata'emoji, v'metadata'website), v'owner, v'numOfVotings, v'deployVotingFee, v'lastChanged) = v;
     build_0 = __tact_store_address(build_0, v'repository);
     build_0 = build_0.store_uint(v'organizationId, 64);
-    build_0 = build_0.store_int(v'hidden, 1);
     var build_1 = begin_cell();
     build_1 = $Metadata$_store(build_1, (v'metadata'name, v'metadata'description, v'metadata'emoji, v'metadata'website));
     build_1 = __tact_store_address(build_1, v'owner);
@@ -328,17 +329,16 @@ builder $Organization$_store(builder build_0, (slice, int, int, (slice, slice, s
     return build_0;
 }
 
-(slice, ((slice, int, int, (slice, slice, slice, slice), slice, int, int, int))) $Organization$_load(slice sc_0) inline {
+(slice, ((slice, int, (slice, slice, slice, slice), slice, int, int, int))) $Organization$_load(slice sc_0) inline {
     var v'repository = sc_0~__tact_load_address();
     var v'organizationId = sc_0~load_uint(64);
-    var v'hidden = sc_0~load_int(1);
     slice sc_1 = sc_0~load_ref().begin_parse();
     var v'metadata = sc_1~$Metadata$_load();
     var v'owner = sc_1~__tact_load_address();
     var v'numOfVotings = sc_1~load_uint(64);
     var v'deployVotingFee = sc_1~load_uint(64);
     var v'lastChanged = sc_1~load_uint(64);
-    return (sc_0, (v'repository, v'organizationId, v'hidden, v'metadata, v'owner, v'numOfVotings, v'deployVotingFee, v'lastChanged));
+    return (sc_0, (v'repository, v'organizationId, v'metadata, v'owner, v'numOfVotings, v'deployVotingFee, v'lastChanged));
 }
 
 (slice, ((slice, int))) $Organization$init$_load(slice sc_0) inline {
@@ -347,7 +347,7 @@ builder $Organization$_store(builder build_0, (slice, int, int, (slice, slice, s
     return (sc_0, (v'repository, v'organizationId));
 }
 
-(slice, int, int, (slice, slice, slice, slice), slice, int, int, int) $Organization$_contract_load() impure inline_ref {
+(slice, int, (slice, slice, slice, slice), slice, int, int, int) $Organization$_contract_load() impure inline_ref {
     slice $sc = get_data().begin_parse();
     __tact_context_sys = $sc~load_ref();
     int $loaded = $sc~load_int(1);
@@ -362,7 +362,7 @@ builder $Organization$_store(builder build_0, (slice, int, int, (slice, slice, s
     }
 }
 
-() $Organization$_contract_store((slice, int, int, (slice, slice, slice, slice), slice, int, int, int) v) impure inline {
+() $Organization$_contract_store((slice, int, (slice, slice, slice, slice), slice, int, int, int) v) impure inline {
     builder b = begin_cell();
     b = b.store_ref(__tact_context_sys);
     b = b.store_int(true, 1);

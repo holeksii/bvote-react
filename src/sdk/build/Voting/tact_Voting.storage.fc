@@ -28,6 +28,10 @@ _ $Context$_get_value((int, slice, int, slice) v) inline {
     return (bounce, to, value, mode, body, code, data);
 }
 
+((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_mode_body(slice to, int value, int bounce, int mode, cell body) inline {
+    return (bounce, to, value, mode, body, null(), null());
+}
+
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_mode_body_code_data(slice to, int value, int bounce, int mode, cell body, cell code, cell data) inline {
     return (bounce, to, value, mode, body, code, data);
 }
@@ -118,18 +122,18 @@ tuple $Candidate$_load_opt(cell cl) inline {
 
 ;;
 ;; Type: CandidateArray
-;; TLB: _ size:uint64 candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}> = CandidateArray
+;; TLB: _ size:uint8 candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}> = CandidateArray
 ;;
 
 builder $CandidateArray$_store(builder build_0, (int, cell) v) inline {
     var (v'size, v'candidates) = v;
-    build_0 = build_0.store_uint(v'size, 64);
+    build_0 = build_0.store_uint(v'size, 8);
     build_0 = build_0.store_dict(v'candidates);
     return build_0;
 }
 
 (slice, ((int, cell))) $CandidateArray$_load(slice sc_0) inline {
-    var v'size = sc_0~load_uint(64);
+    var v'size = sc_0~load_uint(8);
     var v'candidates = sc_0~load_dict();
     return (sc_0, (v'size, v'candidates));
 }
@@ -179,16 +183,16 @@ builder $Metadata$_store(builder build_0, (slice, slice, slice, slice) v) inline
 
 ;;
 ;; Type: InitVoting
-;; Header: 0xfd5fae25
-;; TLB: init_voting#fd5fae25 owner:address candidates:CandidateArray{size:uint64,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint64 startTime:uint64 timeToLive:uint64 = InitVoting
+;; Header: 0xfd1fc2bf
+;; TLB: init_voting#fd1fc2bf owner:address candidates:CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint8 startTime:uint64 timeToLive:uint64 = InitVoting
 ;;
 
 (slice, ((slice, (int, cell), int, int, int, int))) $InitVoting$_load(slice sc_0) inline_ref {
-    throw_unless(129, sc_0~load_uint(32) == 4250906149);
+    throw_unless(129, sc_0~load_uint(32) == 4246717119);
     var v'owner = sc_0~__tact_load_address();
     var v'candidates = sc_0~$CandidateArray$_load();
     var v'voteFee = sc_0~load_uint(64);
-    var v'votesPerCandidate = sc_0~load_uint(64);
+    var v'votesPerCandidate = sc_0~load_uint(8);
     var v'startTime = sc_0~load_uint(64);
     var v'timeToLive = sc_0~load_uint(64);
     return (sc_0, (v'owner, v'candidates, v'voteFee, v'votesPerCandidate, v'startTime, v'timeToLive));
@@ -196,16 +200,16 @@ builder $Metadata$_store(builder build_0, (slice, slice, slice, slice) v) inline
 
 ;;
 ;; Type: InitVotingWithMetadata
-;; Header: 0x236ce7eb
-;; TLB: init_voting_with_metadata#236ce7eb owner:address candidates:CandidateArray{size:uint64,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint64 startTime:uint64 timeToLive:uint64 metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string} = InitVotingWithMetadata
+;; Header: 0xdc1d2ffc
+;; TLB: init_voting_with_metadata#dc1d2ffc owner:address candidates:CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint8 startTime:uint64 timeToLive:uint64 metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string} = InitVotingWithMetadata
 ;;
 
 (slice, ((slice, (int, cell), int, int, int, int, (slice, slice, slice, slice)))) $InitVotingWithMetadata$_load(slice sc_0) inline_ref {
-    throw_unless(129, sc_0~load_uint(32) == 594339819);
+    throw_unless(129, sc_0~load_uint(32) == 3692900348);
     var v'owner = sc_0~__tact_load_address();
     var v'candidates = sc_0~$CandidateArray$_load();
     var v'voteFee = sc_0~load_uint(64);
-    var v'votesPerCandidate = sc_0~load_uint(64);
+    var v'votesPerCandidate = sc_0~load_uint(8);
     var v'startTime = sc_0~load_uint(64);
     var v'timeToLive = sc_0~load_uint(64);
     slice sc_1 = sc_0~load_ref().begin_parse();
@@ -215,15 +219,29 @@ builder $Metadata$_store(builder build_0, (slice, slice, slice, slice) v) inline
 
 ;;
 ;; Type: DeployAndCastVote
-;; Header: 0x50c8f0be
-;; TLB: deploy_and_cast_vote#50c8f0be candidateInd:uint64 numOfVotes:uint64 = DeployAndCastVote
+;; Header: 0x61e07107
+;; TLB: deploy_and_cast_vote#61e07107 candidateInd:uint8 numOfVotes:uint8 = DeployAndCastVote
 ;;
 
 (slice, ((int, int))) $DeployAndCastVote$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 1355346110);
-    var v'candidateInd = sc_0~load_uint(64);
-    var v'numOfVotes = sc_0~load_uint(64);
+    throw_unless(129, sc_0~load_uint(32) == 1642098951);
+    var v'candidateInd = sc_0~load_uint(8);
+    var v'numOfVotes = sc_0~load_uint(8);
     return (sc_0, (v'candidateInd, v'numOfVotes));
+}
+
+;;
+;; Type: DeployAndCastVoteOk
+;; Header: 0xf60d9235
+;; TLB: deploy_and_cast_vote_ok#f60d9235 voter:address candidateInd:uint8 numOfVotes:uint8 = DeployAndCastVoteOk
+;;
+
+(slice, ((slice, int, int))) $DeployAndCastVoteOk$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 4128084533);
+    var v'voter = sc_0~__tact_load_address();
+    var v'candidateInd = sc_0~load_uint(8);
+    var v'numOfVotes = sc_0~load_uint(8);
+    return (sc_0, (v'voter, v'candidateInd, v'numOfVotes));
 }
 
 ;;
@@ -242,30 +260,30 @@ builder $Metadata$_store(builder build_0, (slice, slice, slice, slice) v) inline
 
 ;;
 ;; Type: VotingAllInfo
-;; TLB: _ organization:address emoji:^string name:^string description:^string numOfVotes:uint64 voteFee:uint64 votesPerCandidate:uint64 startTime:uint64 endTime:uint64 = VotingAllInfo
+;; TLB: _ organization:address owner:address emoji:^string name:^string description:^string numOfVotes:uint64 voteFee:uint64 votesPerCandidate:uint8 startTime:uint64 endTime:uint64 = VotingAllInfo
 ;;
 
-(slice, slice, slice, slice, int, int, int, int, int) $VotingAllInfo$_to_external(((slice, slice, slice, slice, int, int, int, int, int)) v) inline {
-    var (v'organization, v'emoji, v'name, v'description, v'numOfVotes, v'voteFee, v'votesPerCandidate, v'startTime, v'endTime) = v; 
-    return (v'organization, v'emoji, v'name, v'description, v'numOfVotes, v'voteFee, v'votesPerCandidate, v'startTime, v'endTime);
+(slice, slice, slice, slice, slice, int, int, int, int, int) $VotingAllInfo$_to_external(((slice, slice, slice, slice, slice, int, int, int, int, int)) v) inline {
+    var (v'organization, v'owner, v'emoji, v'name, v'description, v'numOfVotes, v'voteFee, v'votesPerCandidate, v'startTime, v'endTime) = v; 
+    return (v'organization, v'owner, v'emoji, v'name, v'description, v'numOfVotes, v'voteFee, v'votesPerCandidate, v'startTime, v'endTime);
 }
 
-((slice, slice, slice, slice, int, int, int, int, int)) $VotingAllInfo$_constructor_organization_emoji_name_description_numOfVotes_voteFee_votesPerCandidate_startTime_endTime(slice organization, slice emoji, slice name, slice description, int numOfVotes, int voteFee, int votesPerCandidate, int startTime, int endTime) inline {
-    return (organization, emoji, name, description, numOfVotes, voteFee, votesPerCandidate, startTime, endTime);
+((slice, slice, slice, slice, slice, int, int, int, int, int)) $VotingAllInfo$_constructor_organization_owner_emoji_name_description_numOfVotes_voteFee_votesPerCandidate_startTime_endTime(slice organization, slice owner, slice emoji, slice name, slice description, int numOfVotes, int voteFee, int votesPerCandidate, int startTime, int endTime) inline {
+    return (organization, owner, emoji, name, description, numOfVotes, voteFee, votesPerCandidate, startTime, endTime);
 }
 
 ;;
 ;; Type: CastVote
-;; Header: 0xb865651b
-;; TLB: cast_vote#b865651b owner:address candidateInd:uint64 numOfVotes:uint64 = CastVote
+;; Header: 0x4d87f18b
+;; TLB: cast_vote#4d87f18b owner:address candidateInd:uint8 numOfVotes:uint8 = CastVote
 ;;
 
 builder $CastVote$_store(builder build_0, (slice, int, int) v) inline {
     var (v'owner, v'candidateInd, v'numOfVotes) = v;
-    build_0 = store_uint(build_0, 3093652763, 32);
+    build_0 = store_uint(build_0, 1300754827, 32);
     build_0 = __tact_store_address(build_0, v'owner);
-    build_0 = build_0.store_uint(v'candidateInd, 64);
-    build_0 = build_0.store_uint(v'numOfVotes, 64);
+    build_0 = build_0.store_uint(v'candidateInd, 8);
+    build_0 = build_0.store_uint(v'numOfVotes, 8);
     return build_0;
 }
 
@@ -318,7 +336,7 @@ builder $Voting$_store(builder build_0, (slice, slice, int, (int, cell), (slice,
     var build_1 = begin_cell();
     build_1 = $Metadata$_store(build_1, (v'metadata'name, v'metadata'description, v'metadata'emoji, v'metadata'website));
     build_1 = build_1.store_uint(v'voteFee, 64);
-    build_1 = build_1.store_uint(v'votesPerCandidate, 64);
+    build_1 = build_1.store_uint(v'votesPerCandidate, 8);
     build_1 = build_1.store_uint(v'startTime, 64);
     build_1 = build_1.store_uint(v'timeToLive, 64);
     build_0 = store_ref(build_0, build_1.end_cell());
@@ -333,7 +351,7 @@ builder $Voting$_store(builder build_0, (slice, slice, int, (int, cell), (slice,
     slice sc_1 = sc_0~load_ref().begin_parse();
     var v'metadata = sc_1~$Metadata$_load();
     var v'voteFee = sc_1~load_uint(64);
-    var v'votesPerCandidate = sc_1~load_uint(64);
+    var v'votesPerCandidate = sc_1~load_uint(8);
     var v'startTime = sc_1~load_uint(64);
     var v'timeToLive = sc_1~load_uint(64);
     return (sc_0, (v'owner, v'organization, v'votingId, v'candidates, v'metadata, v'voteFee, v'votesPerCandidate, v'startTime, v'timeToLive));

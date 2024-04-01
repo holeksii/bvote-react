@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: Vote
-BOC Size: 1016 bytes
+BOC Size: 1093 bytes
 
 # Types
-Total Types: 28
+Total Types: 27
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -37,13 +37,9 @@ Signature: `ChangeOwner{queryId:uint64,newOwner:address}`
 TLB: `change_owner_ok#327b2b4a queryId:uint64 newOwner:address = ChangeOwnerOk`
 Signature: `ChangeOwnerOk{queryId:uint64,newOwner:address}`
 
-## DeployOrganization
-TLB: `deploy_organization#bf299a60 hidden:bool = DeployOrganization`
-Signature: `DeployOrganization{hidden:bool}`
-
 ## DeployOrganizationWithMetadata
-TLB: `deploy_organization_with_metadata#78649e51 hidden:bool metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string} = DeployOrganizationWithMetadata`
-Signature: `DeployOrganizationWithMetadata{hidden:bool,metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string}}`
+TLB: `deploy_organization_with_metadata#e828871c metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string} = DeployOrganizationWithMetadata`
+Signature: `DeployOrganizationWithMetadata{metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string}}`
 
 ## SetDeployOrgFee
 TLB: `set_deploy_org_fee#094b2273 newFee:uint64 = SetDeployOrgFee`
@@ -54,68 +50,68 @@ TLB: `_ name:^string description:^string emoji:^string website:^string = Metadat
 Signature: `Metadata{name:^string,description:^string,emoji:^string,website:^string}`
 
 ## InitOrganization
-TLB: `init_organization#0ad506c5 owner:address hidden:bool = InitOrganization`
-Signature: `InitOrganization{owner:address,hidden:bool}`
+TLB: `init_organization#94002cae owner:address = InitOrganization`
+Signature: `InitOrganization{owner:address}`
 
 ## InitOrganizationWithMetadata
-TLB: `init_organization_with_metadata#b3e24164 owner:address hidden:bool metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string} = InitOrganizationWithMetadata`
-Signature: `InitOrganizationWithMetadata{owner:address,hidden:bool,metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string}}`
+TLB: `init_organization_with_metadata#caedd2bf owner:address metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string} = InitOrganizationWithMetadata`
+Signature: `InitOrganizationWithMetadata{owner:address,metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string}}`
 
 ## DeployVoting
-TLB: `deploy_voting#e4796b0c candidates:CandidateArray{size:uint64,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint64 startTime:uint64 timeToLive:uint64 = DeployVoting`
-Signature: `DeployVoting{candidates:CandidateArray{size:uint64,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>},voteFee:uint64,votesPerCandidate:uint64,startTime:uint64,timeToLive:uint64}`
+TLB: `deploy_voting#8c30e194 candidates:CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint8 startTime:uint64 timeToLive:uint64 = DeployVoting`
+Signature: `DeployVoting{candidates:CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>},voteFee:uint64,votesPerCandidate:uint8,startTime:uint64,timeToLive:uint64}`
 
 ## DeployVotingWithMetadata
-TLB: `deploy_voting_with_metadata#bbb5a2fb candidates:CandidateArray{size:uint64,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint64 startTime:uint64 timeToLive:uint64 metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string} = DeployVotingWithMetadata`
-Signature: `DeployVotingWithMetadata{candidates:CandidateArray{size:uint64,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>},voteFee:uint64,votesPerCandidate:uint64,startTime:uint64,timeToLive:uint64,metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string}}`
+TLB: `deploy_voting_with_metadata#c1f3cbaf candidates:CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint8 startTime:uint64 timeToLive:uint64 metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string} = DeployVotingWithMetadata`
+Signature: `DeployVotingWithMetadata{candidates:CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>},voteFee:uint64,votesPerCandidate:uint8,startTime:uint64,timeToLive:uint64,metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string}}`
 
 ## SetDeployVotingFee
 TLB: `set_deploy_voting_fee#e91f83f1 newFee:uint64 = SetDeployVotingFee`
 Signature: `SetDeployVotingFee{newFee:uint64}`
 
 ## OrganizationBasicInfo
-TLB: `_ hidden:bool emoji:^string name:^string website:^string = OrganizationBasicInfo`
-Signature: `OrganizationBasicInfo{hidden:bool,emoji:^string,name:^string,website:^string}`
+TLB: `_ emoji:^string name:^string website:^string = OrganizationBasicInfo`
+Signature: `OrganizationBasicInfo{emoji:^string,name:^string,website:^string}`
 
 ## OrganizationAllInfo
-TLB: `_ owner:address hidden:bool emoji:^string name:^string description:^string website:^string numOfVotings:uint64 = OrganizationAllInfo`
-Signature: `OrganizationAllInfo{owner:address,hidden:bool,emoji:^string,name:^string,description:^string,website:^string,numOfVotings:uint64}`
+TLB: `_ owner:address emoji:^string name:^string description:^string website:^string numOfVotings:uint64 = OrganizationAllInfo`
+Signature: `OrganizationAllInfo{owner:address,emoji:^string,name:^string,description:^string,website:^string,numOfVotings:uint64}`
 
 ## Candidate
 TLB: `_ name:^string info:^string votes:uint64 = Candidate`
 Signature: `Candidate{name:^string,info:^string,votes:uint64}`
 
 ## CandidateArray
-TLB: `_ size:uint64 candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}> = CandidateArray`
-Signature: `CandidateArray{size:uint64,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>}`
-
-## VoteArray
-TLB: `_ size:uint64 votesMap:dict<uint64, uint64> = VoteArray`
-Signature: `VoteArray{size:uint64,votesMap:dict<uint64, uint64>}`
+TLB: `_ size:uint8 candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}> = CandidateArray`
+Signature: `CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>}`
 
 ## InitVoting
-TLB: `init_voting#fd5fae25 owner:address candidates:CandidateArray{size:uint64,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint64 startTime:uint64 timeToLive:uint64 = InitVoting`
-Signature: `InitVoting{owner:address,candidates:CandidateArray{size:uint64,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>},voteFee:uint64,votesPerCandidate:uint64,startTime:uint64,timeToLive:uint64}`
+TLB: `init_voting#fd1fc2bf owner:address candidates:CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint8 startTime:uint64 timeToLive:uint64 = InitVoting`
+Signature: `InitVoting{owner:address,candidates:CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>},voteFee:uint64,votesPerCandidate:uint8,startTime:uint64,timeToLive:uint64}`
 
 ## InitVotingWithMetadata
-TLB: `init_voting_with_metadata#236ce7eb owner:address candidates:CandidateArray{size:uint64,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint64 startTime:uint64 timeToLive:uint64 metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string} = InitVotingWithMetadata`
-Signature: `InitVotingWithMetadata{owner:address,candidates:CandidateArray{size:uint64,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>},voteFee:uint64,votesPerCandidate:uint64,startTime:uint64,timeToLive:uint64,metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string}}`
+TLB: `init_voting_with_metadata#dc1d2ffc owner:address candidates:CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint8 startTime:uint64 timeToLive:uint64 metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string} = InitVotingWithMetadata`
+Signature: `InitVotingWithMetadata{owner:address,candidates:CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>},voteFee:uint64,votesPerCandidate:uint8,startTime:uint64,timeToLive:uint64,metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string}}`
 
 ## DeployAndCastVote
-TLB: `deploy_and_cast_vote#50c8f0be candidateInd:uint64 numOfVotes:uint64 = DeployAndCastVote`
-Signature: `DeployAndCastVote{candidateInd:uint64,numOfVotes:uint64}`
+TLB: `deploy_and_cast_vote#61e07107 candidateInd:uint8 numOfVotes:uint8 = DeployAndCastVote`
+Signature: `DeployAndCastVote{candidateInd:uint8,numOfVotes:uint8}`
+
+## DeployAndCastVoteOk
+TLB: `deploy_and_cast_vote_ok#f60d9235 voter:address candidateInd:uint8 numOfVotes:uint8 = DeployAndCastVoteOk`
+Signature: `DeployAndCastVoteOk{voter:address,candidateInd:uint8,numOfVotes:uint8}`
 
 ## VotingBasicInfo
 TLB: `_ emoji:^string name:^string startTime:uint64 endTime:uint64 = VotingBasicInfo`
 Signature: `VotingBasicInfo{emoji:^string,name:^string,startTime:uint64,endTime:uint64}`
 
 ## VotingAllInfo
-TLB: `_ organization:address emoji:^string name:^string description:^string numOfVotes:uint64 voteFee:uint64 votesPerCandidate:uint64 startTime:uint64 endTime:uint64 = VotingAllInfo`
-Signature: `VotingAllInfo{organization:address,emoji:^string,name:^string,description:^string,numOfVotes:uint64,voteFee:uint64,votesPerCandidate:uint64,startTime:uint64,endTime:uint64}`
+TLB: `_ organization:address owner:address emoji:^string name:^string description:^string numOfVotes:uint64 voteFee:uint64 votesPerCandidate:uint8 startTime:uint64 endTime:uint64 = VotingAllInfo`
+Signature: `VotingAllInfo{organization:address,owner:address,emoji:^string,name:^string,description:^string,numOfVotes:uint64,voteFee:uint64,votesPerCandidate:uint8,startTime:uint64,endTime:uint64}`
 
 ## CastVote
-TLB: `cast_vote#b865651b owner:address candidateInd:uint64 numOfVotes:uint64 = CastVote`
-Signature: `CastVote{owner:address,candidateInd:uint64,numOfVotes:uint64}`
+TLB: `cast_vote#4d87f18b owner:address candidateInd:uint8 numOfVotes:uint8 = CastVote`
+Signature: `CastVote{owner:address,candidateInd:uint8,numOfVotes:uint8}`
 
 # Get Methods
 Total Get Methods: 4

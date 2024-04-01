@@ -5,7 +5,7 @@ message InitVoting {
     owner: Address;
     candidates: CandidateArray;
     voteFee: Int as uint64;
-    votesPerCandidate: Int as uint64;
+    votesPerCandidate: Int as uint8;
     startTime: Int as uint64;
     timeToLive: Int as uint64;
 }
@@ -14,15 +14,21 @@ message InitVotingWithMetadata {
     owner: Address;
     candidates: CandidateArray;
     voteFee: Int as uint64;
-    votesPerCandidate: Int as uint64;
+    votesPerCandidate: Int as uint8;
     startTime: Int as uint64;
     timeToLive: Int as uint64;
     metadata: Metadata;
 }
 
 message DeployAndCastVote {
-    candidateInd: Int as uint64;
-    numOfVotes: Int as uint64;
+    candidateInd: Int as uint8;
+    numOfVotes: Int as uint8;
+}
+
+message DeployAndCastVoteOk {
+    voter: Address;
+    candidateInd: Int as uint8;
+    numOfVotes: Int as uint8;
 }
 
 struct VotingBasicInfo {
@@ -34,12 +40,13 @@ struct VotingBasicInfo {
 
 struct VotingAllInfo {
     organization: Address;
+    owner: Address;
     emoji: String;
     name: String;
     description: String;
     numOfVotes: Int as uint64;
     voteFee: Int as uint64;
-    votesPerCandidate: Int as uint64;
+    votesPerCandidate: Int as uint8;
     startTime: Int as uint64;
     endTime: Int as uint64;
 }

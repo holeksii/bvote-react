@@ -56,16 +56,39 @@ cell $DeployOk$_store_cell((int) v) inline {
 }
 
 ;;
+;; Type: DeployAndCastVoteOk
+;; Header: 0xf60d9235
+;; TLB: deploy_and_cast_vote_ok#f60d9235 voter:address candidateInd:uint8 numOfVotes:uint8 = DeployAndCastVoteOk
+;;
+
+builder $DeployAndCastVoteOk$_store(builder build_0, (slice, int, int) v) inline {
+    var (v'voter, v'candidateInd, v'numOfVotes) = v;
+    build_0 = store_uint(build_0, 4128084533, 32);
+    build_0 = __tact_store_address(build_0, v'voter);
+    build_0 = build_0.store_uint(v'candidateInd, 8);
+    build_0 = build_0.store_uint(v'numOfVotes, 8);
+    return build_0;
+}
+
+cell $DeployAndCastVoteOk$_store_cell((slice, int, int) v) inline {
+    return $DeployAndCastVoteOk$_store(begin_cell(), v).end_cell();
+}
+
+((slice, int, int)) $DeployAndCastVoteOk$_constructor_voter_candidateInd_numOfVotes(slice voter, int candidateInd, int numOfVotes) inline {
+    return (voter, candidateInd, numOfVotes);
+}
+
+;;
 ;; Type: CastVote
-;; Header: 0xb865651b
-;; TLB: cast_vote#b865651b owner:address candidateInd:uint64 numOfVotes:uint64 = CastVote
+;; Header: 0x4d87f18b
+;; TLB: cast_vote#4d87f18b owner:address candidateInd:uint8 numOfVotes:uint8 = CastVote
 ;;
 
 (slice, ((slice, int, int))) $CastVote$_load(slice sc_0) inline {
-    throw_unless(129, sc_0~load_uint(32) == 3093652763);
+    throw_unless(129, sc_0~load_uint(32) == 1300754827);
     var v'owner = sc_0~__tact_load_address();
-    var v'candidateInd = sc_0~load_uint(64);
-    var v'numOfVotes = sc_0~load_uint(64);
+    var v'candidateInd = sc_0~load_uint(8);
+    var v'numOfVotes = sc_0~load_uint(8);
     return (sc_0, (v'owner, v'candidateInd, v'numOfVotes));
 }
 
@@ -77,16 +100,16 @@ builder $Vote$_store(builder build_0, (slice, slice, int, int) v) inline {
     var (v'owner, v'voting, v'candidateInd, v'numOfVotes) = v;
     build_0 = __tact_store_address(build_0, v'owner);
     build_0 = __tact_store_address(build_0, v'voting);
-    build_0 = build_0.store_uint(v'candidateInd, 64);
-    build_0 = build_0.store_uint(v'numOfVotes, 64);
+    build_0 = build_0.store_uint(v'candidateInd, 8);
+    build_0 = build_0.store_uint(v'numOfVotes, 8);
     return build_0;
 }
 
 (slice, ((slice, slice, int, int))) $Vote$_load(slice sc_0) inline {
     var v'owner = sc_0~__tact_load_address();
     var v'voting = sc_0~__tact_load_address();
-    var v'candidateInd = sc_0~load_uint(64);
-    var v'numOfVotes = sc_0~load_uint(64);
+    var v'candidateInd = sc_0~load_uint(8);
+    var v'numOfVotes = sc_0~load_uint(8);
     return (sc_0, (v'owner, v'voting, v'candidateInd, v'numOfVotes));
 }
 

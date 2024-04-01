@@ -6,9 +6,10 @@ import "./voting.tact";
 
 contract Organization with Deployable, Ownable {
 
+    const MIN_TON_TO_LIVE: Int = ton("0.1");
+
     repository: Address;
     organizationId: Int as uint64;
-    hidden: Bool;
     metadata: Metadata;
 
     owner: Address;
@@ -21,8 +22,7 @@ contract Organization with Deployable, Ownable {
 
         self.repository = repository;
         self.organizationId = organizationId;
-        self.hidden = true;
-        
+
         self.owner = newAddress(0, 0x0);
         self.numOfVotings = 0;
         self.deployVotingFee = ton("0");
@@ -40,19 +40,33 @@ contract Organization with Deployable, Ownable {
 
     receive(msg: InitOrganization) {
         self.owner = msg.owner;
-        self.hidden = msg.hidden;
         self.lastChanged = now();
+
+        send(SendParameters{
+            to: self.repository,
+            value: context().value - self.MIN_TON_TO_LIVE,
+            bounce: false,
+            mode: 0,
+            body: "deployOrgOk".asComment()
+        });
     }
 
     receive(msg: InitOrganizationWithMetadata) {
         self.owner = msg.owner;
-        self.hidden = msg.hidden;
         self.metadata = msg.metadata;
         self.lastChanged = now();
+
+        send(SendParameters{
+            to: self.repository,
+            value: context().value - self.MIN_TON_TO_LIVE,
+            bounce: false,
+            mode: 0,
+            body: "deployOrgOk".asComment()
+        });
     }
 
     receive(msg: DeployVoting) {
-        require(context().value >= self.deployVotingFee, "Not enough value to deploy voting");
+        require(context().value >= self.deployVotingFee + self.MIN_TON_TO_LIVE, "Not enough value to deploy voting");
 
         let stime: Int = msg.startTime;
         if (stime == 0) {
@@ -69,18 +83,22 @@ contract Organization with Deployable, Ownable {
             value: 0, 
             bounce: false,
             mode: SendRemainingValue,
-            body: InitVoting{owner: sender(), candidates: msg.candidates, voteFee: msg.voteFee, votesPerCandidate: msg.votesPerCandidate,
-                startTime: stime, timeToLive: msg.timeToLive}.toCell(),
+            body: InitVoting{
+                owner: sender(),
+                candidates: msg.candidates,
+                voteFee: msg.voteFee,
+                votesPerCandidate:
+                msg.votesPerCandidate,
+                startTime: stime,
+                timeToLive: msg.timeToLive
+            }.toCell(),
             code: init.code,
             data: init.data
         });
-
-        self.numOfVotings += 1;
-        self.lastChanged = now();
     }
 
     receive(msg: DeployVotingWithMetadata) {
-        require(context().value >= self.deployVotingFee, "Not enough value to deploy voting");
+        require(context().value >= self.deployVotingFee + self.MIN_TON_TO_LIVE, "Not enough value to deploy voting");
 
         let init: StateInit = initOf Voting(myAddress(), self.numOfVotings);
         let voting: Address = contractAddress(init);
@@ -90,12 +108,21 @@ contract Organization with Deployable, Ownable {
             value: 0, 
             bounce: false,
             mode: SendRemainingValue,
-            body: InitVotingWithMetadata{owner: sender(), candidates: msg.candidates, voteFee: msg.voteFee, votesPerCandidate: msg.votesPerCandidate,
-                startTime: msg.startTime, timeToLive: msg.timeToLive, metadata: msg.metadata}.toCell(),
+            body: InitVotingWithMetadata{
+                owner: sender(),
+                candidates: msg.candidates,
+                voteFee: msg.voteFee,
+                votesPerCandidate: msg.votesPerCandidate,
+                startTime: msg.startTime,
+                timeToLive: msg.timeToLive,
+                metadata: msg.metadata
+            }.toCell(),
             code: init.code,
             data: init.data
         });
+    }
 
+    receive("deployVotingOk") {
         self.numOfVotings += 1;
         self.lastChanged = now();
     }
@@ -105,9 +132,24 @@ contract Organization with Deployable, Ownable {
         self.deployVotingFee = msg.newFee;
     }
 
-    receive("withdraw all"){
+    receive("withdrawAll"){
         self.requireOwner();
-        send(SendParameters{to: sender(), bounce: true, value: 0, mode: (SendRemainingBalance + SendIgnoreErrors)});
+        send(SendParameters{
+            to: sender(),
+            bounce: true,
+            value: 0,
+            mode: (SendRemainingBalance + SendIgnoreErrors)
+        });
+    }
+
+    receive("withdrawSafe"){
+        self.requireOwner();
+        send(SendParameters{
+            to: sender(),
+            bounce: true,
+            value: myBalance() - self.MIN_TON_TO_LIVE,
+            mode: 0
+        });
     }
 
     get fun numOfVotings(): Int {
@@ -118,12 +160,12 @@ contract Organization with Deployable, Ownable {
         return self.deployVotingFee;
     }
 
-    get fun lastChanged(): Int {
-        return self.lastChanged;
+    get fun deployVotingFeePlusTonToLive(): Int {
+        return self.deployVotingFee + self.MIN_TON_TO_LIVE;
     }
 
-    get fun hidden(): Bool {
-        return self.hidden;
+    get fun lastChanged(): Int {
+        return self.lastChanged;
     }
 
     get fun metadata(): Metadata {
@@ -143,9 +185,13 @@ contract Organization with Deployable, Ownable {
         return contractAddress(init);
     }
 
+    get fun lastVotingAddress(votingId: Int): Address {
+        let init: StateInit = initOf Voting(myAddress(), self.numOfVotings - 1);
+        return contractAddress(init);
+    }
+
     get fun basicInfo(): OrganizationBasicInfo {
         return OrganizationBasicInfo{
-            hidden: self.hidden,
             emoji: self.metadata.emoji,
             name: self.metadata.name,
             website: self.metadata.website
@@ -155,7 +201,6 @@ contract Organization with Deployable, Ownable {
     get fun allInfo(): OrganizationAllInfo {
         return OrganizationAllInfo{
             owner: self.owner,
-            hidden: self.hidden,
             emoji: self.metadata.emoji,
             name: self.metadata.name,
             description: self.metadata.description,

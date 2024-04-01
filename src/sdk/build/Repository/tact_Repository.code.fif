@@ -15,7 +15,6 @@ PROGRAM{
   DECLPROC $Deploy$_load
   DECLPROC $DeployOk$_store
   DECLPROC $DeployOk$_store_cell
-  DECLPROC $DeployOrganization$_load
   DECLPROC $Metadata$_store
   DECLPROC $Metadata$_load
   DECLPROC $DeployOrganizationWithMetadata$_load
@@ -39,25 +38,31 @@ PROGRAM{
   DECLPROC $SendParameters$_constructor_bounce_to_value_mode_body_code_data
   DECLPROC $Repository$_fun_numOfOrganizations
   DECLPROC $Repository$_fun_deployOrganizationFee
+  DECLPROC $Repository$_fun_deployOrganizationFeePlusTonToLive
   DECLPROC $Repository$_fun_organizationAddress
+  DECLPROC $Repository$_fun_lastOrganizationAddress
   DECLPROC $Repository$_fun_forward
   DECLPROC $Repository$_fun_notify
   DECLPROC $Repository$_fun_requireOwner
   DECLPROC $Repository$_fun_owner
   DECLPROC $SendParameters$_constructor_to_value_bounce_mode_body_code_data
-  DECLPROC $InitOrganization$_constructor_owner_hidden
-  DECLPROC $InitOrganizationWithMetadata$_constructor_owner_hidden_metadata
+  DECLPROC $InitOrganization$_constructor_owner
+  DECLPROC $InitOrganizationWithMetadata$_constructor_owner_metadata
   DECLPROC $SendParameters$_constructor_to_bounce_value_mode
   DECLPROC $DeployOk$_constructor_queryId
   DECLPROC %$Repository$_internal_empty
-  DECLPROC $Repository$_internal_binary_DeployOrganization
+  DECLPROC $Repository$_internal_text_fe2cf23bb4e8249abdf090dc9df964775424d2e29a79c604ca0e6115a3108828
   DECLPROC $Repository$_internal_binary_DeployOrganizationWithMetadata
+  DECLPROC $Repository$_internal_text_7d95426215e563687f9588ebe2454a30b25f3b8658968ff457bcf7d66132cca9
   DECLPROC $Repository$_internal_binary_SetDeployOrgFee
-  DECLPROC $Repository$_internal_text_5092b5dce0715a57dd969f5fb5a6f93025a0b02eab329470ca2b365ca0d7e93a
+  DECLPROC $Repository$_internal_text_63365f83ad1d185f336d0e64cfce19190f3623d6d976c30c6198ac209c8946ee
+  DECLPROC $Repository$_internal_text_fa1a01be1e29ad0a9589a04fde70c8555eb62353556db90be422f1a9c5d7959d
   DECLPROC $Repository$_internal_binary_Deploy
   125543 DECLMETHOD %numOfOrganizations
   104328 DECLMETHOD %deployOrganizationFee
+  104615 DECLMETHOD %deployOrganizationFeePlusTonToLive
   128109 DECLMETHOD %organizationAddress
+  88981 DECLMETHOD %lastOrganizationAddress
   83229 DECLMETHOD %owner
   113617 DECLMETHOD supported_interfaces
   121275 DECLMETHOD get_abi_ipfs
@@ -182,15 +187,6 @@ PROGRAM{
     $DeployOk$_store INLINECALLDICT
     ENDC
   }>
-  $DeployOrganization$_load PROCINLINE:<{
-    32 LDU
-    SWAP
-    3207174752 PUSHINT
-    EQUAL
-    129 THROWIFNOT
-    1 LDI
-    SWAP
-  }>
   $Metadata$_store PROCINLINE:<{
     NEWC
     s0 s4 XCHG2
@@ -246,12 +242,10 @@ PROGRAM{
   $DeployOrganizationWithMetadata$_load PROCINLINE:<{
     32 LDU
     SWAP
-    2019860049 PUSHINT
+    3894970140 PUSHINT
     EQUAL
     129 THROWIFNOT
-    1 LDI
     $Metadata$_load INLINECALLDICT
-    s4 s5 XCHG
   }>
   $SetDeployOrgFee$_load PROCINLINE:<{
     32 LDU
@@ -263,33 +257,30 @@ PROGRAM{
     SWAP
   }>
   $InitOrganization$_store PROCINLINE:<{
-    181733061 PUSHINT
-    s0 s3 XCHG2
+    2483039406 PUSHINT
+    ROT
     32 STU
     SWAP
     __tact_store_address INLINECALLDICT
-    1 STI
   }>
   $InitOrganization$_store_cell PROCINLINE:<{
     NEWC
-    -ROT
+    SWAP
     $InitOrganization$_store INLINECALLDICT
     ENDC
   }>
   $InitOrganizationWithMetadata$_store PROCINLINE:<{
-    3017949540 PUSHINT
-    s0 s7 XCHG2
+    3404583615 PUSHINT
+    s0 s6 XCHG2
     32 STU
-    s0 s5 XCHG2
+    s0 s4 XCHG2
     __tact_store_address INLINECALLDICT
-    s1 s3 XCHG
-    1 STI
-    s3 s4 XCHG2
+    s1 s3 s4 XCHG3
     $Metadata$_store INLINECALLDICT
   }>
   $InitOrganizationWithMetadata$_store_cell PROCINLINE:<{
     NEWC
-    6 -ROLL
+    5 -ROLL
     $InitOrganizationWithMetadata$_store INLINECALLDICT
     ENDC
   }>
@@ -332,8 +323,9 @@ PROGRAM{
   }>
   $Repository$_contract_init PROCREF:<{
     __tact_context_get_sender INLINECALLDICT
+    SWAP
     0 PUSHINT
-    s2 s0 s0 XC2PU
+    1000000000 PUSHINT
   }>
   $Repository$_contract_load PROCREF:<{
     c4 PUSH
@@ -525,10 +517,23 @@ PROGRAM{
   $Repository$_fun_deployOrganizationFee PROCREF:<{
     DUP
   }>
+  $Repository$_fun_deployOrganizationFeePlusTonToLive PROCREF:<{
+    DUP
+    100000000 PUSHINT
+    ADD
+  }>
   $Repository$_fun_organizationAddress PROCREF:<{
     __tact_context_sys GETGLOB
     MYADDR
     ROT
+    $Organization$_init_child INLINECALLDICT
+    $global_contractAddress INLINECALLDICT
+  }>
+  $Repository$_fun_lastOrganizationAddress PROCREF:<{
+    __tact_context_sys GETGLOB
+    MYADDR
+    s3 PUSH
+    DEC
     $Organization$_init_child INLINECALLDICT
     $global_contractAddress INLINECALLDICT
   }>
@@ -574,9 +579,9 @@ PROGRAM{
     s4 s6 XCHG
     s4 s5 XCHG
   }>
-  $InitOrganization$_constructor_owner_hidden PROCINLINE:<{
+  $InitOrganization$_constructor_owner PROCINLINE:<{
   }>
-  $InitOrganizationWithMetadata$_constructor_owner_hidden_metadata PROCINLINE:<{
+  $InitOrganizationWithMetadata$_constructor_owner_metadata PROCINLINE:<{
   }>
   $SendParameters$_constructor_to_bounce_value_mode PROCINLINE:<{
     s2 s3 XCHG
@@ -588,45 +593,43 @@ PROGRAM{
   }>
   %$Repository$_internal_empty PROCINLINE:<{
   }>
-  $Repository$_internal_binary_DeployOrganization PROCINLINE:<{
+  $Repository$_internal_text_fe2cf23bb4e8249abdf090dc9df964775424d2e29a79c604ca0e6115a3108828 PROCINLINE:<{
     27884 PUSHINT
     __tact_context_get INLINECALLDICT
     $Context$_get_value INLINECALLDICT
-    s3 PUSH
+    s2 PUSH
+    100000000 PUSHINT
+    ADD
     GEQ
     THROWANYIFNOT
     __tact_context_sys GETGLOB
     MYADDR
-    s4 PUSH
+    s3 PUSH
     $Organization$_init_child INLINECALLDICT
     2DUP
     $global_contractAddress INLINECALLDICT
     0 PUSHINT
-    FALSE
+    TRUE
     64 PUSHINT
     __tact_context_get_sender INLINECALLDICT
-    s0 s7 XCHG2
-    $InitOrganization$_constructor_owner_hidden INLINECALLDICT
+    $InitOrganization$_constructor_owner INLINECALLDICT
     $InitOrganization$_store_cell INLINECALLDICT
-    s3 s6 XCHG
-    s0 s5 s5 XCHG3
-    s0 s4 XCHG
+    2 5 BLKSWAP
     $SendParameters$_constructor_to_value_bounce_mode_body_code_data INLINECALLDICT
     $global_send INLINECALLDICT
-    SWAP
-    INC
-    SWAP
   }>
   $Repository$_internal_binary_DeployOrganizationWithMetadata PROCINLINE:<{
     27884 PUSHINT
     __tact_context_get INLINECALLDICT
     $Context$_get_value INLINECALLDICT
-    s7 PUSH
+    s6 PUSH
+    100000000 PUSHINT
+    ADD
     GEQ
     THROWANYIFNOT
     __tact_context_sys GETGLOB
     MYADDR
-    s8 PUSH
+    s7 PUSH
     $Organization$_init_child INLINECALLDICT
     2DUP
     $global_contractAddress INLINECALLDICT
@@ -634,15 +637,19 @@ PROGRAM{
     FALSE
     64 PUSHINT
     __tact_context_get_sender INLINECALLDICT
-    s0 s5 XCHG
-    s4 s11 XCHG
+    s0 s4 XCHG
     s3 s10 XCHG
     s9 s8 s7 XCHG3
-    $InitOrganizationWithMetadata$_constructor_owner_hidden_metadata INLINECALLDICT
+    $InitOrganizationWithMetadata$_constructor_owner_metadata INLINECALLDICT
     $InitOrganizationWithMetadata$_store_cell INLINECALLDICT
-    s0 s2 XCHG
+    s3 s6 XCHG
+    s3 s5 XCHG
+    s3 s4 XCHG
+    -ROT
     $SendParameters$_constructor_to_value_bounce_mode_body_code_data INLINECALLDICT
     $global_send INLINECALLDICT
+  }>
+  $Repository$_internal_text_7d95426215e563687f9588ebe2454a30b25f3b8658968ff457bcf7d66132cca9 PROCINLINE:<{
     SWAP
     INC
     SWAP
@@ -653,12 +660,23 @@ PROGRAM{
     DROP
     3 ROLL
   }>
-  $Repository$_internal_text_5092b5dce0715a57dd969f5fb5a6f93025a0b02eab329470ca2b365ca0d7e93a PROCINLINE:<{
+  $Repository$_internal_text_63365f83ad1d185f336d0e64cfce19190f3623d6d976c30c6198ac209c8946ee PROCINLINE:<{
     $Repository$_fun_requireOwner INLINECALLDICT
     __tact_context_get_sender INLINECALLDICT
     TRUE
     0 PUSHINT
     130 PUSHINT
+    $SendParameters$_constructor_to_bounce_value_mode INLINECALLDICT
+    $global_send INLINECALLDICT
+  }>
+  $Repository$_internal_text_fa1a01be1e29ad0a9589a04fde70c8555eb62353556db90be422f1a9c5d7959d PROCINLINE:<{
+    $Repository$_fun_requireOwner INLINECALLDICT
+    __tact_context_get_sender INLINECALLDICT
+    TRUE
+    __tact_my_balance INLINECALLDICT
+    100000000 PUSHINT
+    SUB
+    0 PUSHINT
     $SendParameters$_constructor_to_bounce_value_mode INLINECALLDICT
     $global_send INLINECALLDICT
   }>
@@ -677,10 +695,20 @@ PROGRAM{
     $Repository$_fun_deployOrganizationFee INLINECALLDICT
     4 1 BLKDROP2
   }>
+  %deployOrganizationFeePlusTonToLive PROC:<{
+    $Repository$_contract_load INLINECALLDICT
+    $Repository$_fun_deployOrganizationFeePlusTonToLive INLINECALLDICT
+    4 1 BLKDROP2
+  }>
   %organizationAddress PROC:<{
     $Repository$_contract_load INLINECALLDICT
     4 ROLL
     $Repository$_fun_organizationAddress INLINECALLDICT
+    4 1 BLKDROP2
+  }>
+  %lastOrganizationAddress PROC:<{
+    $Repository$_contract_load INLINECALLDICT
+    $Repository$_fun_lastOrganizationAddress INLINECALLDICT
     4 1 BLKDROP2
   }>
   %owner PROC:<{
@@ -696,7 +724,7 @@ PROGRAM{
     86142586315491086060343270784266291122 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d503946727445696b6e6833566958356231726d656b4547744b4559427554764d675a5038636d53733569314e} PUSHSLICE
+    x{697066733a2f2f516d5663355570316f684665326e466e51364e506e654d6e67653641447673416b577555336d4272616931544b39} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -733,22 +761,12 @@ PROGRAM{
       TRUE
     }>
     DUP
-    3207174752 PUSHINT
-    EQUAL
-    IFJMP:<{
-      DROP
-      $DeployOrganization$_load INLINECALLDICT
-      NIP
-      $Repository$_internal_binary_DeployOrganization INLINECALLDICT
-      TRUE
-    }>
-    DUP
-    2019860049 PUSHINT
+    3894970140 PUSHINT
     EQUAL
     IFJMP:<{
       DROP
       $DeployOrganizationWithMetadata$_load INLINECALLDICT
-      1 5 BLKDROP2
+      1 4 BLKDROP2
       $Repository$_internal_binary_DeployOrganizationWithMetadata INLINECALLDICT
       TRUE
     }>
@@ -775,10 +793,37 @@ PROGRAM{
     0 EQINT
     IF:<{
       HASHSU
-      36444242729032575060637673953708123039509959040849370188450484212211184560442 PUSHINT
+      DUP
+      114966876643304398821415801151801801707338978120023538707572097338349647333416 PUSHINT
       EQUAL
       IFJMP:<{
-        $Repository$_internal_text_5092b5dce0715a57dd969f5fb5a6f93025a0b02eab329470ca2b365ca0d7e93a INLINECALLDICT
+        DROP
+        $Repository$_internal_text_fe2cf23bb4e8249abdf090dc9df964775424d2e29a79c604ca0e6115a3108828 INLINECALLDICT
+        TRUE
+        RETALT
+      }>
+      DUP
+      56802824445199862373505757541609671801329681963999630700680735862745619156137 PUSHINT
+      EQUAL
+      IFJMP:<{
+        DROP
+        $Repository$_internal_text_7d95426215e563687f9588ebe2454a30b25f3b8658968ff457bcf7d66132cca9 INLINECALLDICT
+        TRUE
+        RETALT
+      }>
+      DUP
+      44875040967128359233849870319678368402034961253064673980724220848427263149806 PUSHINT
+      EQUAL
+      IFJMP:<{
+        DROP
+        $Repository$_internal_text_63365f83ad1d185f336d0e64cfce19190f3623d6d976c30c6198ac209c8946ee INLINECALLDICT
+        TRUE
+        RETALT
+      }>
+      113124162196813561873574137668437484088250020799762236312505125312699618006429 PUSHINT
+      EQUAL
+      IFJMP:<{
+        $Repository$_internal_text_fa1a01be1e29ad0a9589a04fde70c8555eb62353556db90be422f1a9c5d7959d INLINECALLDICT
         TRUE
         RETALT
       }>
