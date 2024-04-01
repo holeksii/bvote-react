@@ -6,10 +6,6 @@ import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 export default defineConfig({
   plugins: [react(), nodePolyfills()],
-
-  build: {
-    outDir: "dist",
-  },
   // @ts-ignore
   base: process.env.GH_PAGES ? "/bvote-react/" : "./",
   server: {
