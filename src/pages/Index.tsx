@@ -5,7 +5,6 @@ import { useTonClient } from "../hooks/useTonClient";
 import { Organization } from "../sdk/wrappers/Organization";
 import {
   Repository,
-  storeDeploy,
   storeDeployOrganizationWithMetadata,
 } from "../sdk/wrappers/Repository";
 import { Address, Sender, beginCell, toNano } from "@ton/core";

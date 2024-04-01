@@ -26,34 +26,6 @@ import { NewCandidateArray } from "../sdk/wrappers/Arrays";
 
 const pageSize = 4;
 
-/*
-    candidates: CandidateArray;
-    voteFee: bigint;
-    votesPerCandidate: bigint;
-    startTime: bigint;
-    timeToLive: bigint;
-    metadata: Metadata;
-
-    CandidateArray: {
-          size: bigint;
-    candidates: Dictionary<bigint, Candidate>;
-    }
-    Candidate: {
-          name: string;
-    info: string;
-    votes: bigint;
-    }
-
-    export type Metadata = {
-    $$type: 'Metadata';
-    name: string;
-    description: string;
-    emoji: string;
-    website: string;
-}
-
-*/
-
 const newVotingFields = [
   {
     name: "name",

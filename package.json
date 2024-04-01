@@ -4,9 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "prettier": {},
+  "homepage": "https://holeksii.github.io/vote-react",
   "scripts": {
     "dev": "vite --host",
-    "build": "tsc && GH_PAGES=true vite build",
+    "build": "react-scripts build",
     "build:dev": "tsc && vite build",
     "preview": "vite preview",
     "predeploy": "npm run build",
