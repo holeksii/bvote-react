@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [react(), nodePolyfills()],
 
   build: {
-    outDir: "docs",
+    outDir: "dist",
   },
   // @ts-ignore
   base: process.env.GH_PAGES ? "/bvote-react/" : "./",
