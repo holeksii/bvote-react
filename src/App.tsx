@@ -13,7 +13,7 @@ import ErrorPage from "./pages/Error";
 function App() {
   return (
     <TonConnectUIProvider
-      manifestUrl="https://raw.githubusercontent.com/ton-community/tutorials/main/03-client/test/public/tonconnect-manifest.json"
+      manifestUrl="https://raw.githubusercontent.com/holeksii/bvote-react/master/public/tonconnect-manifest.json"
       uiPreferences={{ theme: THEME.DARK }}
       walletsListConfiguration={{
         includeWallets: [
