@@ -9,6 +9,10 @@
 2. Or download desktop application [Tonkeeper](https://tonkeeper.com/desktop)
 3. Follow instructions in Tonkeeper to create a wallet \
 NOTE! Save the recovery phrase
+4. Swith wallet to a testnet \
+Go to the Tonkeeper settings \
+Click few times on the tonkeeper logo, the menu will open and swith to the testnet \
+![missing instructions](assets\testnet-switch.png)
 4. Get some TON on wallet \
 Use [Telegram bot](https://t.me/testgiver_ton_bot) to get 5 TON \
 ![missing instructions](assets\tgbot-instructions.png)
@@ -23,4 +27,4 @@ Use [Telegram bot](https://t.me/testgiver_ton_bot) to get 5 TON \
     ![missing instructions](assets\tonkeeper-firefox-allowance.png)  
 3. Open voting
 4. Click at the candidate and confirm transaction in a wallet. \
-![missing instructions](assets\candidate.png)
+![missing instructions](https://github.com/holeksii/bvote-react/blob/master/assets/candidate.png)
