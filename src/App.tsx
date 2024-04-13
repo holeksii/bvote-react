@@ -3,7 +3,7 @@ import "./index.css";
 import { THEME, TonConnectUIProvider } from "@tonconnect/ui-react";
 import { Header } from "./components/Header/Header";
 import { Footer } from "./components/Footer/Footer";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, HashRouter } from "react-router-dom";
 import NoPage from "./pages/NoPage";
 import Voting from "./pages/Voting";
 import Index from "./pages/Index";
@@ -42,7 +42,7 @@ function App() {
       }}
     >
       <div className="app bg-slate-950 text-gray-200">
-        <BrowserRouter basename="/bvote-react">
+        <HashRouter basename="/bvote-react">
           <Header />
           <div className="content container">
             <Routes>
@@ -54,7 +54,7 @@ function App() {
             </Routes>
           </div>
           <Footer />
-        </BrowserRouter>
+        </HashRouter>
       </div>
     </TonConnectUIProvider>
   );
