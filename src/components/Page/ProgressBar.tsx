@@ -2,6 +2,7 @@ interface SlotComponentProps {
   name: string;
   progress: number;
   className?: string;
+  count?: string;
   onClick?: () => void;
 }
 
@@ -9,6 +10,7 @@ const SlotComponent = ({
   name,
   progress,
   className = "",
+  count="2",
   onClick,
 }: SlotComponentProps) => {
   return (
@@ -26,7 +28,10 @@ const SlotComponent = ({
           }}
         ></div>
         <div className="w-full flex-shrink-0 bg-slate-700"></div>
+  
       </div>
+      <div className="text-sm text-right">{count}</div>
+
     </div>
   );
 };

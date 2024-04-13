@@ -135,6 +135,18 @@ builder $CandidateArray$_store(builder build_0, (int, cell) v) inline {
 }
 
 ;;
+;; Type: TransferOwnership
+;; Header: 0x70373fea
+;; TLB: transfer_ownership#70373fea newOwner:address = TransferOwnership
+;;
+
+(slice, ((slice))) $TransferOwnership$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 1882669034);
+    var v'newOwner = sc_0~__tact_load_address();
+    return (sc_0, (v'newOwner));
+}
+
+;;
 ;; Type: Candidate
 ;; TLB: _ name:^string info:^string votes:uint64 = Candidate
 ;;

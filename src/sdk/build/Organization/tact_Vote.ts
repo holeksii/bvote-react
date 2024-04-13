@@ -504,6 +504,66 @@ function dictValueParserInitOrganizationWithMetadata(): DictionaryValue<InitOrga
     }
 }
 
+export type UpdateOrganizationInfo = {
+    $$type: 'UpdateOrganizationInfo';
+    emoji: string;
+    name: string;
+    description: string;
+    website: string;
+}
+
+export function storeUpdateOrganizationInfo(src: UpdateOrganizationInfo) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(2221509127, 32);
+        b_0.storeStringRefTail(src.emoji);
+        b_0.storeStringRefTail(src.name);
+        b_0.storeStringRefTail(src.description);
+        let b_1 = new Builder();
+        b_1.storeStringRefTail(src.website);
+        b_0.storeRef(b_1.endCell());
+    };
+}
+
+export function loadUpdateOrganizationInfo(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 2221509127) { throw Error('Invalid prefix'); }
+    let _emoji = sc_0.loadStringRefTail();
+    let _name = sc_0.loadStringRefTail();
+    let _description = sc_0.loadStringRefTail();
+    let sc_1 = sc_0.loadRef().beginParse();
+    let _website = sc_1.loadStringRefTail();
+    return { $$type: 'UpdateOrganizationInfo' as const, emoji: _emoji, name: _name, description: _description, website: _website };
+}
+
+function loadTupleUpdateOrganizationInfo(source: TupleReader) {
+    let _emoji = source.readString();
+    let _name = source.readString();
+    let _description = source.readString();
+    let _website = source.readString();
+    return { $$type: 'UpdateOrganizationInfo' as const, emoji: _emoji, name: _name, description: _description, website: _website };
+}
+
+function storeTupleUpdateOrganizationInfo(source: UpdateOrganizationInfo) {
+    let builder = new TupleBuilder();
+    builder.writeString(source.emoji);
+    builder.writeString(source.name);
+    builder.writeString(source.description);
+    builder.writeString(source.website);
+    return builder.build();
+}
+
+function dictValueParserUpdateOrganizationInfo(): DictionaryValue<UpdateOrganizationInfo> {
+    return {
+        serialize: (src, buidler) => {
+            buidler.storeRef(beginCell().store(storeUpdateOrganizationInfo(src)).endCell());
+        },
+        parse: (src) => {
+            return loadUpdateOrganizationInfo(src.loadRef().beginParse());
+        }
+    }
+}
+
 export type DeployVoting = {
     $$type: 'DeployVoting';
     candidates: CandidateArray;
@@ -850,6 +910,90 @@ function dictValueParserMetadata(): DictionaryValue<Metadata> {
         },
         parse: (src) => {
             return loadMetadata(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type Withdraw = {
+    $$type: 'Withdraw';
+    amount: bigint;
+}
+
+export function storeWithdraw(src: Withdraw) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(195467089, 32);
+        b_0.storeCoins(src.amount);
+    };
+}
+
+export function loadWithdraw(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 195467089) { throw Error('Invalid prefix'); }
+    let _amount = sc_0.loadCoins();
+    return { $$type: 'Withdraw' as const, amount: _amount };
+}
+
+function loadTupleWithdraw(source: TupleReader) {
+    let _amount = source.readBigNumber();
+    return { $$type: 'Withdraw' as const, amount: _amount };
+}
+
+function storeTupleWithdraw(source: Withdraw) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.amount);
+    return builder.build();
+}
+
+function dictValueParserWithdraw(): DictionaryValue<Withdraw> {
+    return {
+        serialize: (src, buidler) => {
+            buidler.storeRef(beginCell().store(storeWithdraw(src)).endCell());
+        },
+        parse: (src) => {
+            return loadWithdraw(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type TransferOwnership = {
+    $$type: 'TransferOwnership';
+    newOwner: Address;
+}
+
+export function storeTransferOwnership(src: TransferOwnership) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(1882669034, 32);
+        b_0.storeAddress(src.newOwner);
+    };
+}
+
+export function loadTransferOwnership(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 1882669034) { throw Error('Invalid prefix'); }
+    let _newOwner = sc_0.loadAddress();
+    return { $$type: 'TransferOwnership' as const, newOwner: _newOwner };
+}
+
+function loadTupleTransferOwnership(source: TupleReader) {
+    let _newOwner = source.readAddress();
+    return { $$type: 'TransferOwnership' as const, newOwner: _newOwner };
+}
+
+function storeTupleTransferOwnership(source: TransferOwnership) {
+    let builder = new TupleBuilder();
+    builder.writeAddress(source.newOwner);
+    return builder.build();
+}
+
+function dictValueParserTransferOwnership(): DictionaryValue<TransferOwnership> {
+    return {
+        serialize: (src, buidler) => {
+            buidler.storeRef(beginCell().store(storeTransferOwnership(src)).endCell());
+        },
+        parse: (src) => {
+            return loadTransferOwnership(src.loadRef().beginParse());
         }
     }
 }
@@ -1397,8 +1541,8 @@ function initVote_init_args(src: Vote_init_args) {
 }
 
 async function Vote_init(voting: Address, owner: Address) {
-    const __code = Cell.fromBase64('te6ccgECHgEABDkAART/APSkE/S88sgLAQIBYgIDA3rQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxVE9s88uCCGgQFAgEgCwwCvAGSMH/gcCHXScIflTAg1wsf3iCCEE2H8Yu6jrYw0x8BghBNh/GLuvLggfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0wfTB1UgbBPgghCUapi2uuMCMHAGBwCkyPhDAcx/AcoAVTBQQyDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFgEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYSywfLB8ntVALYNFNRxwUDwAAjkSCRcOKzjowGcH+AQEMwbW1t2zyRNuKBcMVQBvL0gWZnWPL0VHATUGTIVSCCEPYNkjVQBMsfWCDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFssHywfJFPhCAX9t2zx/CQgBTtMfAYIQlGqYtrry4IHTPwExyAGCEK/5D1dYyx/LP8n4QgFwbds8fwgBOm1tIm6zmVsgbvLQgG8iAZEy4hAkcAMEgEJQI9s8CQHKyHEBygFQBwHKAHABygJQBSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAD+gJwAcpoI26zkX+TJG6z4pczMwFwAcoA4w0hbrOcfwHKAAEgbvLQgAHMlTFwAcoA4skB+wAKAJh/AcoAyHABygBwAcoAJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4iRus51/AcoABCBu8tCAUATMljQDcAHKAOJwAcoAAn8BygACyVjMAgEgDQ4CASAUFQIBSA8QAhG4Ud2zzbPGxBgaEwIRs1C2zzbPGxBgGhECEbLvNs82zxsQYBoSAAIiAAIgAAIjALm7vRgnBc7D1dLK57HoTsOdZKhRtmgnCd1jUtK2R8syLTry398WI5gnAgVcAbgGdjlM5YOq5HJbLDgnCdl05as07LczoOlm2UZuikgnBAznVp5xX50lCwHWFuJkeygCAUgWFwARsK+7UTQ0gABgAgFYGBkAdKm7jQ1aXBmczovL1FtUFd4bzRTVWJpRDF3QUNDY3Jad1pvUldMcmtoajJ5ZUNZaEZuOVpSTDZMSmWACEKhJ2zzbPGxBGhsBwO1E0NQB+GPSAAGOSPpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAHTB9MHVTBsFOD4KNcLCoMJuvLgiRwAAiEBivpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiBIC0QHbPB0AHoIAkvL4QlIwxwXy9AF/cA==');
-    const __system = Cell.fromBase64('te6cckECIAEABEMAAQHAAQEFoDrNAgEU/wD0pBP0vPLICwMCAWIVBAIBIA0FAgEgDAYCAUgLBwIBWAoIAhCoSds82zxsQR0JAAIhAHSpu40NWlwZnM6Ly9RbVBXeG80U1ViaUQxd0FDQ2NyWndab1JXTHJraGoyeWVDWWhGbjlaUkw2TEplgABGwr7tRNDSAAGAAubu9GCcFzsPV0srnsehOw51kqFG2aCcJ3WNS0rZHyzItOvLf3xYjmCcCBVwBuAZ2OUzlg6rkclssOCcJ2XTlqzTstzOg6WbZRm6KSCcEDOdWnnFfnSULAdYW4mR7KAIBIBAOAhG4Ud2zzbPGxBgdDwACIwIBSBMRAhGy7zbPNs8bEGAdEgACIAIRs1C2zzbPGxBgHRQAAiIDetAB0NMDAXGwowH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIVFBTA28E+GEC+GLbPFUT2zzy4IIdFxYApMj4QwHMfwHKAFUwUEMg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYBINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WEssHywfJ7VQCvAGSMH/gcCHXScIflTAg1wsf3iCCEE2H8Yu6jrYw0x8BghBNh/GLuvLggfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0wfTB1UgbBPgghCUapi2uuMCMHAZGAFO0x8BghCUapi2uvLggdM/ATHIAYIQr/kPV1jLH8s/yfhCAXBt2zx/GgLYNFNRxwUDwAAjkSCRcOKzjowGcH+AQEMwbW1t2zyRNuKBcMVQBvL0gWZnWPL0VHATUGTIVSCCEPYNkjVQBMsfWCDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFssHywfJFPhCAX9t2zx/GxoBOm1tIm6zmVsgbvLQgG8iAZEy4hAkcAMEgEJQI9s8GwHKyHEBygFQBwHKAHABygJQBSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAD+gJwAcpoI26zkX+TJG6z4pczMwFwAcoA4w0hbrOcfwHKAAEgbvLQgAHMlTFwAcoA4skB+wAcAJh/AcoAyHABygBwAcoAJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4iRus51/AcoABCBu8tCAUATMljQDcAHKAOJwAcoAAn8BygACyVjMAcDtRNDUAfhj0gABjkj6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0wfTB1UwbBTg+CjXCwqDCbry4IkeAYr6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgSAtEB2zwfAB6CAJLy+EJSMMcF8vQBf3D5h9gA');
+    const __code = Cell.fromBase64('te6ccgECHgEABDkAART/APSkE/S88sgLAQIBYgIDA3rQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxVE9s88uCCGgQFAgEgCwwCvAGSMH/gcCHXScIflTAg1wsf3iCCEE2H8Yu6jrYw0x8BghBNh/GLuvLggfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0wfTB1UgbBPgghCUapi2uuMCMHAGBwCkyPhDAcx/AcoAVTBQQyDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFgEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYSywfLB8ntVALYNFNRxwUDwAAjkSCRcOKzjowGcH+AQEMwbW1t2zyRNuKBcMVQBvL0gWZnWPL0VHATUGTIVSCCEPYNkjVQBMsfWCDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFssHywfJFPhCAX9t2zx/CQgBTtMfAYIQlGqYtrry4IHTPwExyAGCEK/5D1dYyx/LP8n4QgFwbds8fwgBOm1tIm6zmVsgbvLQgG8iAZEy4hAkcAMEgEJQI9s8CQHKyHEBygFQBwHKAHABygJQBSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAD+gJwAcpoI26zkX+TJG6z4pczMwFwAcoA4w0hbrOcfwHKAAEgbvLQgAHMlTFwAcoA4skB+wAKAJh/AcoAyHABygBwAcoAJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4iRus51/AcoABCBu8tCAUATMljQDcAHKAOJwAcoAAn8BygACyVjMAgEgDQ4CASAUFQIBSA8QAhG4Ud2zzbPGxBgaEwIRs1C2zzbPGxBgGhECEbLvNs82zxsQYBoSAAIiAAIgAAIjALm7vRgnBc7D1dLK57HoTsOdZKhRtmgnCd1jUtK2R8syLTry398WI5gnAgVcAbgGdjlM5YOq5HJbLDgnCdl05as07LczoOlm2UZuikgnBAznVp5xX50lCwHWFuJkeygCAUgWFwARsK+7UTQ0gABgAgFYGBkAdKm7jQ1aXBmczovL1FtWXhkbm5QYnVNc1NYZDVOZEtNUVNxeUVweTh4WTRwNWJSTjh1d3pubXV2TDGACEKhJ2zzbPGxBGhsBwO1E0NQB+GPSAAGOSPpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiAHTB9MHVTBsFOD4KNcLCoMJuvLgiRwAAiEBivpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiBIC0QHbPB0AHoIAkvL4QlIwxwXy9AF/cA==');
+    const __system = Cell.fromBase64('te6cckECIAEABEMAAQHAAQEFoDrNAgEU/wD0pBP0vPLICwMCAWIVBAIBIA0FAgEgDAYCAUgLBwIBWAoIAhCoSds82zxsQR0JAAIhAHSpu40NWlwZnM6Ly9RbVl4ZG5uUGJ1TXNTWGQ1TmRLTVFTcXlFcHk4eFk0cDViUk44dXd6bm11dkwxgABGwr7tRNDSAAGAAubu9GCcFzsPV0srnsehOw51kqFG2aCcJ3WNS0rZHyzItOvLf3xYjmCcCBVwBuAZ2OUzlg6rkclssOCcJ2XTlqzTstzOg6WbZRm6KSCcEDOdWnnFfnSULAdYW4mR7KAIBIBAOAhG4Ud2zzbPGxBgdDwACIwIBSBMRAhGy7zbPNs8bEGAdEgACIAIRs1C2zzbPGxBgHRQAAiIDetAB0NMDAXGwowH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIVFBTA28E+GEC+GLbPFUT2zzy4IIdFxYApMj4QwHMfwHKAFUwUEMg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxYBINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WEssHywfJ7VQCvAGSMH/gcCHXScIflTAg1wsf3iCCEE2H8Yu6jrYw0x8BghBNh/GLuvLggfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0wfTB1UgbBPgghCUapi2uuMCMHAZGAFO0x8BghCUapi2uvLggdM/ATHIAYIQr/kPV1jLH8s/yfhCAXBt2zx/GgLYNFNRxwUDwAAjkSCRcOKzjowGcH+AQEMwbW1t2zyRNuKBcMVQBvL0gWZnWPL0VHATUGTIVSCCEPYNkjVQBMsfWCDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFssHywfJFPhCAX9t2zx/GxoBOm1tIm6zmVsgbvLQgG8iAZEy4hAkcAMEgEJQI9s8GwHKyHEBygFQBwHKAHABygJQBSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFlAD+gJwAcpoI26zkX+TJG6z4pczMwFwAcoA4w0hbrOcfwHKAAEgbvLQgAHMlTFwAcoA4skB+wAcAJh/AcoAyHABygBwAcoAJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4iRus51/AcoABCBu8tCAUATMljQDcAHKAOJwAcoAAn8BygACyVjMAcDtRNDUAfhj0gABjkj6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgB0wfTB1UwbBTg+CjXCwqDCbry4IkeAYr6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgSAtEB2zwfAB6CAJLy+EJSMMcF8vQBf3Bu56un');
     let builder = beginCell();
     builder.storeRef(__system);
     builder.storeUint(0, 1);
@@ -1433,6 +1577,7 @@ const Vote_errors: { [key: number]: { message: string } } = {
     136: { message: `Invalid address` },
     137: { message: `Masterchain support is not enabled for this contract` },
     13397: { message: `Invalid number of votes` },
+    15509: { message: `Only deployer is allowed to withdraw` },
     24647: { message: `Only repository can deploy organization` },
     26215: { message: `Only the owner can cast votes` },
     26998: { message: `Not enough value to deploy voting` },
@@ -1442,7 +1587,9 @@ const Vote_errors: { [key: number]: { message: string } } = {
     38223: { message: `Start time should be in the future` },
     51754: { message: `Insufficient funds` },
     54147: { message: `Voting has not started yet` },
+    54615: { message: `Insufficient balance` },
     59195: { message: `Voting has ended` },
+    59846: { message: `Voting has not ended yet` },
 }
 
 const Vote_types: ABIType[] = [
@@ -1456,12 +1603,15 @@ const Vote_types: ABIType[] = [
     {"name":"ChangeOwnerOk","header":846932810,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"newOwner","type":{"kind":"simple","type":"address","optional":false}}]},
     {"name":"InitOrganization","header":2483039406,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}}]},
     {"name":"InitOrganizationWithMetadata","header":3404583615,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"metadata","type":{"kind":"simple","type":"Metadata","optional":false}}]},
+    {"name":"UpdateOrganizationInfo","header":2221509127,"fields":[{"name":"emoji","type":{"kind":"simple","type":"string","optional":false}},{"name":"name","type":{"kind":"simple","type":"string","optional":false}},{"name":"description","type":{"kind":"simple","type":"string","optional":false}},{"name":"website","type":{"kind":"simple","type":"string","optional":false}}]},
     {"name":"DeployVoting","header":2352013716,"fields":[{"name":"candidates","type":{"kind":"simple","type":"CandidateArray","optional":false}},{"name":"voteFee","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"votesPerCandidate","type":{"kind":"simple","type":"uint","optional":false,"format":8}},{"name":"startTime","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"timeToLive","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
     {"name":"DeployVotingWithMetadata","header":3253980079,"fields":[{"name":"candidates","type":{"kind":"simple","type":"CandidateArray","optional":false}},{"name":"voteFee","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"votesPerCandidate","type":{"kind":"simple","type":"uint","optional":false,"format":8}},{"name":"startTime","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"timeToLive","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"metadata","type":{"kind":"simple","type":"Metadata","optional":false}}]},
     {"name":"SetDeployVotingFee","header":3911156721,"fields":[{"name":"newFee","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
     {"name":"OrganizationBasicInfo","header":null,"fields":[{"name":"emoji","type":{"kind":"simple","type":"string","optional":false}},{"name":"name","type":{"kind":"simple","type":"string","optional":false}},{"name":"website","type":{"kind":"simple","type":"string","optional":false}}]},
     {"name":"OrganizationAllInfo","header":null,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"emoji","type":{"kind":"simple","type":"string","optional":false}},{"name":"name","type":{"kind":"simple","type":"string","optional":false}},{"name":"description","type":{"kind":"simple","type":"string","optional":false}},{"name":"website","type":{"kind":"simple","type":"string","optional":false}},{"name":"numOfVotings","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
     {"name":"Metadata","header":null,"fields":[{"name":"name","type":{"kind":"simple","type":"string","optional":false}},{"name":"description","type":{"kind":"simple","type":"string","optional":false}},{"name":"emoji","type":{"kind":"simple","type":"string","optional":false}},{"name":"website","type":{"kind":"simple","type":"string","optional":false}}]},
+    {"name":"Withdraw","header":195467089,"fields":[{"name":"amount","type":{"kind":"simple","type":"uint","optional":false,"format":"coins"}}]},
+    {"name":"TransferOwnership","header":1882669034,"fields":[{"name":"newOwner","type":{"kind":"simple","type":"address","optional":false}}]},
     {"name":"Candidate","header":null,"fields":[{"name":"name","type":{"kind":"simple","type":"string","optional":false}},{"name":"info","type":{"kind":"simple","type":"string","optional":false}},{"name":"votes","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
     {"name":"CandidateArray","header":null,"fields":[{"name":"size","type":{"kind":"simple","type":"uint","optional":false,"format":8}},{"name":"candidates","type":{"kind":"dict","key":"uint","keyFormat":64,"value":"Candidate","valueFormat":"ref"}}]},
     {"name":"InitVoting","header":4246717119,"fields":[{"name":"owner","type":{"kind":"simple","type":"address","optional":false}},{"name":"candidates","type":{"kind":"simple","type":"CandidateArray","optional":false}},{"name":"voteFee","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"votesPerCandidate","type":{"kind":"simple","type":"uint","optional":false,"format":8}},{"name":"startTime","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"timeToLive","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},

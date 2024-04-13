@@ -69,6 +69,9 @@ builder $CandidateArray$_store(builder build_0, (int, cell) v) inline;
 ;; $CandidateArray$_load
 (slice, ((int, cell))) $CandidateArray$_load(slice sc_0) inline;
 
+;; $TransferOwnership$_load
+(slice, ((slice))) $TransferOwnership$_load(slice sc_0) inline;
+
 ;; $Candidate$_store
 builder $Candidate$_store(builder build_0, (slice, slice, int) v) inline;
 

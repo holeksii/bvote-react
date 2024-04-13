@@ -102,6 +102,9 @@ builder $CastVote$_store(builder build_0, (slice, int, int) v) inline;
 ;; $CastVote$_store_cell
 cell $CastVote$_store_cell((slice, int, int) v) inline;
 
+;; $TransferOwnership$_load
+(slice, ((slice))) $TransferOwnership$_load(slice sc_0) inline;
+
 ;; $Voting$_store
 builder $Voting$_store(builder build_0, (slice, slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) v) inline;
 

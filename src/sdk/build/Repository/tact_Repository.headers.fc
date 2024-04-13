@@ -63,6 +63,12 @@ builder $Metadata$_store(builder build_0, (slice, slice, slice, slice) v) inline
 ;; $SetDeployOrgFee$_load
 (slice, ((int))) $SetDeployOrgFee$_load(slice sc_0) inline;
 
+;; $Withdraw$_load
+(slice, ((int))) $Withdraw$_load(slice sc_0) inline;
+
+;; $TransferOwnership$_load
+(slice, ((slice))) $TransferOwnership$_load(slice sc_0) inline;
+
 ;; $InitOrganization$_store
 builder $InitOrganization$_store(builder build_0, (slice) v) inline;
 

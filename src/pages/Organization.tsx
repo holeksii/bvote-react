@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
-
 import { Key, useState } from "react";
-
 import { useEffect } from "react";
 import { useTonClient } from "../hooks/useTonClient";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +8,9 @@ import {
   Organization,
   OrganizationAllInfo,
   storeDeployVotingWithMetadata,
+  storeTransferOwnership,
+  storeUpdateOrganizationInfo,
+  storeWithdraw,
 } from "../sdk/wrappers/Organization";
 import { Voting } from "../sdk/wrappers/Voting";
 import { Address, beginCell, fromNano, toNano } from "@ton/core";
@@ -23,76 +24,15 @@ import {
 import FormsCustom from "../components/Forms/Custom";
 import Overlay from "../components/Page/Overlay";
 import { NewCandidateArray } from "../sdk/wrappers/Arrays";
+import {
+  getWithdrawFields,
+  newVotingFields,
+  getEditOrganizationFields,
+  transferOwnershipFields,
+} from "../components/Forms/Fields";
+import EditSvg from "../components/Svg/Edit";
 
 const pageSize = 4;
-
-const newVotingFields = [
-  {
-    name: "name",
-    label: "Name",
-    type: "text",
-    initialValue: "",
-    isRequired: true,
-  },
-  {
-    name: "description",
-    label: "Description",
-    type: "textarea",
-    initialValue: "",
-    isRequired: true,
-  },
-  { name: "emoji", label: "Emoji", type: "emoji", isRequired: true },
-  {
-    name: "website",
-    label: "Website",
-    type: "text",
-    initialValue: "",
-    isRequired: false,
-  },
-
-  {
-    name: "voteFee",
-    label: "Vote Fee (TON)",
-    type: "number",
-    initialValue: "0",
-    min: 0,
-    step: 0.001,
-    isRequired: true,
-  },
-  {
-    name: "votesPerCandidate",
-    label: "Votes Per Candidate",
-    type: "number",
-    initialValue: 1,
-    min: 1,
-    isRequired: true,
-  },
-  {
-    name: "startTime",
-    label: "Start Time",
-    type: "datepicker",
-    initialValue: new Date(),
-    isRequired: true,
-  },
-  {
-    name: "endTime",
-    label: "End Time",
-    type: "datepicker",
-    initialValue: new Date(),
-    isRequired: true,
-  },
-  {
-    name: "candidates",
-    label: "Candidates",
-    type: "reccuring",
-    initialValue: [],
-    isRequired: true,
-    fields: [
-      { name: "name", label: "Name", type: "text", initialValue: "" },
-      { name: "info", label: "Info", type: "text", initialValue: "" },
-    ],
-  },
-] as any;
 
 export default () => {
   const navigate = useNavigate();
@@ -118,8 +58,16 @@ export default () => {
   let [total, setTotal] = useState(0n);
   let [totalLoaded, setTotalLoaded] = useState(0n);
 
-  // vote deployment
-  const [overlayVisible, setOverlayVisible] = useState(false);
+  const [createVotingOverlayVisible, setCreateVotingOverlayVisible] =
+    useState(false);
+  const [withdrawOverlayVisible, setWithdrawOverlayVisible] = useState(false);
+  const [editOrganizationOverlayVisible, setEditOrganizationOverlayVisible] =
+    useState(false);
+  
+  const [transgerOwnershipOverlayVisible, setTransgerOwnershipOverlayVisible] =
+    useState(false);
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   function allInfo() {
     const fields = {
@@ -239,7 +187,7 @@ export default () => {
   async function deployVoting(data: any) {
     if (!tonClient) return;
 
-    setOverlayVisible(false);
+    setCreateVotingOverlayVisible(false);
 
     const organization = await Organization.fromAddress(
       Address.parse(contractAddress!),
@@ -291,10 +239,12 @@ export default () => {
     await tonConnectUi.sendTransaction(tx);
   }
 
-  async function withdrawFunds() {
+  async function withdrawFunds(data: any) {
     if (!tonClient) return;
 
-    const organization = await Organization.fromAddress(
+    setWithdrawOverlayVisible(false);
+
+    const organization = Organization.fromAddress(
       Address.parse(contractAddress!),
     );
 
@@ -305,15 +255,87 @@ export default () => {
           address: organization.address.toRawString(),
           amount: toNano(0.1).toString(),
           payload: beginCell()
-            .storeUint(0, 32)
-            .storeStringTail("withdrawSafe")
+            .store(
+              storeWithdraw({
+                $$type: "Withdraw",
+                amount: toNano(data.amount!),
+              }),
+            )
             .endCell()
             .toBoc()
             .toString("base64"),
         },
       ],
     };
+
     await tonConnectUi.sendTransaction(tx);
+  }
+
+  async function editMetadata(data: any) {
+    if (!tonClient) return;
+
+    setEditOrganizationOverlayVisible(false);
+
+    const organization = Organization.fromAddress(
+      Address.parse(contractAddress!),
+    );
+
+    const tx: SendTransactionRequest = {
+      validUntil: Math.floor(Date.now() / 1000) + 600,
+      messages: [
+        {
+          address: organization.address.toRawString(),
+          amount: toNano(0.1).toString(),
+          payload: beginCell()
+            .store(
+              storeUpdateOrganizationInfo({
+                $$type: "UpdateOrganizationInfo",
+                emoji: data.emoji,
+                name: data.name,
+                description: data.description,
+                website: data.website,
+              }),
+            )
+            .endCell()
+            .toBoc()
+            .toString("base64"),
+        },
+      ],
+    };
+
+    await tonConnectUi.sendTransaction(tx);
+  }
+
+  async function transferOwnership(data: any) {
+    if (!tonClient) return;
+
+    const organization = Voting.fromAddress(Address.parse(contractAddress!));
+    const newOwner = Address.parse(data.newOwner);
+    if ((await tonClient.getContractState(newOwner)).state !== "active")
+      setErrorMessage("Contract is not active");
+
+    const tx: SendTransactionRequest = {
+      validUntil: Math.floor(Date.now() / 1000) + 600,
+      messages: [
+        {
+          address: organization.address.toRawString(),
+          amount: toNano(0.1).toString(),
+          payload: beginCell()
+            .store(
+              storeTransferOwnership({
+                $$type: "TransferOwnership",
+                newOwner: newOwner,
+              }),
+            )
+            .endCell()
+            .toBoc()
+            .toString("base64"),
+        },
+      ],
+    };
+
+    await tonConnectUi.sendTransaction(tx);
+    setTransgerOwnershipOverlayVisible(false);
   }
 
   // on mounted
@@ -329,9 +351,21 @@ export default () => {
     <div className="flex flex-wrap">
       <div className="w-full sm:w-2/5 p-2 sticky">
         <Box name={isLoaded ? metadata.name : "Loading..."}>
-          <div className="">
+          <div>
             {isLoaded ? (
-              <div>
+              <div className="relative">
+                {isMyOrganization() ? (
+                  <div className="absolute top-0 right-0 w-4 h-4">
+                    <button
+                      className="text-white"
+                      onClick={() => {
+                        setEditOrganizationOverlayVisible(true);
+                      }}
+                    >
+                      <EditSvg />
+                    </button>
+                  </div>
+                ) : null}
                 <div className="flex w-full items-center justify-center mb-2 select-none">
                   <div className="rounded-full text-3xl bg-gray-300 w-14 h-14 mr-2 flex items-center justify-center">
                     {metadata.emoji}
@@ -360,7 +394,7 @@ export default () => {
                 className="bg-slate-900 text-white px-4 py-2 rounded-xl mt-4"
                 onClick={() => {
                   if (!wallet) tonConnectUi.openModal();
-                  else setOverlayVisible(true);
+                  else setCreateVotingOverlayVisible(true);
                 }}
               >
                 Create Voting
@@ -369,20 +403,62 @@ export default () => {
                 className="bg-slate-900 text-white px-4 py-2 rounded-xl mt-4"
                 onClick={() => {
                   if (!wallet) tonConnectUi.openModal();
-                  else withdrawFunds();
+                  else setWithdrawOverlayVisible(true);
                 }}
               >
                 Withdraw Funds
               </button>
+              <button
+                className="bg-slate-900 text-white px-4 py-2 rounded-xl mt-4"
+                onClick={() => {
+                  if (!wallet) tonConnectUi.openModal();
+                  else setTransgerOwnershipOverlayVisible(true);
+                }}
+              >
+                Transfer Ownership
+              </button>
             </div>
             <Overlay
-              isOpen={overlayVisible}
-              onClose={() => setOverlayVisible(false)}
+              isOpen={createVotingOverlayVisible}
+              onClose={() => setCreateVotingOverlayVisible(false)}
             >
               <div className="text-xl mb-2">Create Voting</div>
               <FormsCustom
                 fields={newVotingFields}
                 onFormSubmit={deployVoting}
+              />
+            </Overlay>
+            <Overlay
+              isOpen={withdrawOverlayVisible}
+              onClose={() => setWithdrawOverlayVisible(false)}
+            >
+              <div className="text-xl mb-2">Withdraw Funds</div>
+              <FormsCustom
+                fields={getWithdrawFields(
+                  Math.floor(Number(fromNano(contractBalance)) * 1000) / 1000,
+                  Math.floor(Number(fromNano(contractBalance)) * 1000) / 1000,
+                )}
+                onFormSubmit={withdrawFunds}
+              />
+            </Overlay>
+            <Overlay
+              isOpen={editOrganizationOverlayVisible}
+              onClose={() => setEditOrganizationOverlayVisible(false)}
+            >
+              <div className="text-xl mb-2">Edit Organization</div>
+              <FormsCustom
+                fields={getEditOrganizationFields(metadata)}
+                onFormSubmit={editMetadata}
+              />
+            </Overlay>
+            <Overlay
+              isOpen={transgerOwnershipOverlayVisible}
+              onClose={() => setTransgerOwnershipOverlayVisible(false)}
+            >
+              <div className="text-xl mb-2">Transfer Ownership</div>
+              <FormsCustom
+                fields={transferOwnershipFields}
+                onFormSubmit={transferOwnership}
               />
             </Overlay>
           </div>
@@ -459,6 +535,11 @@ export default () => {
           )}
         </div>
       </div>
+      <Overlay isOpen={errorMessage !== ""} onClose={() => setErrorMessage("")}>
+        <div className="p-4 bg-red-600 text-white rounded-md">
+          {errorMessage}
+        </div>
+      </Overlay>
     </div>
   );
 };

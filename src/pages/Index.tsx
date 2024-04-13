@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import { useEffect } from "react";
 import { useTonClient } from "../hooks/useTonClient";
 import { Organization } from "../sdk/wrappers/Organization";
@@ -7,46 +6,20 @@ import {
   Repository,
   storeDeployOrganizationWithMetadata,
 } from "../sdk/wrappers/Repository";
-import { Address, Sender, beginCell, toNano } from "@ton/core";
+import { beginCell, toNano } from "@ton/core";
 import {
   SendTransactionRequest,
   useTonConnectUI,
   useTonWallet,
 } from "@tonconnect/ui-react";
-
 import Box from "../components/Page/Box";
 import { Link, useNavigate } from "react-router-dom";
 import FormsCustom from "../components/Forms/Custom";
 import Overlay from "../components/Page/Overlay";
+import { newOrganizationFields } from "../components/Forms/Fields";
+import { repoId } from "../constants";
 
 const pageSize = 5;
-
-const repoId = 998n;
-
-const newOrganizationFields = [
-  {
-    name: "name",
-    label: "Name",
-    type: "text",
-    initialValue: "",
-    isRequired: true,
-  },
-  {
-    name: "description",
-    label: "Description",
-    type: "textarea",
-    initialValue: "",
-    isRequired: true,
-  },
-  { name: "emoji", label: "Emoji", type: "emoji", isRequired: true },
-  {
-    name: "website",
-    label: "Website",
-    type: "text",
-    initialValue: "",
-    isRequired: false,
-  },
-] as any;
 
 export default () => {
   const navigate = useNavigate();
@@ -70,10 +43,7 @@ export default () => {
     if (tonClient === undefined) return;
     setIsUpdating(true);
 
-    // sleep for 1 sec
-
     const mainRepo = await Repository.fromInit(repoId);
-
     const left = Number(total - totalLoaded);
 
     let newOrganizaions = await Promise.all(
@@ -194,7 +164,7 @@ export default () => {
           else setOverlayVisible(true);
         }}
       >
-        Deploy Organization
+        Create Organization
       </button>
       <Overlay isOpen={overlayVisible} onClose={() => setOverlayVisible(false)}>
         <div className="text-xl mb-2">Deploy Organization</div>

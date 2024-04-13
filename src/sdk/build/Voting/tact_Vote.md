@@ -3,7 +3,7 @@ Contract: Vote
 BOC Size: 1093 bytes
 
 # Types
-Total Types: 18
+Total Types: 20
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -77,6 +77,14 @@ Signature: `VotingAllInfo{organization:address,owner:address,emoji:^string,name:
 TLB: `cast_vote#4d87f18b owner:address candidateInd:uint8 numOfVotes:uint8 = CastVote`
 Signature: `CastVote{owner:address,candidateInd:uint8,numOfVotes:uint8}`
 
+## Withdraw
+TLB: `withdraw#0ba69751 amount:coins = Withdraw`
+Signature: `Withdraw{amount:coins}`
+
+## TransferOwnership
+TLB: `transfer_ownership#70373fea newOwner:address = TransferOwnership`
+Signature: `TransferOwnership{newOwner:address}`
+
 # Get Methods
 Total Get Methods: 4
 
@@ -121,3 +129,4 @@ Total Get Methods: 4
 51754: Insufficient funds
 54147: Voting has not started yet
 59195: Voting has ended
+59846: Voting has not ended yet

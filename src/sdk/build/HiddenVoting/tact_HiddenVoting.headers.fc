@@ -97,10 +97,10 @@ builder $CastVote$_store(builder build_0, (slice, int, int) v) inline;
 cell $CastVote$_store_cell((slice, int, int) v) inline;
 
 ;; $HiddenVoting$_store
-builder $HiddenVoting$_store(builder build_0, (slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) v) inline;
+builder $HiddenVoting$_store(builder build_0, (slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) v) inline;
 
 ;; $HiddenVoting$_load
-(slice, ((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int))) $HiddenVoting$_load(slice sc_0) inline;
+(slice, ((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int))) $HiddenVoting$_load(slice sc_0) inline;
 
 ;; $StateInit$_not_null
 ((cell, cell)) $StateInit$_not_null(tuple v) inline;
@@ -127,22 +127,16 @@ _ $Context$_get_value((int, slice, int, slice) v) inline;
 builder $Vote$init$_store(builder build_0, (slice, slice) v) inline;
 
 ;; $HiddenVoting$init$_load
-(slice, ((slice, int))) $HiddenVoting$init$_load(slice sc_0) inline;
-
-;; $CandidateArray$_constructor_size_candidates
-((int, cell)) $CandidateArray$_constructor_size_candidates(int size, cell candidates) inline;
-
-;; $Metadata$_constructor_name_description_emoji_website
-((slice, slice, slice, slice)) $Metadata$_constructor_name_description_emoji_website(slice name, slice description, slice emoji, slice website) inline;
+(slice, ((slice, (int, cell), int, int, int, int, (slice, slice, slice, slice)))) $HiddenVoting$init$_load(slice sc_0) inline_ref;
 
 ;; $HiddenVoting$_contract_init
-(slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $HiddenVoting$_contract_init(slice $organization, int $deployTime) impure inline_ref;
+(slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $HiddenVoting$_contract_init(slice $organization, (int, cell) $candidates, int $voteFee, int $votesPerCandidate, int $startTime, int $timeToLive, (slice, slice, slice, slice) $metadata) impure inline_ref;
 
 ;; $HiddenVoting$_contract_load
-(slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $HiddenVoting$_contract_load() impure inline_ref;
+(slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $HiddenVoting$_contract_load() impure inline_ref;
 
 ;; $HiddenVoting$_contract_store
-() $HiddenVoting$_contract_store((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) v) impure inline;
+() $HiddenVoting$_contract_store((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) v) impure inline;
 
 ;; $global_contractAddress
 slice $global_contractAddress((cell, cell) $s) impure inline;
@@ -156,56 +150,53 @@ slice $global_contractAddress((cell, cell) $s) impure inline;
 ;; $SendParameters$_constructor_bounce_to_value_mode_body_code_data
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_bounce_to_value_mode_body_code_data(int bounce, slice to, int value, int mode, cell body, cell code, cell data) inline;
 
-;; $HiddenVoting$_fun_deployTime
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_deployTime((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
-
 ;; $HiddenVoting$_fun_candidates
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), (int, cell)) $HiddenVoting$_fun_candidates((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), (int, cell)) $HiddenVoting$_fun_candidates((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
 
 ;; $HiddenVoting$_fun_numOfVotes
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_numOfVotes((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_numOfVotes((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
 
 ;; $HiddenVoting$_fun_voteFee
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_voteFee((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_voteFee((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
 
 ;; $HiddenVoting$_fun_votesPerCandidate
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_votesPerCandidate((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_votesPerCandidate((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
 
 ;; $HiddenVoting$_fun_startTime
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_startTime((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_startTime((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
 
 ;; $HiddenVoting$_fun_timeToLive
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_timeToLive((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_timeToLive((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
 
 ;; $HiddenVoting$_fun_metadata
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), (slice, slice, slice, slice)) $HiddenVoting$_fun_metadata((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), (slice, slice, slice, slice)) $HiddenVoting$_fun_metadata((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
 
 ;; $HiddenVoting$_fun_voteAddress
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), slice) $HiddenVoting$_fun_voteAddress((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self, slice $owner) impure inline_ref;
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), slice) $HiddenVoting$_fun_voteAddress((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self, slice $owner) impure inline_ref;
 
 ;; $VotingBasicInfo$_constructor_emoji_name_startTime_endTime
 ((slice, slice, int, int)) $VotingBasicInfo$_constructor_emoji_name_startTime_endTime(slice emoji, slice name, int startTime, int endTime) inline;
 
 ;; $HiddenVoting$_fun_basicInfo
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), (slice, slice, int, int)) $HiddenVoting$_fun_basicInfo((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), (slice, slice, int, int)) $HiddenVoting$_fun_basicInfo((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
 
 ;; $VotingAllInfo$_constructor_organization_owner_emoji_name_description_numOfVotes_voteFee_votesPerCandidate_startTime_endTime
 ((slice, slice, slice, slice, slice, int, int, int, int, int)) $VotingAllInfo$_constructor_organization_owner_emoji_name_description_numOfVotes_voteFee_votesPerCandidate_startTime_endTime(slice organization, slice owner, slice emoji, slice name, slice description, int numOfVotes, int voteFee, int votesPerCandidate, int startTime, int endTime) inline;
 
 ;; $HiddenVoting$_fun_allInfo
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), (slice, slice, slice, slice, slice, int, int, int, int, int)) $HiddenVoting$_fun_allInfo((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), (slice, slice, slice, slice, slice, int, int, int, int, int)) $HiddenVoting$_fun_allInfo((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
 
 ;; $HiddenVoting$_fun_forward
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), ()) $HiddenVoting$_fun_forward((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), ()) $HiddenVoting$_fun_forward((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self, slice $to, cell $body, int $bounce, tuple $init) impure inline_ref;
 
 ;; $HiddenVoting$_fun_notify
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), ()) $HiddenVoting$_fun_notify((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self, cell $body) impure inline;
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), ()) $HiddenVoting$_fun_notify((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self, cell $body) impure inline;
 
 ;; $HiddenVoting$_fun_requireOwner
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), ()) $HiddenVoting$_fun_requireOwner((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), ()) $HiddenVoting$_fun_requireOwner((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
 
 ;; $HiddenVoting$_fun_owner
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), slice) $HiddenVoting$_fun_owner((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), slice) $HiddenVoting$_fun_owner((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref;
 
 ;; $SendParameters$_constructor_to_value_bounce_mode_body_code_data
 ((int, slice, int, int, cell, cell, cell)) $SendParameters$_constructor_to_value_bounce_mode_body_code_data(slice to, int value, int bounce, int mode, cell body, cell code, cell data) inline;

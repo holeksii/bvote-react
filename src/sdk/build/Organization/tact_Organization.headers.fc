@@ -63,6 +63,9 @@ builder $Metadata$_store(builder build_0, (slice, slice, slice, slice) v) inline
 ;; $InitOrganizationWithMetadata$_load
 (slice, ((slice, (slice, slice, slice, slice)))) $InitOrganizationWithMetadata$_load(slice sc_0) inline;
 
+;; $UpdateOrganizationInfo$_load
+(slice, ((slice, slice, slice, slice))) $UpdateOrganizationInfo$_load(slice sc_0) inline;
+
 ;; $CandidateArray$_store
 builder $CandidateArray$_store(builder build_0, (int, cell) v) inline;
 
@@ -77,6 +80,12 @@ builder $CandidateArray$_store(builder build_0, (int, cell) v) inline;
 
 ;; $SetDeployVotingFee$_load
 (slice, ((int))) $SetDeployVotingFee$_load(slice sc_0) inline;
+
+;; $Withdraw$_load
+(slice, ((int))) $Withdraw$_load(slice sc_0) inline;
+
+;; $TransferOwnership$_load
+(slice, ((slice))) $TransferOwnership$_load(slice sc_0) inline;
 
 ;; $InitVoting$_store
 builder $InitVoting$_store(builder build_0, (slice, (int, cell), int, int, int, int) v) inline_ref;

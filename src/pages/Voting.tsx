@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useTonClient } from "../hooks/useTonClient";
 import {
-  Metadata,
   Voting,
   VotingAllInfo,
   storeDeployAndCastVote,
+  storeTransferOwnership,
+  storeWithdraw,
 } from "../sdk/wrappers/Voting";
 import { Address, beginCell, fromNano, toNano } from "@ton/core";
 import Box from "../components/Page/Box";
@@ -20,6 +21,10 @@ import Overlay from "../components/Page/Overlay";
 import FormsCustom from "../components/Forms/Custom";
 
 import { useNavigate } from "react-router-dom";
+import {
+  getWithdrawFields,
+  transferOwnershipFields,
+} from "../components/Forms/Fields";
 
 export default () => {
   const [tonConnectUi] = useTonConnectUI();
@@ -39,8 +44,16 @@ export default () => {
   const [candidates, setCandidates] = useState([] as any[]);
   const [totalVotes, setTotalVotes] = useState(0n);
 
+  const [contractBalance, setContractBalance] = useState(0n);
   // vote casting
-  const [overlayVisible, setOverlayVisible] = useState(false);
+  const [castVoteOverlayVisible, setCastVoteOverlayVisible] = useState(false);
+  // withdraw funds
+  const [withdrawOverlayVisible, setWithdrawOverlayVisible] = useState(false);
+  // transfer ownership
+  const [transgerOwnershipOverlayVisible, setTransgerOwnershipOverlayVisible] =
+    useState(false);
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   function getVoteFormFields() {
     return [
@@ -121,6 +134,12 @@ export default () => {
       return;
     }
 
+    const contractBalance = await tonClient.getBalance(
+      Address.parse(contractAddress!),
+    );
+
+    setContractBalance(contractBalance);
+
     const provider = tonClient.provider(Address.parse(contractAddress!));
 
     const voting = provider.open(
@@ -142,9 +161,9 @@ export default () => {
     setIsLoaded(true);
   }
 
-  async function castSpell(data: { numOfVotes: number }) {
+  async function castVote(data: { numOfVotes: number }) {
     if (!tonClient) return;
-    setOverlayVisible(false);
+    setCastVoteOverlayVisible(false);
 
     const voting = Voting.fromAddress(Address.parse(contractAddress!));
     // check if voted
@@ -187,29 +206,69 @@ export default () => {
       ],
     };
 
-    const res = await tonConnectUi.sendTransaction(tx);
+    await tonConnectUi.sendTransaction(tx);
   }
-  async function withdrawFunds() {
+
+  async function withdrawFunds(data: any) {
     if (!tonClient) return;
 
-    const voting = await Voting.fromAddress(Address.parse(contractAddress!));
+    setWithdrawOverlayVisible(false);
+
+    const organization = Voting.fromAddress(Address.parse(contractAddress!));
 
     const tx: SendTransactionRequest = {
       validUntil: Math.floor(Date.now() / 1000) + 600,
       messages: [
         {
-          address: voting.address.toRawString(),
+          address: organization.address.toRawString(),
           amount: toNano(0.1).toString(),
           payload: beginCell()
-            .storeUint(0, 32)
-            .storeStringTail("withdrawSafe")
+            .store(
+              storeWithdraw({
+                $$type: "Withdraw",
+                amount: toNano(data.amount!),
+              }),
+            )
             .endCell()
             .toBoc()
             .toString("base64"),
         },
       ],
     };
+
     await tonConnectUi.sendTransaction(tx);
+  }
+
+  async function transferOwnership(data: any) {
+    if (!tonClient) return;
+
+    const organization = Voting.fromAddress(Address.parse(contractAddress!));
+    const newOwner = Address.parse(data.newOwner);
+    if ((await tonClient.getContractState(newOwner)).state !== "active")
+      setErrorMessage("Contract is not active");
+
+    const tx: SendTransactionRequest = {
+      validUntil: Math.floor(Date.now() / 1000) + 600,
+      messages: [
+        {
+          address: organization.address.toRawString(),
+          amount: toNano(0.1).toString(),
+          payload: beginCell()
+            .store(
+              storeTransferOwnership({
+                $$type: "TransferOwnership",
+                newOwner: newOwner,
+              }),
+            )
+            .endCell()
+            .toBoc()
+            .toString("base64"),
+        },
+      ],
+    };
+
+    await tonConnectUi.sendTransaction(tx);
+    setTransgerOwnershipOverlayVisible(false);
   }
 
   // ping update
@@ -243,10 +302,12 @@ export default () => {
                 <div className="font-light">{votingInfo.description}</div>
 
                 <div className="mt-2">
+                  <br />
+                  <div className="text-xl text-center">Candidades Info</div>
                   {candidates.map((candidate, index) => {
                     return (
                       <div key={index} className="mt-2">
-                        <div className="w-full text-center">
+                        <div className="w-full font-bold text-center">
                           {candidate.name}
                         </div>
                         <div className="font-light">
@@ -299,7 +360,7 @@ export default () => {
                       return;
                     }
                     setCandidateId(index);
-                    setOverlayVisible(true);
+                    setCastVoteOverlayVisible(true);
                   }}
                   className="cursor-pointer hover:bg-slate-800"
                   progress={
@@ -309,6 +370,7 @@ export default () => {
                         )
                       : 0
                   }
+                  count={candidate.votes.toString()}
                   key={index}
                 />
               );
@@ -323,24 +385,37 @@ export default () => {
             </div>
           )}
         </Box>
-        {isMyVoting() && (
+        {isMyVoting() && getStatus() == "Ended" && (
           <div className="flex flex-row w-full justify-between gap-2">
             <button
               className="bg-slate-900 text-white px-4 py-2 rounded-xl mt-4"
               onClick={() => {
                 if (!wallet) tonConnectUi.openModal();
-                else withdrawFunds();
+                else setWithdrawOverlayVisible(true);
               }}
             >
               Withdraw Funds
             </button>
           </div>
         )}
+        {isMyVoting() && (
+          <div className="flex flex-row w-full justify-between gap-2">
+            <button
+              className="bg-slate-900 text-white px-4 py-2 rounded-xl mt-4"
+              onClick={() => {
+                if (!wallet) tonConnectUi.openModal();
+                else setTransgerOwnershipOverlayVisible(true);
+              }}
+            >
+              Transfer Ownership
+            </button>
+          </div>
+        )}
       </div>
       {isLoaded && (
         <Overlay
-          isOpen={overlayVisible}
-          onClose={() => setOverlayVisible(false)}
+          isOpen={castVoteOverlayVisible}
+          onClose={() => setCastVoteOverlayVisible(false)}
         >
           <div className="text-xl mb-2">Cast vote</div>
           <div className="text-base mb-2">
@@ -352,10 +427,42 @@ export default () => {
           <div className="text-sm mb-2">{`Max votes per voter: ${votingInfo.votesPerCandidate}`}</div>
           <FormsCustom
             fields={getVoteFormFields() as any}
-            onFormSubmit={castSpell}
+            onFormSubmit={castVote}
           />
         </Overlay>
       )}
+      {isLoaded && (
+        <Overlay
+          isOpen={withdrawOverlayVisible}
+          onClose={() => setWithdrawOverlayVisible(false)}
+        >
+          <div className="text-xl mb-2">Withdraw Funds</div>
+          <FormsCustom
+            fields={getWithdrawFields(
+              Math.floor(Number(fromNano(contractBalance)) * 1000) / 1000,
+              Math.floor(Number(fromNano(contractBalance)) * 1000) / 1000,
+            )}
+            onFormSubmit={withdrawFunds}
+          />
+        </Overlay>
+      )}
+      {isLoaded && (
+        <Overlay
+          isOpen={transgerOwnershipOverlayVisible}
+          onClose={() => setTransgerOwnershipOverlayVisible(false)}
+        >
+          <div className="text-xl mb-2">Transfer Ownership</div>
+          <FormsCustom
+            fields={transferOwnershipFields}
+            onFormSubmit={transferOwnership}
+          />
+        </Overlay>
+      )}
+      <Overlay isOpen={errorMessage !== ""} onClose={() => setErrorMessage("")}>
+        <div className="p-4 bg-red-600 text-white rounded-md">
+          {errorMessage}
+        </div>
+      </Overlay>
     </div>
   );
 };

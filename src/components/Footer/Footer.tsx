@@ -95,6 +95,16 @@ export const Footer = () => {
   return (
     <footer className="w-full p-2 flex flex-row  justify-center">
       <div> BVote {"💙"}</div>
+      {/* add github link to right corner and add github logo*/}
+      <div className="absolute right-2">
+        <a
+          href="https://github.com/holeksii/bvote-react"
+          target="_blank"
+          rel="noreferrer"
+        >
+          GitHub
+        </a>
+      </div>
     </footer>
   );
 };

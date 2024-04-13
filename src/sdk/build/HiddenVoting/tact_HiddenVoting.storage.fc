@@ -139,10 +139,6 @@ builder $CandidateArray$_store(builder build_0, (int, cell) v) inline {
     return (v'size, v'candidates);
 }
 
-((int, cell)) $CandidateArray$_constructor_size_candidates(int size, cell candidates) inline {
-    return (size, candidates);
-}
-
 ;;
 ;; Type: Metadata
 ;; TLB: _ name:^string description:^string emoji:^string website:^string = Metadata
@@ -171,10 +167,6 @@ builder $Metadata$_store(builder build_0, (slice, slice, slice, slice) v) inline
 (slice, slice, slice, slice) $Metadata$_to_external(((slice, slice, slice, slice)) v) inline {
     var (v'name, v'description, v'emoji, v'website) = v; 
     return (v'name, v'description, v'emoji, v'website);
-}
-
-((slice, slice, slice, slice)) $Metadata$_constructor_name_description_emoji_website(slice name, slice description, slice emoji, slice website) inline {
-    return (name, description, emoji, website);
 }
 
 ;;
@@ -287,10 +279,9 @@ builder $Vote$init$_store(builder build_0, (slice, slice) v) inline {
 ;; Type: HiddenVoting
 ;;
 
-builder $HiddenVoting$_store(builder build_0, (slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) v) inline {
-    var (v'owner, v'deployTime, (v'candidates'size, v'candidates'candidates), (v'metadata'name, v'metadata'description, v'metadata'emoji, v'metadata'website), v'voteFee, v'votesPerCandidate, v'startTime, v'timeToLive) = v;
+builder $HiddenVoting$_store(builder build_0, (slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) v) inline {
+    var (v'owner, (v'candidates'size, v'candidates'candidates), (v'metadata'name, v'metadata'description, v'metadata'emoji, v'metadata'website), v'voteFee, v'votesPerCandidate, v'startTime, v'timeToLive) = v;
     build_0 = __tact_store_address(build_0, v'owner);
-    build_0 = build_0.store_uint(v'deployTime, 64);
     build_0 = $CandidateArray$_store(build_0, (v'candidates'size, v'candidates'candidates));
     var build_1 = begin_cell();
     build_1 = $Metadata$_store(build_1, (v'metadata'name, v'metadata'description, v'metadata'emoji, v'metadata'website));
@@ -302,9 +293,8 @@ builder $HiddenVoting$_store(builder build_0, (slice, int, (int, cell), (slice, 
     return build_0;
 }
 
-(slice, ((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int))) $HiddenVoting$_load(slice sc_0) inline {
+(slice, ((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int))) $HiddenVoting$_load(slice sc_0) inline {
     var v'owner = sc_0~__tact_load_address();
-    var v'deployTime = sc_0~load_uint(64);
     var v'candidates = sc_0~$CandidateArray$_load();
     slice sc_1 = sc_0~load_ref().begin_parse();
     var v'metadata = sc_1~$Metadata$_load();
@@ -312,16 +302,22 @@ builder $HiddenVoting$_store(builder build_0, (slice, int, (int, cell), (slice, 
     var v'votesPerCandidate = sc_1~load_uint(8);
     var v'startTime = sc_1~load_uint(64);
     var v'timeToLive = sc_1~load_uint(64);
-    return (sc_0, (v'owner, v'deployTime, v'candidates, v'metadata, v'voteFee, v'votesPerCandidate, v'startTime, v'timeToLive));
+    return (sc_0, (v'owner, v'candidates, v'metadata, v'voteFee, v'votesPerCandidate, v'startTime, v'timeToLive));
 }
 
-(slice, ((slice, int))) $HiddenVoting$init$_load(slice sc_0) inline {
+(slice, ((slice, (int, cell), int, int, int, int, (slice, slice, slice, slice)))) $HiddenVoting$init$_load(slice sc_0) inline_ref {
     var v'organization = sc_0~__tact_load_address();
-    var v'deployTime = sc_0~load_int(257);
-    return (sc_0, (v'organization, v'deployTime));
+    var v'candidates = sc_0~$CandidateArray$_load();
+    var v'voteFee = sc_0~load_int(257);
+    var v'votesPerCandidate = sc_0~load_int(257);
+    slice sc_1 = sc_0~load_ref().begin_parse();
+    var v'startTime = sc_1~load_int(257);
+    var v'timeToLive = sc_1~load_int(257);
+    var v'metadata = sc_1~$Metadata$_load();
+    return (sc_0, (v'organization, v'candidates, v'voteFee, v'votesPerCandidate, v'startTime, v'timeToLive, v'metadata));
 }
 
-(slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $HiddenVoting$_contract_load() impure inline_ref {
+(slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $HiddenVoting$_contract_load() impure inline_ref {
     slice $sc = get_data().begin_parse();
     __tact_context_sys = $sc~load_ref();
     int $loaded = $sc~load_int(1);
@@ -330,13 +326,13 @@ builder $HiddenVoting$_store(builder build_0, (slice, int, (int, cell), (slice, 
     } else {
         ;; Allow only workchain deployments
         throw_unless(137, my_address().preload_uint(11) == 1024);
-        (slice organization, int deployTime) = $sc~$HiddenVoting$init$_load();
+        (slice organization, (int, cell) candidates, int voteFee, int votesPerCandidate, int startTime, int timeToLive, (slice, slice, slice, slice) metadata) = $sc~$HiddenVoting$init$_load();
         $sc.end_parse();
-        return $HiddenVoting$_contract_init(organization, deployTime);
+        return $HiddenVoting$_contract_init(organization, candidates, voteFee, votesPerCandidate, startTime, timeToLive, metadata);
     }
 }
 
-() $HiddenVoting$_contract_store((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) v) impure inline {
+() $HiddenVoting$_contract_store((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) v) impure inline {
     builder b = begin_cell();
     b = b.store_ref(__tact_context_sys);
     b = b.store_int(true, 1);

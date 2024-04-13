@@ -119,6 +119,30 @@ builder $Metadata$_store(builder build_0, (slice, slice, slice, slice) v) inline
 }
 
 ;;
+;; Type: Withdraw
+;; Header: 0x0ba69751
+;; TLB: withdraw#0ba69751 amount:coins = Withdraw
+;;
+
+(slice, ((int))) $Withdraw$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 195467089);
+    var v'amount = sc_0~load_coins();
+    return (sc_0, (v'amount));
+}
+
+;;
+;; Type: TransferOwnership
+;; Header: 0x70373fea
+;; TLB: transfer_ownership#70373fea newOwner:address = TransferOwnership
+;;
+
+(slice, ((slice))) $TransferOwnership$_load(slice sc_0) inline {
+    throw_unless(129, sc_0~load_uint(32) == 1882669034);
+    var v'newOwner = sc_0~__tact_load_address();
+    return (sc_0, (v'newOwner));
+}
+
+;;
 ;; Type: InitOrganization
 ;; Header: 0x94002cae
 ;; TLB: init_organization#94002cae owner:address = InitOrganization

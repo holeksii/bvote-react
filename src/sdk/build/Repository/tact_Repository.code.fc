@@ -99,6 +99,14 @@
     return (($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee), ());
 }
 
+(((slice, int, int, int)), ()) $Repository$_internal_binary_TransferOwnership((slice, int, int, int) $self, (slice) $msg) impure inline {
+    var ($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee) = $self;
+    var ($msg'newOwner) = $msg;
+    ($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee)~$Repository$_fun_requireOwner();
+    $self'owner = $msg'newOwner;
+    return (($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee), ());
+}
+
 ((slice, int, int, int), ()) $Repository$_internal_text_63365f83ad1d185f336d0e64cfce19190f3623d6d976c30c6198ac209c8946ee((slice, int, int, int) $self) impure inline {
     var ($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee) = $self;
     ($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee)~$Repository$_fun_requireOwner();
@@ -110,6 +118,16 @@
     var ($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee) = $self;
     ($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee)~$Repository$_fun_requireOwner();
     $global_send($SendParameters$_constructor_to_bounce_value_mode(__tact_context_get_sender(), true, (__tact_my_balance() - 100000000), 0));
+    return (($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee), ());
+}
+
+(((slice, int, int, int)), ()) $Repository$_internal_binary_Withdraw((slice, int, int, int) $self, (int) $msg) impure inline {
+    var ($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee) = $self;
+    var ($msg'amount) = $msg;
+    throw_unless(15509, ( __tact_slice_eq_bits($self'owner, __tact_context_get_sender()) ));
+    int $amount = min($msg'amount, ((__tact_my_balance() - $Context$_get_value(__tact_context_get())) - 100000000));
+    throw_unless(54615, ($amount > 0));
+    $global_send($SendParameters$_constructor_to_bounce_value_mode(__tact_context_get_sender(), true, $amount, (64 + 2)));
     return (($self'owner, $self'repositoryId, $self'numOfOrganizations, $self'deployOrganizationFee), ());
 }
 
@@ -172,7 +190,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmVc5Up1ohFe2nFnQ6NPneMnge6ADvsAkWuU3mBrai1TK9";
+    return "ipfs://QmW3chDwxGoEhbBj7vwsqC6YgFYHoioyKC2RxFqDkvc1qZ";
 }
 
 _ lazy_deployment_completed() method_id {
@@ -213,6 +231,20 @@ _ lazy_deployment_completed() method_id {
     if (op == 155918963) {
         var msg = in_msg~$SetDeployOrgFee$_load();
         self~$Repository$_internal_binary_SetDeployOrgFee(msg);
+        return (self, true);
+    }
+    
+    ;; Receive TransferOwnership message
+    if (op == 1882669034) {
+        var msg = in_msg~$TransferOwnership$_load();
+        self~$Repository$_internal_binary_TransferOwnership(msg);
+        return (self, true);
+    }
+    
+    ;; Receive Withdraw message
+    if (op == 195467089) {
+        var msg = in_msg~$Withdraw$_load();
+        self~$Repository$_internal_binary_Withdraw(msg);
         return (self, true);
     }
     

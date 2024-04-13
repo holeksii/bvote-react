@@ -19,6 +19,8 @@ PROGRAM{
   DECLPROC $Metadata$_load
   DECLPROC $DeployOrganizationWithMetadata$_load
   DECLPROC $SetDeployOrgFee$_load
+  DECLPROC $Withdraw$_load
+  DECLPROC $TransferOwnership$_load
   DECLPROC $InitOrganization$_store
   DECLPROC $InitOrganization$_store_cell
   DECLPROC $InitOrganizationWithMetadata$_store
@@ -55,8 +57,10 @@ PROGRAM{
   DECLPROC $Repository$_internal_binary_DeployOrganizationWithMetadata
   DECLPROC $Repository$_internal_text_7d95426215e563687f9588ebe2454a30b25f3b8658968ff457bcf7d66132cca9
   DECLPROC $Repository$_internal_binary_SetDeployOrgFee
+  DECLPROC $Repository$_internal_binary_TransferOwnership
   DECLPROC $Repository$_internal_text_63365f83ad1d185f336d0e64cfce19190f3623d6d976c30c6198ac209c8946ee
   DECLPROC $Repository$_internal_text_fa1a01be1e29ad0a9589a04fde70c8555eb62353556db90be422f1a9c5d7959d
+  DECLPROC $Repository$_internal_binary_Withdraw
   DECLPROC $Repository$_internal_binary_Deploy
   125543 DECLMETHOD %numOfOrganizations
   104328 DECLMETHOD %deployOrganizationFee
@@ -255,6 +259,23 @@ PROGRAM{
     129 THROWIFNOT
     64 LDU
     SWAP
+  }>
+  $Withdraw$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    195467089 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    LDGRAMS
+    SWAP
+  }>
+  $TransferOwnership$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    1882669034 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    __tact_load_address INLINECALLDICT
   }>
   $InitOrganization$_store PROCINLINE:<{
     2483039406 PUSHINT
@@ -660,6 +681,11 @@ PROGRAM{
     DROP
     3 ROLL
   }>
+  $Repository$_internal_binary_TransferOwnership PROCINLINE:<{
+    4 -ROLL
+    $Repository$_fun_requireOwner INLINECALLDICT
+    1 3 BLKDROP2
+  }>
   $Repository$_internal_text_63365f83ad1d185f336d0e64cfce19190f3623d6d976c30c6198ac209c8946ee PROCINLINE:<{
     $Repository$_fun_requireOwner INLINECALLDICT
     __tact_context_get_sender INLINECALLDICT
@@ -677,6 +703,30 @@ PROGRAM{
     100000000 PUSHINT
     SUB
     0 PUSHINT
+    $SendParameters$_constructor_to_bounce_value_mode INLINECALLDICT
+    $global_send INLINECALLDICT
+  }>
+  $Repository$_internal_binary_Withdraw PROCINLINE:<{
+    15509 PUSHINT
+    __tact_context_get_sender INLINECALLDICT
+    s6 s(-1) PUXC
+    __tact_slice_eq_bits INLINECALLDICT
+    THROWANYIFNOT
+    __tact_my_balance INLINECALLDICT
+    __tact_context_get INLINECALLDICT
+    $Context$_get_value INLINECALLDICT
+    SUB
+    100000000 PUSHINT
+    SUB
+    MIN
+    54615 PUSHINT
+    OVER
+    0 GTINT
+    THROWANYIFNOT
+    __tact_context_get_sender INLINECALLDICT
+    TRUE
+    ROT
+    66 PUSHINT
     $SendParameters$_constructor_to_bounce_value_mode INLINECALLDICT
     $global_send INLINECALLDICT
   }>
@@ -724,7 +774,7 @@ PROGRAM{
     86142586315491086060343270784266291122 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d5663355570316f684665326e466e51364e506e654d6e67653641447673416b577555336d4272616931544b39} PUSHSLICE
+    x{697066733a2f2f516d57336368447778476f456862426a3776777371433659674659486f696f794b433252784671446b766331715a} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -778,6 +828,26 @@ PROGRAM{
       $SetDeployOrgFee$_load INLINECALLDICT
       NIP
       $Repository$_internal_binary_SetDeployOrgFee INLINECALLDICT
+      TRUE
+    }>
+    DUP
+    1882669034 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      $TransferOwnership$_load INLINECALLDICT
+      NIP
+      $Repository$_internal_binary_TransferOwnership INLINECALLDICT
+      TRUE
+    }>
+    DUP
+    195467089 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      $Withdraw$_load INLINECALLDICT
+      NIP
+      $Repository$_internal_binary_Withdraw INLINECALLDICT
       TRUE
     }>
     DUP

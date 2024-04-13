@@ -3,7 +3,7 @@ Contract: Vote
 BOC Size: 1093 bytes
 
 # Types
-Total Types: 25
+Total Types: 28
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -45,6 +45,10 @@ Signature: `InitOrganization{owner:address}`
 TLB: `init_organization_with_metadata#caedd2bf owner:address metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string} = InitOrganizationWithMetadata`
 Signature: `InitOrganizationWithMetadata{owner:address,metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string}}`
 
+## UpdateOrganizationInfo
+TLB: `update_organization_info#84698a07 emoji:^string name:^string description:^string website:^string = UpdateOrganizationInfo`
+Signature: `UpdateOrganizationInfo{emoji:^string,name:^string,description:^string,website:^string}`
+
 ## DeployVoting
 TLB: `deploy_voting#8c30e194 candidates:CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint8 startTime:uint64 timeToLive:uint64 = DeployVoting`
 Signature: `DeployVoting{candidates:CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>},voteFee:uint64,votesPerCandidate:uint8,startTime:uint64,timeToLive:uint64}`
@@ -68,6 +72,14 @@ Signature: `OrganizationAllInfo{owner:address,emoji:^string,name:^string,descrip
 ## Metadata
 TLB: `_ name:^string description:^string emoji:^string website:^string = Metadata`
 Signature: `Metadata{name:^string,description:^string,emoji:^string,website:^string}`
+
+## Withdraw
+TLB: `withdraw#0ba69751 amount:coins = Withdraw`
+Signature: `Withdraw{amount:coins}`
+
+## TransferOwnership
+TLB: `transfer_ownership#70373fea newOwner:address = TransferOwnership`
+Signature: `TransferOwnership{newOwner:address}`
 
 ## Candidate
 TLB: `_ name:^string info:^string votes:uint64 = Candidate`
@@ -142,6 +154,7 @@ Total Get Methods: 4
 136: Invalid address
 137: Masterchain support is not enabled for this contract
 13397: Invalid number of votes
+15509: Only deployer is allowed to withdraw
 24647: Only repository can deploy organization
 26215: Only the owner can cast votes
 26998: Not enough value to deploy voting
@@ -151,4 +164,6 @@ Total Get Methods: 4
 38223: Start time should be in the future
 51754: Insufficient funds
 54147: Voting has not started yet
+54615: Insufficient balance
 59195: Voting has ended
+59846: Voting has not ended yet

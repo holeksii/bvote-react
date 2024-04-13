@@ -1,9 +1,9 @@
 # TACT Compilation Report
 Contract: Organization
-BOC Size: 2596 bytes
+BOC Size: 2848 bytes
 
 # Types
-Total Types: 27
+Total Types: 30
 
 ## StateInit
 TLB: `_ code:^cell data:^cell = StateInit`
@@ -45,6 +45,14 @@ Signature: `DeployOrganizationWithMetadata{metadata:Metadata{name:^string,descri
 TLB: `set_deploy_org_fee#094b2273 newFee:uint64 = SetDeployOrgFee`
 Signature: `SetDeployOrgFee{newFee:uint64}`
 
+## Withdraw
+TLB: `withdraw#0ba69751 amount:coins = Withdraw`
+Signature: `Withdraw{amount:coins}`
+
+## TransferOwnership
+TLB: `transfer_ownership#70373fea newOwner:address = TransferOwnership`
+Signature: `TransferOwnership{newOwner:address}`
+
 ## Metadata
 TLB: `_ name:^string description:^string emoji:^string website:^string = Metadata`
 Signature: `Metadata{name:^string,description:^string,emoji:^string,website:^string}`
@@ -56,6 +64,10 @@ Signature: `InitOrganization{owner:address}`
 ## InitOrganizationWithMetadata
 TLB: `init_organization_with_metadata#caedd2bf owner:address metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string} = InitOrganizationWithMetadata`
 Signature: `InitOrganizationWithMetadata{owner:address,metadata:Metadata{name:^string,description:^string,emoji:^string,website:^string}}`
+
+## UpdateOrganizationInfo
+TLB: `update_organization_info#84698a07 emoji:^string name:^string description:^string website:^string = UpdateOrganizationInfo`
+Signature: `UpdateOrganizationInfo{emoji:^string,name:^string,description:^string,website:^string}`
 
 ## DeployVoting
 TLB: `deploy_voting#8c30e194 candidates:CandidateArray{size:uint8,candidates:dict<uint64, ^Candidate{name:^string,info:^string,votes:uint64}>} voteFee:uint64 votesPerCandidate:uint8 startTime:uint64 timeToLive:uint64 = DeployVoting`
@@ -168,6 +180,7 @@ Argument: votingId
 136: Invalid address
 137: Masterchain support is not enabled for this contract
 13397: Invalid number of votes
+15509: Only deployer is allowed to withdraw
 24647: Only repository can deploy organization
 26215: Only the owner can cast votes
 26998: Not enough value to deploy voting
@@ -178,4 +191,6 @@ Argument: votingId
 38223: Start time should be in the future
 51754: Insufficient funds
 54147: Voting has not started yet
+54615: Insufficient balance
 59195: Voting has ended
+59846: Voting has not ended yet

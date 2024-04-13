@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
 import EmojiPicker, { Theme } from "emoji-picker-react";
 
 interface Field {
@@ -14,6 +13,7 @@ interface Field {
   min?: number;
   step?: number;
   fields?: Field[];
+  validators?: any[];
   isRequired?: boolean;
 }
 
@@ -23,6 +23,7 @@ interface CustomizableFormProps {
 }
 
 const CustomizableForm = ({ fields, onFormSubmit }: CustomizableFormProps) => {
+  
   const initialFormData = {} as any;
   const initialFormErrors = {} as any;
 
@@ -50,6 +51,27 @@ const CustomizableForm = ({ fields, onFormSubmit }: CustomizableFormProps) => {
     });
     // if field is not required return
     const field = fields.find((field) => field.name === name);
+
+    let isValidationError = false
+    // if validators list value is not empty
+    if (field?.validators && value) {
+      field.validators.forEach((validator) => {
+        const errorMessage = validator(value);
+        if (errorMessage) {
+         isValidationError = true
+        }
+      });
+    }
+
+    // if no validation error set form errors to empty
+    if (!isValidationError) {
+      setFormErrors({
+        ...formErrors,
+        [name]: "",
+      });
+    }
+    
+
     if (!field?.isRequired) {
       return;
     }
@@ -88,6 +110,21 @@ const CustomizableForm = ({ fields, onFormSubmit }: CustomizableFormProps) => {
 
       // check if field is required
       const field = fields.find((field) => field.name === key);
+
+      // if validators list value is not empty
+      if (field?.validators && value
+        
+      ) {
+        console.log("validating");
+        field.validators.forEach((validator) => {
+          const errorMessage = validator(value);
+          if (errorMessage) {
+            newFormErrors[key] = errorMessage;
+            errorsExist = true;
+          }
+        });
+      }
+
       // if not required return
       if (!field?.isRequired) {
         return;

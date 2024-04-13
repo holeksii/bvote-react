@@ -167,9 +167,18 @@
     return (($self'owner, $self'organization, $self'votingId, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ());
 }
 
+(((slice, slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int)), ()) $Voting$_internal_binary_TransferOwnership((slice, slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self, (slice) $msg) impure inline {
+    var ($self'owner, $self'organization, $self'votingId, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive) = $self;
+    var ($msg'newOwner) = $msg;
+    ($self'owner, $self'organization, $self'votingId, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)~$Voting$_fun_requireOwner();
+    $self'owner = $msg'newOwner;
+    return (($self'owner, $self'organization, $self'votingId, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ());
+}
+
 ((slice, slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), ()) $Voting$_internal_text_63365f83ad1d185f336d0e64cfce19190f3623d6d976c30c6198ac209c8946ee((slice, slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline {
     var ($self'owner, $self'organization, $self'votingId, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive) = $self;
     ($self'owner, $self'organization, $self'votingId, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)~$Voting$_fun_requireOwner();
+    throw_unless(59846, (now() >= ($self'startTime + $self'timeToLive)));
     $global_send($SendParameters$_constructor_to_bounce_value_mode(__tact_context_get_sender(), true, 0, (128 + 2)));
     return (($self'owner, $self'organization, $self'votingId, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ());
 }
@@ -177,6 +186,7 @@
 ((slice, slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), ()) $Voting$_internal_text_fa1a01be1e29ad0a9589a04fde70c8555eb62353556db90be422f1a9c5d7959d((slice, slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline {
     var ($self'owner, $self'organization, $self'votingId, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive) = $self;
     ($self'owner, $self'organization, $self'votingId, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)~$Voting$_fun_requireOwner();
+    throw_unless(59846, (now() >= ($self'startTime + $self'timeToLive)));
     $global_send($SendParameters$_constructor_to_bounce_value_mode(__tact_context_get_sender(), true, (__tact_my_balance() - 100000000), 0));
     return (($self'owner, $self'organization, $self'votingId, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ());
 }
@@ -282,7 +292,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmYzxEKBFGwg9hidcXTrf5htPhySjJ2FTtJfBQsDWCuubj";
+    return "ipfs://QmV7Fc4vfZ9pPy8UtjoHJmLEXCYD5Zyayi54wAhbPJXKyT";
 }
 
 _ lazy_deployment_completed() method_id {
@@ -337,6 +347,13 @@ _ lazy_deployment_completed() method_id {
     if (op == 4128084533) {
         var msg = in_msg~$DeployAndCastVoteOk$_load();
         self~$Voting$_internal_binary_DeployAndCastVoteOk(msg);
+        return (self, true);
+    }
+    
+    ;; Receive TransferOwnership message
+    if (op == 1882669034) {
+        var msg = in_msg~$TransferOwnership$_load();
+        self~$Voting$_internal_binary_TransferOwnership(msg);
         return (self, true);
     }
     

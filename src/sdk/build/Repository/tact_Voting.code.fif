@@ -19,6 +19,7 @@ PROGRAM{
   DECLPROC $DeployOk$_store_cell
   DECLPROC $Metadata$_store
   DECLPROC $Metadata$_load
+  DECLPROC $TransferOwnership$_load
   DECLPROC $CandidateArray$_store
   DECLPROC $CandidateArray$_load
   DECLPROC $Candidate$_store
@@ -81,6 +82,7 @@ PROGRAM{
   DECLPROC $Voting$_internal_binary_InitVotingWithMetadata
   DECLPROC $Voting$_internal_binary_DeployAndCastVote
   DECLPROC $Voting$_internal_binary_DeployAndCastVoteOk
+  DECLPROC $Voting$_internal_binary_TransferOwnership
   DECLPROC $Voting$_internal_text_63365f83ad1d185f336d0e64cfce19190f3623d6d976c30c6198ac209c8946ee
   DECLPROC $Voting$_internal_text_fa1a01be1e29ad0a9589a04fde70c8555eb62353556db90be422f1a9c5d7959d
   DECLPROC $Voting$_internal_binary_Deploy
@@ -294,6 +296,14 @@ PROGRAM{
     CTOS
     s1 s4 XCHG
     s3 s3 s0 XCHG3
+  }>
+  $TransferOwnership$_load PROCINLINE:<{
+    32 LDU
+    SWAP
+    1882669034 PUSHINT
+    EQUAL
+    129 THROWIFNOT
+    __tact_load_address INLINECALLDICT
   }>
   $CandidateArray$_store PROCINLINE:<{
     s0 s2 XCHG
@@ -1023,8 +1033,19 @@ PROGRAM{
     $SendParameters$_constructor_to_bounce_value_mode INLINECALLDICT
     $global_send INLINECALLDICT
   }>
+  $Voting$_internal_binary_TransferOwnership PROCINLINE:<{
+    13 -ROLL
+    $Voting$_fun_requireOwner INLINECALLDICT
+    1 12 BLKDROP2
+  }>
   $Voting$_internal_text_63365f83ad1d185f336d0e64cfce19190f3623d6d976c30c6198ac209c8946ee PROCINLINE:<{
     $Voting$_fun_requireOwner INLINECALLDICT
+    59846 PUSHINT
+    NOW
+    2OVER
+    ADD
+    GEQ
+    THROWANYIFNOT
     __tact_context_get_sender INLINECALLDICT
     TRUE
     0 PUSHINT
@@ -1034,6 +1055,12 @@ PROGRAM{
   }>
   $Voting$_internal_text_fa1a01be1e29ad0a9589a04fde70c8555eb62353556db90be422f1a9c5d7959d PROCINLINE:<{
     $Voting$_fun_requireOwner INLINECALLDICT
+    59846 PUSHINT
+    NOW
+    2OVER
+    ADD
+    GEQ
+    THROWANYIFNOT
     __tact_context_get_sender INLINECALLDICT
     TRUE
     __tact_my_balance INLINECALLDICT
@@ -1128,7 +1155,7 @@ PROGRAM{
     86142586315491086060343270784266291122 PUSHINT
   }>
   get_abi_ipfs PROC:<{
-    x{697066733a2f2f516d597a78454b4246477767396869646358547266356874506879536a4a324654744a664251734457437575626a} PUSHSLICE
+    x{697066733a2f2f516d563746633476665a397050793855746a6f484a6d4c4558435944355a79617969353477416862504a584b7954} PUSHSLICE
   }>
   lazy_deployment_completed PROC:<{
     c4 PUSH
@@ -1202,6 +1229,16 @@ PROGRAM{
       $DeployAndCastVoteOk$_load INLINECALLDICT
       1 3 BLKDROP2
       $Voting$_internal_binary_DeployAndCastVoteOk INLINECALLDICT
+      TRUE
+    }>
+    DUP
+    1882669034 PUSHINT
+    EQUAL
+    IFJMP:<{
+      DROP
+      $TransferOwnership$_load INLINECALLDICT
+      NIP
+      $Voting$_internal_binary_TransferOwnership INLINECALLDICT
       TRUE
     }>
     DUP

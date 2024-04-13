@@ -4,39 +4,34 @@
 
 #include "tact_HiddenVoting.headers.fc";
 #include "tact_HiddenVoting.stdlib.fc";
-#include "tact_HiddenVoting.constants.fc";
 #include "tact_HiddenVoting.storage.fc";
 
 ;;
 ;; Contract HiddenVoting functions
 ;;
 
-(slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $HiddenVoting$_contract_init(slice $organization, int $deployTime) impure inline_ref {
-    var (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = (null(), null(), null(), null(), null(), null(), null(), null());
+(slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $HiddenVoting$_contract_init(slice $organization, (int, cell) $candidates, int $voteFee, int $votesPerCandidate, int $startTime, int $timeToLive, (slice, slice, slice, slice) $metadata) impure inline_ref {
+    var (($candidates'size, $candidates'candidates)) = $candidates;
+    var (($metadata'name, $metadata'description, $metadata'emoji, $metadata'website)) = $metadata;
+    var (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = (null(), null(), null(), null(), null(), null(), null());
     throw_unless(34218, ( __tact_slice_eq_bits($organization, __tact_context_get_sender()) ));
     $self'owner = __tact_context_get_sender();
-    $self'deployTime = $deployTime;
-    ($self'candidates'size, $self'candidates'candidates) = $CandidateArray$_constructor_size_candidates(0, null());
-    $self'voteFee = 0;
-    $self'votesPerCandidate = 0;
-    $self'startTime = 0;
-    $self'timeToLive = 0;
-    ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website) = $Metadata$_constructor_name_description_emoji_website(__gen_slice_string_96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7(), __gen_slice_string_96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7(), __gen_slice_string_96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7(), __gen_slice_string_96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7());
-    return ($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive);
+    ($self'candidates'size, $self'candidates'candidates) = ($candidates'size, $candidates'candidates);
+    $self'voteFee = $voteFee;
+    $self'votesPerCandidate = $votesPerCandidate;
+    $self'startTime = $startTime;
+    $self'timeToLive = $timeToLive;
+    ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website) = ($metadata'name, $metadata'description, $metadata'emoji, $metadata'website);
+    return ($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive);
 }
 
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_deployTime((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
-    var (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
-    return (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), $self'deployTime);
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), (int, cell)) $HiddenVoting$_fun_candidates((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
+    var (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
+    return (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ($self'candidates'size, $self'candidates'candidates));
 }
 
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), (int, cell)) $HiddenVoting$_fun_candidates((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
-    var (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
-    return (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ($self'candidates'size, $self'candidates'candidates));
-}
-
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_numOfVotes((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
-    var (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_numOfVotes((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
+    var (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
     int $num = 0;
     int $i = 0;
     while (($i < $self'candidates'size)) {
@@ -46,73 +41,73 @@
         }
         $i = $i + 1;
     }
-    return (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), $num);
+    return (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), $num);
 }
 
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_voteFee((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
-    var (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
-    return (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), $self'voteFee);
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_voteFee((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
+    var (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
+    return (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), $self'voteFee);
 }
 
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_votesPerCandidate((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
-    var (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
-    return (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), $self'votesPerCandidate);
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_votesPerCandidate((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
+    var (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
+    return (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), $self'votesPerCandidate);
 }
 
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_startTime((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
-    var (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
-    return (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), $self'startTime);
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_startTime((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
+    var (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
+    return (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), $self'startTime);
 }
 
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_timeToLive((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
-    var (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
-    return (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), $self'timeToLive);
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_fun_timeToLive((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
+    var (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
+    return (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), $self'timeToLive);
 }
 
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), (slice, slice, slice, slice)) $HiddenVoting$_fun_metadata((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
-    var (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
-    return (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website));
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), (slice, slice, slice, slice)) $HiddenVoting$_fun_metadata((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
+    var (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
+    return (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website));
 }
 
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), slice) $HiddenVoting$_fun_voteAddress((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self, slice $owner) impure inline_ref {
-    var (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), slice) $HiddenVoting$_fun_voteAddress((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self, slice $owner) impure inline_ref {
+    var (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
     var ($init'code, $init'data) = $Vote$_init_child(__tact_context_sys, my_address(), $owner);
     slice $voting = $global_contractAddress(($init'code, $init'data));
-    return (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), $voting);
+    return (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), $voting);
 }
 
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), (slice, slice, int, int)) $HiddenVoting$_fun_basicInfo((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
-    var (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
-    return (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), $VotingBasicInfo$_constructor_emoji_name_startTime_endTime($self'metadata'emoji, $self'metadata'name, $self'startTime, ($self'startTime + $self'timeToLive)));
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), (slice, slice, int, int)) $HiddenVoting$_fun_basicInfo((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
+    var (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
+    return (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), $VotingBasicInfo$_constructor_emoji_name_startTime_endTime($self'metadata'emoji, $self'metadata'name, $self'startTime, ($self'startTime + $self'timeToLive)));
 }
 
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), (slice, slice, slice, slice, slice, int, int, int, int, int)) $HiddenVoting$_fun_allInfo((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
-    var (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
-    return (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), $VotingAllInfo$_constructor_organization_owner_emoji_name_description_numOfVotes_voteFee_votesPerCandidate_startTime_endTime($self'owner, $self'owner, $self'metadata'emoji, $self'metadata'name, $self'metadata'description, ($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)~$HiddenVoting$_fun_numOfVotes(), $self'voteFee, $self'votesPerCandidate, $self'startTime, ($self'startTime + $self'timeToLive)));
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), (slice, slice, slice, slice, slice, int, int, int, int, int)) $HiddenVoting$_fun_allInfo((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
+    var (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
+    return (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), $VotingAllInfo$_constructor_organization_owner_emoji_name_description_numOfVotes_voteFee_votesPerCandidate_startTime_endTime($self'owner, $self'owner, $self'metadata'emoji, $self'metadata'name, $self'metadata'description, ($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)~$HiddenVoting$_fun_numOfVotes(), $self'voteFee, $self'votesPerCandidate, $self'startTime, ($self'startTime + $self'timeToLive)));
 }
 
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), ()) $HiddenVoting$_fun_requireOwner((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
-    var (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), ()) $HiddenVoting$_fun_requireOwner((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
+    var (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
     throw_unless(132, ( __tact_slice_eq_bits($self'owner, __tact_context_get_sender()) ));
-    return (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ());
+    return (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ());
 }
 
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), slice) $HiddenVoting$_fun_owner((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
-    var (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
-    return (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), $self'owner);
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), slice) $HiddenVoting$_fun_owner((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline_ref {
+    var (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)) = $self;
+    return (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), $self'owner);
 }
 
 ;;
 ;; Receivers of a Contract HiddenVoting
 ;;
 
-(((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int)), ()) %$HiddenVoting$_internal_empty((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline {
-    var ($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive) = $self;
-    return (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ());
+(((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int)), ()) %$HiddenVoting$_internal_empty((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline {
+    var ($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive) = $self;
+    return (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ());
 }
 
-(((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int)), ()) $HiddenVoting$_internal_binary_DeployAndCastVote((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self, (int, int) $msg) impure inline {
-    var ($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive) = $self;
+(((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int)), ()) $HiddenVoting$_internal_binary_DeployAndCastVote((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self, (int, int) $msg) impure inline {
+    var ($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive) = $self;
     var ($msg'candidateInd, $msg'numOfVotes) = $msg;
     throw_unless(54147, (now() >= $self'startTime));
     throw_unless(59195, (now() <= ($self'startTime + $self'timeToLive)));
@@ -122,48 +117,42 @@
     var ($init'code, $init'data) = $Vote$_init_child(__tact_context_sys, my_address(), __tact_context_get_sender());
     slice $voting = $global_contractAddress(($init'code, $init'data));
     $global_send($SendParameters$_constructor_to_value_bounce_mode_body_code_data($voting, ($Context$_get_value(__tact_context_get()) - $totalFee), false, 0, $CastVote$_store_cell($CastVote$_constructor_owner_candidateInd_numOfVotes(__tact_context_get_sender(), $msg'candidateInd, $msg'numOfVotes)), $init'code, $init'data));
-    return (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ());
+    return (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ());
 }
 
-(((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int)), ()) $HiddenVoting$_internal_binary_DeployAndCastVoteOk((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self, (slice, int, int) $msg) impure inline {
-    var ($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive) = $self;
+(((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int)), ()) $HiddenVoting$_internal_binary_DeployAndCastVoteOk((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self, (slice, int, int) $msg) impure inline {
+    var ($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive) = $self;
     var ($msg'voter, $msg'candidateInd, $msg'numOfVotes) = $msg;
     var ($cand'name, $cand'info, $cand'votes) = $Candidate$_not_null($Candidate$_load_opt(__tact_dict_get_uint_cell($self'candidates'candidates, 64, $msg'candidateInd)));
     $self'candidates'candidates~__tact_dict_set_uint_cell(64, $msg'candidateInd, $Candidate$_store_cell($Candidate$_constructor_name_info_votes($cand'name, $cand'info, ($cand'votes + $msg'numOfVotes))));
     $global_send($SendParameters$_constructor_to_bounce_value_mode($msg'voter, true, 0, (64 + 2)));
-    return (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ());
+    return (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ());
 }
 
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), ()) $HiddenVoting$_internal_text_63365f83ad1d185f336d0e64cfce19190f3623d6d976c30c6198ac209c8946ee((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline {
-    var ($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive) = $self;
-    ($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)~$HiddenVoting$_fun_requireOwner();
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), ()) $HiddenVoting$_internal_text_63365f83ad1d185f336d0e64cfce19190f3623d6d976c30c6198ac209c8946ee((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline {
+    var ($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive) = $self;
+    ($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)~$HiddenVoting$_fun_requireOwner();
     $global_send($SendParameters$_constructor_to_bounce_value_mode(__tact_context_get_sender(), true, 0, (128 + 2)));
-    return (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ());
+    return (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ());
 }
 
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), ()) $HiddenVoting$_internal_text_fa1a01be1e29ad0a9589a04fde70c8555eb62353556db90be422f1a9c5d7959d((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline {
-    var ($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive) = $self;
-    ($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)~$HiddenVoting$_fun_requireOwner();
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), ()) $HiddenVoting$_internal_text_fa1a01be1e29ad0a9589a04fde70c8555eb62353556db90be422f1a9c5d7959d((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self) impure inline {
+    var ($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive) = $self;
+    ($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)~$HiddenVoting$_fun_requireOwner();
     $global_send($SendParameters$_constructor_to_bounce_value_mode(__tact_context_get_sender(), true, (__tact_my_balance() - 100000000), 0));
-    return (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ());
+    return (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ());
 }
 
-(((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int)), ()) $HiddenVoting$_internal_binary_Deploy((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self, (int) $deploy) impure inline {
-    var ($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive) = $self;
+(((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int)), ()) $HiddenVoting$_internal_binary_Deploy((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) $self, (int) $deploy) impure inline {
+    var ($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive) = $self;
     var ($deploy'queryId) = $deploy;
-    ($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)~$HiddenVoting$_fun_notify($DeployOk$_store_cell($DeployOk$_constructor_queryId($deploy'queryId)));
-    return (($self'owner, $self'deployTime, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ());
+    ($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive)~$HiddenVoting$_fun_notify($DeployOk$_store_cell($DeployOk$_constructor_queryId($deploy'queryId)));
+    return (($self'owner, ($self'candidates'size, $self'candidates'candidates), ($self'metadata'name, $self'metadata'description, $self'metadata'emoji, $self'metadata'website), $self'voteFee, $self'votesPerCandidate, $self'startTime, $self'timeToLive), ());
 }
 
 ;;
 ;; Get methods of a Contract HiddenVoting
 ;;
-
-_ %deployTime() method_id(125970) {
-    var self = $HiddenVoting$_contract_load();
-    var res = self~$HiddenVoting$_fun_deployTime();
-    return res;
-}
 
 _ %candidates() method_id(105998) {
     var self = $HiddenVoting$_contract_load();
@@ -243,7 +232,7 @@ _ supported_interfaces() method_id {
 }
 
 _ get_abi_ipfs() method_id {
-    return "ipfs://QmSnuAmu8cu4Warxr9uVWwwXp6CA7ZmioMBzgMBFXMbr89";
+    return "ipfs://QmVZBNstkXB29qfDMtPVS4MYM7d6JEoe8Kgr33JXbY3SRP";
 }
 
 _ lazy_deployment_completed() method_id {
@@ -254,7 +243,7 @@ _ lazy_deployment_completed() method_id {
 ;; Routing of a Contract HiddenVoting
 ;;
 
-((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_contract_router_internal((slice, int, (int, cell), (slice, slice, slice, slice), int, int, int, int) self, int msg_bounced, slice in_msg) impure inline_ref {
+((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int), int) $HiddenVoting$_contract_router_internal((slice, (int, cell), (slice, slice, slice, slice), int, int, int, int) self, int msg_bounced, slice in_msg) impure inline_ref {
     ;; Handle bounced messages
     if (msg_bounced) {
         return (self, true);

@@ -1,6 +1,6 @@
 # TACT Compilation Report
 Contract: HiddenVoting
-BOC Size: 2152 bytes
+BOC Size: 2155 bytes
 
 # Types
 Total Types: 18
@@ -78,9 +78,7 @@ TLB: `cast_vote#4d87f18b owner:address candidateInd:uint8 numOfVotes:uint8 = Cas
 Signature: `CastVote{owner:address,candidateInd:uint8,numOfVotes:uint8}`
 
 # Get Methods
-Total Get Methods: 12
-
-## deployTime
+Total Get Methods: 11
 
 ## candidates
 
