@@ -6,7 +6,8 @@ import { Address } from "@ton/core";
 
 import { useNavigate } from "react-router-dom";
 import { Organization } from "../../sdk/wrappers/Organization";
-import Overlay from "../Page/Overlay";
+
+import { useTranslation } from "react-i18next";
 
 export default () => {
   const tonClient = useTonClient();
@@ -16,6 +17,8 @@ export default () => {
   const [isUpdating, setIsUpdating] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState("");
+
+  const { t } = useTranslation();
 
   async function findContract(address: string) {
     if (!tonClient) return;
@@ -80,7 +83,7 @@ export default () => {
         <input
           type="text"
           className={"bg-transparent text-gray-200 p-2 w-full pr-10"}
-          placeholder="Enter contract address"
+          placeholder={t("search.placeholder")}
           onKeyUp={(e) => {
             if (e.key === "Enter") {
               findContract(e.currentTarget.value);

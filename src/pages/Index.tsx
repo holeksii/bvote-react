@@ -16,8 +16,9 @@ import Box from "../components/Page/Box";
 import { Link, useNavigate } from "react-router-dom";
 import FormsCustom from "../components/Forms/Custom";
 import Overlay from "../components/Page/Overlay";
-import { newOrganizationFields } from "../components/Forms/Fields";
+import { getNewOrganizationFields } from "../components/Forms/Fields";
 import { repoId } from "../constants";
+import { useTranslation } from "react-i18next";
 
 const pageSize = 5;
 
@@ -36,8 +37,9 @@ export default () => {
   let [total, setTotal] = useState(0n);
   let [totalLoaded, setTotalLoaded] = useState(0n);
 
-  // org deployment
   const [overlayVisible, setOverlayVisible] = useState(false);
+
+  const { t } = useTranslation();
 
   async function loadMore() {
     if (tonClient === undefined) return;
@@ -51,12 +53,11 @@ export default () => {
         length: Math.min(pageSize, left),
       }).map(async (_, index) => {
         const i = BigInt(index) + totalLoaded;
-        const i_reverse = total - i - 1n;
-        const organization = await Organization.fromAddress(
+        const organization = Organization.fromAddress(
           await mainRepo.getOrganizationAddress(
             tonClient.provider(mainRepo.address),
-            i,
-          ),
+            i
+          )
         );
         try {
           const metadata = await organization.getMetadata(
@@ -164,12 +165,12 @@ export default () => {
           else setOverlayVisible(true);
         }}
       >
-        Create Organization
+        {t("organization.deploy")}
       </button>
       <Overlay isOpen={overlayVisible} onClose={() => setOverlayVisible(false)}>
-        <div className="text-xl mb-2">Deploy Organization</div>
+        <div className="text-xl mb-2">{t("organization.form.create.name")}</div>
         <FormsCustom
-          fields={newOrganizationFields}
+          fields={getNewOrganizationFields()}
           onFormSubmit={deployOrganization}
         />
       </Overlay>

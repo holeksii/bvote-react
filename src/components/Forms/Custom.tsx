@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import EmojiPicker, { Theme } from "emoji-picker-react";
+import { useTranslation } from "react-i18next";
 
 interface Field {
   name: string;
-  label: string;
+  label?: string;
   type: string;
+
+  i18nKey?: string;
 
   initialValue: any;
   max?: number;
@@ -24,6 +27,8 @@ interface CustomizableFormProps {
 
 const CustomizableForm = ({ fields, onFormSubmit }: CustomizableFormProps) => {
   
+  const {t} = useTranslation();
+
   const initialFormData = {} as any;
   const initialFormErrors = {} as any;
 
@@ -52,13 +57,13 @@ const CustomizableForm = ({ fields, onFormSubmit }: CustomizableFormProps) => {
     // if field is not required return
     const field = fields.find((field) => field.name === name);
 
-    let isValidationError = false
+    let isValidationError = false;
     // if validators list value is not empty
     if (field?.validators && value) {
       field.validators.forEach((validator) => {
         const errorMessage = validator(value);
         if (errorMessage) {
-         isValidationError = true
+          isValidationError = true;
         }
       });
     }
@@ -70,7 +75,6 @@ const CustomizableForm = ({ fields, onFormSubmit }: CustomizableFormProps) => {
         [name]: "",
       });
     }
-    
 
     if (!field?.isRequired) {
       return;
@@ -96,10 +100,6 @@ const CustomizableForm = ({ fields, onFormSubmit }: CustomizableFormProps) => {
     });
   };
 
-  const handleToggleEmojiPicker = () => {
-    setIsEmojiPickerOpen(!isEmojiPickerOpen); // Toggle EmojiPicker visibility
-  };
-
   const handleSubmit = (e: any) => {
     e.preventDefault();
     let errorsExist = false;
@@ -112,14 +112,11 @@ const CustomizableForm = ({ fields, onFormSubmit }: CustomizableFormProps) => {
       const field = fields.find((field) => field.name === key);
 
       // if validators list value is not empty
-      if (field?.validators && value
-        
-      ) {
-        console.log("validating");
+      if (field?.validators && value) {
         field.validators.forEach((validator) => {
           const errorMessage = validator(value);
           if (errorMessage) {
-            newFormErrors[key] = errorMessage;
+            newFormErrors[key] = t(errorMessage);
             errorsExist = true;
           }
         });
@@ -131,16 +128,16 @@ const CustomizableForm = ({ fields, onFormSubmit }: CustomizableFormProps) => {
       }
 
       if (typeof value === "string" && value.trim() === "") {
-        newFormErrors[key] = `${key} is required`;
+        newFormErrors[key] = t("error.required");
         errorsExist = true;
       } else if (!value && (typeof value !== "object" || !value.getTime)) {
         // Check if value is falsy or not an object with a getTime function (for Date objects)
-        newFormErrors[key] = `${key} is required`;
+        newFormErrors[key] = t("error.required");
         errorsExist = true;
       }
       // if list is empty
       if (Array.isArray(value) && value.length === 0) {
-        newFormErrors[key] = `${key} is required`;
+        newFormErrors[key] = t("error.required");
         errorsExist = true;
       }
     });
@@ -158,7 +155,11 @@ const CustomizableForm = ({ fields, onFormSubmit }: CustomizableFormProps) => {
     <form onSubmit={handleSubmit} className="max-w-md mx-auto">
       {fields.map((field) => (
         <div className="mb-4" key={field.name}>
-          <label className="block mb-1">{field.label}:</label>
+          <label className="block mb-1">{
+            field.i18nKey ? t(field.i18nKey)
+             : field.label
+          }:</label>
+          
           {field.type === "text" && (
             <input
               type="text"
@@ -243,7 +244,7 @@ const CustomizableForm = ({ fields, onFormSubmit }: CustomizableFormProps) => {
                       field.fields!.map((subField: any) => (
                         <div className="mb-4" key={subField.name}>
                           <label className="block mb-1">
-                            {subField.label}:
+                            {subField.i18nKey ? t(subField.i18nKey) : subField.label}
                           </label>
 
                           <input

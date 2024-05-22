@@ -1,8 +1,17 @@
+
+import { useTranslation } from "react-i18next";
+
+
 interface SlotComponentProps {
-  info: Record<string, { value: any; type: string }>;
+  info: Record<string, { value: any; type: string, i18nKey?: string
+
+   }>;
 }
 
 const SlotComponent = ({ info }: SlotComponentProps) => {
+
+  const {t} = useTranslation();
+
   function fixUrl(url: string) {
     // if not starts with http and not starts with / then add https
     if (!url.startsWith("http") && !url.startsWith("/")) {
@@ -16,7 +25,10 @@ const SlotComponent = ({ info }: SlotComponentProps) => {
       {Object.entries(info).map(([key, value]) => {
         return (
           <div className="flex justify-between" key={key}>
-            <div>{key}</div>
+            <div>
+            
+              {value.i18nKey ? t(value.i18nKey) : key}
+              </div>
             <div className="text-right font-light w-1/2">
               {
                 // if key is status

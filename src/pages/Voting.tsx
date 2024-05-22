@@ -22,9 +22,10 @@ import FormsCustom from "../components/Forms/Custom";
 
 import { useNavigate } from "react-router-dom";
 import {
+  getTransferOwnershipFields,
   getWithdrawFields,
-  transferOwnershipFields,
 } from "../components/Forms/Fields";
+import { useTranslation } from "react-i18next";
 
 export default () => {
   const [tonConnectUi] = useTonConnectUI();
@@ -55,11 +56,13 @@ export default () => {
 
   const [errorMessage, setErrorMessage] = useState("");
 
+  const { t } = useTranslation();
+
   function getVoteFormFields() {
     return [
       {
         name: "numOfVotes",
-        label: "Number of votes",
+        i18nKey: "organization.info.owner",
         type: "number",
         max: votingInfo.votesPerCandidate ?? 1,
         min: 1,
@@ -77,10 +80,10 @@ export default () => {
     const timeNow = new Date();
 
     return timeNow > timeStart && timeNow < timeEnd
-      ? "Active"
+      ? "active"
       : timeNow < timeStart
-        ? "Waiting"
-        : "Ended";
+        ? "waiting"
+        : "ended";
   }
 
   function isMyVoting() {
@@ -94,34 +97,39 @@ export default () => {
       parseInt(votingInfo.startTime.toString()) * 1000,
     );
     const timeEnd = new Date(parseInt(votingInfo.endTime.toString()) * 1000);
-    const timeNow = new Date();
 
     const fields = {
       Status: {
         type: "status",
+        i18nKey: "voting.info.status",
         // check if voting has started or not ended. Active, Ended, Waiting
-        value: getStatus(),
+        value: t(`voting.status.${getStatus()}`),
       },
       Contract: {
         type: "address",
+        i18nKey: "voting.info.contract",
         value: contractAddress,
       },
       "Start time": {
         type: "string",
+        i18nKey: "voting.info.startTime",
         value:
           timeStart.toLocaleTimeString() + " " + timeStart.toLocaleDateString(),
       },
       "End time": {
         type: "string",
+        i18nKey: "voting.info.endTime",
         value:
           timeEnd.toLocaleTimeString() + " " + timeEnd.toLocaleDateString(),
       },
       "Vote fee": {
         type: "string",
+        i18nKey: "voting.info.fee",
         value: fromNano(votingInfo.voteFee) + " TON",
       },
       "Total votes": {
         type: "number",
+        i18nKey: "voting.info.totalVotes",
         value: votingInfo.numOfVotes.toString(),
       },
     };
@@ -303,7 +311,9 @@ export default () => {
 
                 <div className="mt-2">
                   <br />
-                  <div className="text-xl text-center">Candidades Info</div>
+                  <div className="text-xl text-center">
+                    {t("voting.info.candidates")}
+                  </div>
                   {candidates.map((candidate, index) => {
                     return (
                       <div key={index} className="mt-2">
@@ -331,7 +341,7 @@ export default () => {
         </Box>
       </div>
       <div className="w-full sm:w-1/2 md:w-2/6 p-2">
-        <Box name="Voting Info">
+        <Box name={t("voting.info.votingInfo")}>
           {isLoaded ? (
             <InfoTable info={allInfo()} />
           ) : (
@@ -346,7 +356,7 @@ export default () => {
         </Box>
       </div>
       <div className="w-full md:w-2/6 p-2">
-        <Box name="Candidates">
+        <Box name={t("voting.info.candidates")}>
           {isLoaded ? (
             candidates.map((candidate, index) => {
               return (
@@ -354,7 +364,7 @@ export default () => {
                   name={candidate.name}
                   onClick={() => {
                     // if status not active, do not allow voting
-                    if (getStatus() !== "Active") return;
+                    if (getStatus() !== "active") return;
                     if (!wallet) {
                       tonConnectUi.openModal();
                       return;
@@ -385,7 +395,7 @@ export default () => {
             </div>
           )}
         </Box>
-        {isMyVoting() && getStatus() == "Ended" && (
+        {isMyVoting() && getStatus() == "ended" && (
           <div className="flex flex-row w-full justify-between gap-2">
             <button
               className="bg-slate-900 text-white px-4 py-2 rounded-xl mt-4"
@@ -394,7 +404,7 @@ export default () => {
                 else setWithdrawOverlayVisible(true);
               }}
             >
-              Withdraw Funds
+              {t("withdraw.funds")}
             </button>
           </div>
         )}
@@ -407,7 +417,7 @@ export default () => {
                 else setTransgerOwnershipOverlayVisible(true);
               }}
             >
-              Transfer Ownership
+              {t("ownership.transfer")}
             </button>
           </div>
         )}
@@ -453,7 +463,7 @@ export default () => {
         >
           <div className="text-xl mb-2">Transfer Ownership</div>
           <FormsCustom
-            fields={transferOwnershipFields}
+            fields={getTransferOwnershipFields()}
             onFormSubmit={transferOwnership}
           />
         </Overlay>

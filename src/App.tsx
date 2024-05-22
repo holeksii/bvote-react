@@ -16,7 +16,6 @@ function App() {
       manifestUrl="https://raw.githubusercontent.com/holeksii/bvote-react/master/public/tonconnect-manifest.json"
       uiPreferences={{ theme: THEME.DARK }}
       walletsListConfiguration={{
-        
         includeWallets: [
           {
             appName: "safepalwallet",

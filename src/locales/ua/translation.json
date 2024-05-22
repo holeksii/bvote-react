@@ -1,0 +1,78 @@
+{
+  "lang.change": "Змінити мову",
+  "search": {
+    "placeholder": "Введіть адресу смарт-контракту"
+  },
+  "loadMore": "Завантажити ще",
+  "organization": {
+    "deploy": "Створити організацію",
+    "edit": "Редагувати організацію",
+    "form": {
+      "create.name": "Інформація про нову організацію",
+      "field": {
+        "name": "Назва",
+        "description": "Опис",
+        "emoji": "Емоджі",
+        "website": "Вебсайт"
+      }
+    },
+    "info": {
+      "owner": "Власник",
+      "contract": "Смарт-контракт",
+      "numOfVotings": "Кількість голосів",
+      "website": "Вебсайт",
+      "balance": "Баланс"
+    }
+  },
+  "voting": {
+    "deploy": "Створити голосування",
+    "form": {
+      "create.name": "Інформація про нове голосування",
+      "field": {
+        "name": "Назва",
+        "description": "Опис",
+        "emoji": "Емоджі",
+        "website": "Вебсайт",
+        "fee": "Комісія за голос(TON)",
+        "votesPerCandidate": "Голосів на кандидата",
+        "startTime": "Початок",
+        "endTime": "Кінець",
+        "candidates": "Кандидати",
+        "about": "Інформація"
+      }
+    },
+    "info": {
+      "candidates": "Кандидати",
+      "candidatesInfo": "Інформація про кандидатів",
+      "votingInfo": "Загальна інформація",
+      "status": "Статус",
+      "contract": "Смарт-контракт",
+      "startTime": "Починається",
+      "endTime": "Закінчується",
+      "fee": "Комісія за голос",
+      "totalVotes": "Всього голосів"
+    },
+    "status": {
+      "active": "Активно",
+      "waiting": "Очікується",
+      "ended": "Завершено"
+    }
+  },
+  "withdraw": {
+    "field": {
+      "amount": "Сума(TON)"
+    },
+    "funds": "Зняти кошти"
+  },
+  "ownership": {
+    "transfer": "Передати право власності",
+    "new": "Адреса нового власника"
+  },
+  "error": {
+    "required": "поле є обов'язковим",
+    "address": "Неправильна адреса",
+    "url": "Неправильний URL",
+    "webProtocol": "Введіть URL без http або https",
+    "whitespace": "Поле не може містити пробіли"
+  }
+}

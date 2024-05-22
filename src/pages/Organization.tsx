@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Key, useState } from "react";
+import { useState } from "react";
 import { useEffect } from "react";
 import { useTonClient } from "../hooks/useTonClient";
 import { useNavigate } from "react-router-dom";
@@ -28,9 +28,10 @@ import {
   getWithdrawFields,
   newVotingFields,
   getEditOrganizationFields,
-  transferOwnershipFields,
+  getTransferOwnershipFields,
 } from "../components/Forms/Fields";
 import EditSvg from "../components/Svg/Edit";
+import { useTranslation } from "react-i18next";
 
 const pageSize = 4;
 
@@ -63,24 +64,29 @@ export default () => {
   const [withdrawOverlayVisible, setWithdrawOverlayVisible] = useState(false);
   const [editOrganizationOverlayVisible, setEditOrganizationOverlayVisible] =
     useState(false);
-  
+
   const [transgerOwnershipOverlayVisible, setTransgerOwnershipOverlayVisible] =
     useState(false);
 
   const [errorMessage, setErrorMessage] = useState("");
 
+  const { t } = useTranslation();
+
   function allInfo() {
     const fields = {
       Owner: {
         type: "address",
+        i18nKey: "organization.info.owner",
         value: organizationInfo.owner.toString(),
       },
       Contract: {
         type: "address",
+        i18nKey: "organization.info.contract",
         value: contractAddress,
       },
       "Number of Votings": {
         type: "string",
+        i18nKey: "organization.info.numOfVotings",
         value: organizationInfo.numOfVotings.toString(),
       },
     } as any;
@@ -88,13 +94,14 @@ export default () => {
     if (metadata.website !== "") {
       fields["Website"] = {
         type: "url",
+        i18nKey: "organization.info.website",
         value: metadata.website,
       };
     }
 
     // if owner is me add deploy voting fee
     if (isMyOrganization()) {
-      fields["Contract Balance"] = {
+      fields[t("organization.info.balance")] = {
         type: "string",
         value: fromNano(contractBalance).toString() + " TON",
       };
@@ -389,40 +396,40 @@ export default () => {
         </Box>
         {isMyOrganization() && (
           <div>
-            <div className="flex flex-row w-full justify-between gap-2">
+            <div className="flex flex-wrap w-full gap-2 mt-4">
               <button
-                className="bg-slate-900 text-white px-4 py-2 rounded-xl mt-4"
+                className="bg-slate-900 text-white px-4 py-2 rounded-xl"
                 onClick={() => {
                   if (!wallet) tonConnectUi.openModal();
                   else setCreateVotingOverlayVisible(true);
                 }}
               >
-                Create Voting
+                {t("voting.deploy")}
               </button>
               <button
-                className="bg-slate-900 text-white px-4 py-2 rounded-xl mt-4"
+                className="bg-slate-900 text-white px-4 py-2 rounded-xl"
                 onClick={() => {
                   if (!wallet) tonConnectUi.openModal();
                   else setWithdrawOverlayVisible(true);
                 }}
               >
-                Withdraw Funds
+                {t("withdraw.funds")}
               </button>
               <button
-                className="bg-slate-900 text-white px-4 py-2 rounded-xl mt-4"
+                className="bg-slate-900 text-white px-4 py-2 rounded-xl"
                 onClick={() => {
                   if (!wallet) tonConnectUi.openModal();
                   else setTransgerOwnershipOverlayVisible(true);
                 }}
               >
-                Transfer Ownership
+                {t("ownership.transfer")}
               </button>
             </div>
             <Overlay
               isOpen={createVotingOverlayVisible}
               onClose={() => setCreateVotingOverlayVisible(false)}
             >
-              <div className="text-xl mb-2">Create Voting</div>
+              <div className="text-xl mb-2">{t("voting.deploy")}</div>
               <FormsCustom
                 fields={newVotingFields}
                 onFormSubmit={deployVoting}
@@ -432,7 +439,7 @@ export default () => {
               isOpen={withdrawOverlayVisible}
               onClose={() => setWithdrawOverlayVisible(false)}
             >
-              <div className="text-xl mb-2">Withdraw Funds</div>
+              <div className="text-xl mb-2">{t("withdraw.funds")}</div>
               <FormsCustom
                 fields={getWithdrawFields(
                   Math.floor(Number(fromNano(contractBalance)) * 1000) / 1000,
@@ -445,7 +452,7 @@ export default () => {
               isOpen={editOrganizationOverlayVisible}
               onClose={() => setEditOrganizationOverlayVisible(false)}
             >
-              <div className="text-xl mb-2">Edit Organization</div>
+              <div className="text-xl mb-2">{t("organization.edit")}</div>
               <FormsCustom
                 fields={getEditOrganizationFields(metadata)}
                 onFormSubmit={editMetadata}
@@ -455,9 +462,9 @@ export default () => {
               isOpen={transgerOwnershipOverlayVisible}
               onClose={() => setTransgerOwnershipOverlayVisible(false)}
             >
-              <div className="text-xl mb-2">Transfer Ownership</div>
+              <div className="text-xl mb-2">{t("ownership.transfer")}</div>
               <FormsCustom
-                fields={transferOwnershipFields}
+                fields={getTransferOwnershipFields()}
                 onFormSubmit={transferOwnership}
               />
             </Overlay>

@@ -1,0 +1,78 @@
+{
+  "lang.change": "Change Language",
+  "search": {
+    "placeholder": "Enter contract address"
+  },
+  "loadMore": "Load more",
+  "organization": {
+    "deploy": "Create organization",
+    "edit": "Edit organization",
+    "form": {
+      "create.name": "New organization information",
+      "field": {
+        "name": "Name",
+        "description": "Description",
+        "emoji": "Emoji",
+        "website": "Website"
+      }
+    },
+    "info": {
+      "owner": "Owner",
+      "contract": "Smart-contract",
+      "numOfVotings": "Number of votings",
+      "website": "Website",
+      "balance": "Balance"
+    }
+  },
+  "voting": {
+    "deploy": "Create voting",
+    "form": {
+      "create.name": "New voting information",
+      "field": {
+        "name": "Name",
+        "description": "Description",
+        "emoji": "Emoji",
+        "website": "Website",
+        "fee": "Fee for vote(TON)",
+        "votesPerCandidate": "Votes Per Candidate",
+        "startTime": "Start time",
+        "endTime": "End time",
+        "candidates": "Candidates",
+        "about": "About"
+      }
+    },
+    "info": {
+      "candidates": "Candidates",
+      "candidatesInfo": "Candidates information",
+      "votingInfo": "Voting information",
+      "status": "Status",
+      "contract": "Smart-contract",
+      "startTime": "Starts",
+      "endTime": "Ends",
+      "fee": "Vote fee",
+      "totalVotes": "Total votes"
+    },
+    "status": {
+      "active": "Active",
+      "waiting": "Waiting",
+      "ended": "Ended"
+    }
+  },
+  "withdraw": {
+    "field": {
+      "amount": "Amount(TON)"
+    },
+    "funds": "Withdraw funds"
+  },
+  "ownership": {
+    "transfer": "Transfer ownership",
+    "new": "New owner address"
+  },
+  "error": {
+    "required": "required field",
+    "address": "Invalid address",
+    "url": "Invalid URL",
+    "webProtocol": "Please do not include http or https",
+    "whitespace": "Please do not include whitespaces"
+  }
+}
