@@ -74,5 +74,12 @@
     "url": "Invalid URL",
     "webProtocol": "Please do not include http or https",
     "whitespace": "Please do not include whitespaces"
+  },
+  "generic": {
+    "status": {
+      "active": "Active",
+      "waiting": "Waiting",
+      "ended": "Ended"
+    }
   }
 }

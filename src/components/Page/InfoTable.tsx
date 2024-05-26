@@ -24,19 +24,23 @@ const SlotComponent = ({ info }: SlotComponentProps) => {
     <div>
       {Object.entries(info).map(([key, value]) => {
         return (
-          <div className="flex justify-between" key={key}>
+          <div className="flex justify-between gap-1" key={key}>
             <div>
             
               {value.i18nKey ? t(value.i18nKey) : key}
               </div>
-            <div className="text-right font-light w-1/2">
+            <div className="text-right font-light w-2/5">
               {
                 // if key is status
                 value.type === "status" ? (
                   <div className="flex flex-row items-center justify-end gap-2">
-                    <div>{value.value.toString()}</div>
+                    <div>
+
+                    {t('generic.status.'+value.value.toString().toLowerCase())}
+                    
+                    </div>
                     <div
-                      className={`h-2 w-2 rounded-full ${value.value === "Active" ? "animate-pulse bg-green-500" : "bg-red-500"}`}
+                      className={`h-2 w-2 rounded-full ${value.value === "active" ? "animate-pulse bg-green-500" : "bg-red-500"}`}
                     ></div>
                   </div>
                 ) : value.type === "address" || value.type === "url" ? (

@@ -103,7 +103,7 @@ export default () => {
         type: "status",
         i18nKey: "voting.info.status",
         // check if voting has started or not ended. Active, Ended, Waiting
-        value: t(`voting.status.${getStatus()}`),
+        value: getStatus() //t(`voting.status.${getStatus()}`),
       },
       Contract: {
         type: "address",

@@ -74,5 +74,12 @@
     "url": "Неправильний URL",
     "webProtocol": "Введіть URL без http або https",
     "whitespace": "Поле не може містити пробіли"
+  },
+  "generic": {
+    "status": {
+      "active": "Активно",
+      "waiting": "Очікується",
+      "ended": "Завершено"
+    }
   }
 }
